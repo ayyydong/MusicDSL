@@ -63,7 +63,7 @@ Amman: 4
 We have established the primary features of our DSL we’re planning to implement, written a draft grammar, established responsibilities and deadlines for our project roadmap, and have designed and scheduled our pre-implementation user-studies.
 
 ##### Draft Grammar:
-'''
+```
 program: title part+;
 part: clef key time measure+;
 clef: “treble” | “bass”;
@@ -78,4 +78,4 @@ note: [A-G] accidental? duration;
 rest: “R” duration;
 accidental: “#” | “b”;
 duration: “.”* division;
-'''
+```
