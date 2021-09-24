@@ -28,3 +28,54 @@ repeating elements of a piece without having to manually write every segment.
 ##### Any planned follow-up tasks or features still to design:
 * An important feature to design and implement would be to take a text input in the DSL
 and generate a file (perhaps a pdf or an image) of the sheet music
+
+
+
+
+
+### Milestone 2
+
+##### Planned division of main responsibilities between team members:
+Andy: 1
+Bill: 2
+Daniel: 3
+Amman: 4
+
+##### Project Roadmap:
+* Feature brainstorming (1234) (ongoing)
+* Pre-implementation user study (12) (Sept 27)
+* Feature refinement (from user study) (1234) (Sept 30)
+* Finalize lexer grammar (23) (Sept 30)
+* Finalize parser grammar (14) (Set 30)
+* Implementation Phases
+  * Tokenization (4) (Oct 7)
+  * Parsing (34) (Oct 7)
+  * AST Conversion (1) (Oct 7)
+  * Static checks (1) (Oct 7)
+  * Evaluation (23) (Oct 7)
+  * Dynamic checks (2) (Oct 7)
+* Develop tests/debugging (1234) (Oct 11)
+* Post-implementation user study (34) (Oct 13)
+* Further implementations/refinements (1234) (Oct 15)
+* Demo video production (14) (Oct 17)
+
+##### Progress Summary:
+We have established the primary features of our DSL we’re planning to implement, written a draft grammar, established responsibilities and deadlines for our project roadmap, and have designed and scheduled our pre-implementation user-studies.
+
+##### Draft Grammar:
+'''
+program: title part+;
+part: clef key time measure+;
+clef: “treble” | “bass”;
+key: keynote keytype;
+time: number “/” division;
+measure: “|” (note | rest)+;
+keynote: [A-G] accidental?;
+keytype: “major” | “minor”;
+number: [1-9]+;
+division: [1-9]+ , where the number equals 2^n, n>=0;
+note: [A-G] accidental? duration;
+rest: “R” duration;
+accidental: “#” | “b”;
+duration: “.”* division;
+'''
