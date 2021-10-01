@@ -79,3 +79,42 @@ rest: “R” duration;
 accidental: “#” | “b”;
 duration: “.”* division;
 ```
+
+
+
+### Milestone 3
+
+##### Mockup grammar used for User Study
+```
+program: title part+;
+part: clef key time measure+;
+clef: “treble” | “bass”;
+key: keynote keytype;
+time: number “/” division;
+measure: “[” (note | rest)+ "]";
+keynote: [A-G] accidental?;
+keytype: “major” | “minor”;
+number: [1-9]+;
+division: [1-9]+ , number equals 2^n, n>=0;
+note: [A-G] accidental? duration;
+rest: “R” duration;
+accidental: “#” | “b”;
+duration: “.”* division;
+```
+
+##### Notes from first User Study
+* Language generally clear.
+* It would be extremely helpful to be able to specify how many measures are in a line,
+and write the language with measures separated by new lines, making it more readable.
+* Would be nice to include beams between 8th notes and smaller.
+* Would be nice to include articulations.
+* Would be nice to allow for key/time signature changes within a piece.
+
+##### Changes to original design
+* Inclusion of beams and articulations.
+* Not necessarily a change, but language should be flexible to newlines being accepted as
+a continuation of the previous line. I don't think we'll be allowing users to specify how
+many measures are in a line, as that could run into a lot of formatting issues when
+generating sheet music. (Though perhaps maybe our sheet music could regenerate a formatted
+copy of our DSL with the measures correctly formatted?)
+* Allowing for key/time signature changes with a new declaration of those variables.
