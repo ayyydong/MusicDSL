@@ -77,4 +77,14 @@ public interface MusicSheetParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitMeasure(MusicSheetParser.MeasureContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MusicSheetParser#submeasure}.
+	 * @param ctx the parse tree
+	 */
+	void enterSubmeasure(MusicSheetParser.SubmeasureContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MusicSheetParser#submeasure}.
+	 * @param ctx the parse tree
+	 */
+	void exitSubmeasure(MusicSheetParser.SubmeasureContext ctx);
 }

@@ -52,4 +52,10 @@ public interface MusicSheetParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitMeasure(MusicSheetParser.MeasureContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MusicSheetParser#submeasure}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSubmeasure(MusicSheetParser.SubmeasureContext ctx);
 }

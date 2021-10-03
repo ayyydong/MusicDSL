@@ -2,7 +2,7 @@ lexer grammar MusicSheetLexer;
 
 // (DEFAULT_MODE)
 TITLE_START: 'Title:' WS* -> mode(TEXT_MODE);
-PART_START: 'Part' WS* -> mode(TEXT_MODE);
+PART_START: 'Part:' WS* -> mode(TEXT_MODE);
 CLEF: 'treble' | 'bass';
 NOTE: [A-G] ('#' | 'b')? ('*' '.'* [1-9]+)? ;
 KEYTYPE: 'major' | 'minor';

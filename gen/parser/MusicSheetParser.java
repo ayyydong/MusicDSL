@@ -21,10 +21,10 @@ public class MusicSheetParser extends Parser {
 		MEASURE_END=8, REST=9, WS=10, TEXT=11;
 	public static final int
 		RULE_program = 0, RULE_title = 1, RULE_part = 2, RULE_name = 3, RULE_sheet = 4, 
-		RULE_key = 5, RULE_measure = 6;
+		RULE_key = 5, RULE_measure = 6, RULE_submeasure = 7;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"program", "title", "part", "name", "sheet", "key", "measure"
+			"program", "title", "part", "name", "sheet", "key", "measure", "submeasure"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -128,19 +128,19 @@ public class MusicSheetParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(14);
+			setState(16);
 			title();
-			setState(18);
+			setState(20);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==TEXT) {
+			while (_la==PART_START) {
 				{
 				{
-				setState(15);
+				setState(17);
 				part();
 				}
 				}
-				setState(20);
+				setState(22);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -185,9 +185,9 @@ public class MusicSheetParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(21);
+			setState(23);
 			match(TITLE_START);
-			setState(22);
+			setState(24);
 			match(TEXT);
 			}
 		}
@@ -203,6 +203,7 @@ public class MusicSheetParser extends Parser {
 	}
 
 	public static class PartContext extends ParserRuleContext {
+		public TerminalNode PART_START() { return getToken(MusicSheetParser.PART_START, 0); }
 		public NameContext name() {
 			return getRuleContext(NameContext.class,0);
 		}
@@ -234,9 +235,11 @@ public class MusicSheetParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(24);
+			setState(26);
+			match(PART_START);
+			setState(27);
 			name();
-			setState(25);
+			setState(28);
 			sheet();
 			}
 		}
@@ -278,7 +281,7 @@ public class MusicSheetParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(27);
+			setState(30);
 			match(TEXT);
 			}
 		}
@@ -331,23 +334,23 @@ public class MusicSheetParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(29);
+			setState(32);
 			match(CLEF);
-			setState(30);
+			setState(33);
 			key();
-			setState(31);
+			setState(34);
 			match(TIME);
-			setState(33); 
+			setState(36); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(32);
+				setState(35);
 				measure();
 				}
 				}
-				setState(35); 
+				setState(38); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==MEASURE_START );
@@ -392,9 +395,9 @@ public class MusicSheetParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(37);
+			setState(40);
 			match(NOTE);
-			setState(38);
+			setState(41);
 			match(KEYTYPE);
 			}
 		}
@@ -412,13 +415,11 @@ public class MusicSheetParser extends Parser {
 	public static class MeasureContext extends ParserRuleContext {
 		public TerminalNode MEASURE_START() { return getToken(MusicSheetParser.MEASURE_START, 0); }
 		public TerminalNode MEASURE_END() { return getToken(MusicSheetParser.MEASURE_END, 0); }
-		public List<TerminalNode> NOTE() { return getTokens(MusicSheetParser.NOTE); }
-		public TerminalNode NOTE(int i) {
-			return getToken(MusicSheetParser.NOTE, i);
+		public List<SubmeasureContext> submeasure() {
+			return getRuleContexts(SubmeasureContext.class);
 		}
-		public List<TerminalNode> REST() { return getTokens(MusicSheetParser.REST); }
-		public TerminalNode REST(int i) {
-			return getToken(MusicSheetParser.REST, i);
+		public SubmeasureContext submeasure(int i) {
+			return getRuleContext(SubmeasureContext.class,i);
 		}
 		public MeasureContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -446,31 +447,23 @@ public class MusicSheetParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(40);
+			setState(43);
 			match(MEASURE_START);
-			setState(42); 
+			setState(45); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(41);
-				_la = _input.LA(1);
-				if ( !(_la==NOTE || _la==REST) ) {
-				_errHandler.recoverInline(this);
-				}
-				else {
-					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-					_errHandler.reportMatch(this);
-					consume();
+				setState(44);
+				submeasure();
 				}
 				}
-				}
-				setState(44); 
+				setState(47); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==NOTE || _la==REST );
-			setState(46);
+			setState(49);
 			match(MEASURE_END);
 			}
 		}
@@ -485,20 +478,73 @@ public class MusicSheetParser extends Parser {
 		return _localctx;
 	}
 
+	public static class SubmeasureContext extends ParserRuleContext {
+		public TerminalNode NOTE() { return getToken(MusicSheetParser.NOTE, 0); }
+		public TerminalNode REST() { return getToken(MusicSheetParser.REST, 0); }
+		public SubmeasureContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_submeasure; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MusicSheetParserListener ) ((MusicSheetParserListener)listener).enterSubmeasure(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MusicSheetParserListener ) ((MusicSheetParserListener)listener).exitSubmeasure(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MusicSheetParserVisitor ) return ((MusicSheetParserVisitor<? extends T>)visitor).visitSubmeasure(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final SubmeasureContext submeasure() throws RecognitionException {
+		SubmeasureContext _localctx = new SubmeasureContext(_ctx, getState());
+		enterRule(_localctx, 14, RULE_submeasure);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(51);
+			_la = _input.LA(1);
+			if ( !(_la==NOTE || _la==REST) ) {
+			_errHandler.recoverInline(this);
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\r\63\4\2\t\2\4\3"+
-		"\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\3\2\3\2\7\2\23\n\2\f\2\16"+
-		"\2\26\13\2\3\3\3\3\3\3\3\4\3\4\3\4\3\5\3\5\3\6\3\6\3\6\3\6\6\6$\n\6\r"+
-		"\6\16\6%\3\7\3\7\3\7\3\b\3\b\6\b-\n\b\r\b\16\b.\3\b\3\b\3\b\2\2\t\2\4"+
-		"\6\b\n\f\16\2\3\4\2\6\6\13\13\2.\2\20\3\2\2\2\4\27\3\2\2\2\6\32\3\2\2"+
-		"\2\b\35\3\2\2\2\n\37\3\2\2\2\f\'\3\2\2\2\16*\3\2\2\2\20\24\5\4\3\2\21"+
-		"\23\5\6\4\2\22\21\3\2\2\2\23\26\3\2\2\2\24\22\3\2\2\2\24\25\3\2\2\2\25"+
-		"\3\3\2\2\2\26\24\3\2\2\2\27\30\7\3\2\2\30\31\7\r\2\2\31\5\3\2\2\2\32\33"+
-		"\5\b\5\2\33\34\5\n\6\2\34\7\3\2\2\2\35\36\7\r\2\2\36\t\3\2\2\2\37 \7\5"+
-		"\2\2 !\5\f\7\2!#\7\b\2\2\"$\5\16\b\2#\"\3\2\2\2$%\3\2\2\2%#\3\2\2\2%&"+
-		"\3\2\2\2&\13\3\2\2\2\'(\7\6\2\2()\7\7\2\2)\r\3\2\2\2*,\7\t\2\2+-\t\2\2"+
-		"\2,+\3\2\2\2-.\3\2\2\2.,\3\2\2\2./\3\2\2\2/\60\3\2\2\2\60\61\7\n\2\2\61"+
-		"\17\3\2\2\2\5\24%.";
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\r8\4\2\t\2\4\3\t"+
+		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\3\2\3\2\7\2\25\n\2"+
+		"\f\2\16\2\30\13\2\3\3\3\3\3\3\3\4\3\4\3\4\3\4\3\5\3\5\3\6\3\6\3\6\3\6"+
+		"\6\6\'\n\6\r\6\16\6(\3\7\3\7\3\7\3\b\3\b\6\b\60\n\b\r\b\16\b\61\3\b\3"+
+		"\b\3\t\3\t\3\t\2\2\n\2\4\6\b\n\f\16\20\2\3\4\2\6\6\13\13\2\62\2\22\3\2"+
+		"\2\2\4\31\3\2\2\2\6\34\3\2\2\2\b \3\2\2\2\n\"\3\2\2\2\f*\3\2\2\2\16-\3"+
+		"\2\2\2\20\65\3\2\2\2\22\26\5\4\3\2\23\25\5\6\4\2\24\23\3\2\2\2\25\30\3"+
+		"\2\2\2\26\24\3\2\2\2\26\27\3\2\2\2\27\3\3\2\2\2\30\26\3\2\2\2\31\32\7"+
+		"\3\2\2\32\33\7\r\2\2\33\5\3\2\2\2\34\35\7\4\2\2\35\36\5\b\5\2\36\37\5"+
+		"\n\6\2\37\7\3\2\2\2 !\7\r\2\2!\t\3\2\2\2\"#\7\5\2\2#$\5\f\7\2$&\7\b\2"+
+		"\2%\'\5\16\b\2&%\3\2\2\2\'(\3\2\2\2(&\3\2\2\2()\3\2\2\2)\13\3\2\2\2*+"+
+		"\7\6\2\2+,\7\7\2\2,\r\3\2\2\2-/\7\t\2\2.\60\5\20\t\2/.\3\2\2\2\60\61\3"+
+		"\2\2\2\61/\3\2\2\2\61\62\3\2\2\2\62\63\3\2\2\2\63\64\7\n\2\2\64\17\3\2"+
+		"\2\2\65\66\t\2\2\2\66\21\3\2\2\2\5\26(\61";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
