@@ -120,19 +120,19 @@ copy of our DSL with the measures correctly formatted?)
 * Allowing for key/time signature changes with a new declaration of those variables.
 
 ### Milestone 4
-#### Status of implementation 
+##### Status of implementation 
 * Tokenization, parsing, AST conversion have been completed. 
 * We are currently working on static and dynamic checks as well as the evaluation methods. 
 * Plan to finish all or most of the implementation phases before the next milestone.
 
-#### Plans for final user study
+##### Plans for final user study
 * Will happen sometime next week (aiming to be on the same schedule as the roadmap)
 * Similar to the pre-implementation user study. 
 * Will ask the user to perform some tasks given our DSL, and a scribe will take notes on any 
 errors/difficulties the user encounters while performing the tasks.
 * Tasks will vary in complexity, but in the end, should cover all the features in our grammar.
 
-#### Planned timeline for the remaining days
+##### Planned timeline for the remaining days
 * Complete static and dynamic checks, and evaluate methods by next milestone.
 * Post-implementation user study will happen after the DSL is implemented following the roadmap 
 (Oct 13)
