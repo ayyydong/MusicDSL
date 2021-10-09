@@ -1,4 +1,4 @@
-// Generated from /home/ammanz/Projects/CPSC-410/Project1Group22/src/parser/MusicSheetParser.g4 by ANTLR 4.9.1
+// Generated from C:/Users/danie/OneDrive/Documents/School/2021W1/CPSC410/MusicSheetGenerator/src/parser\MusicSheetParser.g4 by ANTLR 4.9.1
 package parser;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -100,13 +100,13 @@ public class MusicSheetParserBaseListener implements MusicSheetParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSubmeasure(MusicSheetParser.SubmeasureContext ctx) { }
+	@Override public void enterNote(MusicSheetParser.NoteContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSubmeasure(MusicSheetParser.SubmeasureContext ctx) { }
+	@Override public void exitNote(MusicSheetParser.NoteContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

@@ -1,6 +1,6 @@
 package ast;
 
 public enum KeyType {
-    major,
-    minor
+    MAJOR,
+    MINOR
 }

@@ -63,42 +63,56 @@ public class ParsedTreeToAST extends AbstractParseTreeVisitor<Node> implements M
 
     @Override
     public Key visitKey(MusicSheetParser.KeyContext ctx) {
+        Note note = visitNote(ctx.note());
         KeyType keyType;
         if (ctx.KEYTYPE().getText().equals("major")) {
-            keyType = KeyType.major;
+            keyType = KeyType.MAJOR;
         } else if (ctx.KEYTYPE().getText().equals("minor")) {
-            keyType = KeyType.minor;
+            keyType = KeyType.MINOR;
         } else {
             throw new RuntimeException("Lexer error: tokenized key type that is not major or minor");
         }
-
-        String note = ctx.NOTE().getText();
 
         return new Key(keyType, note);
     }
 
     @Override
-    public Measure visitMeasure(MusicSheetParser.MeasureContext ctx) {
-        List<SubMeasure> subMeasures = new ArrayList<>();
+    public Note visitNote(MusicSheetParser.NoteContext ctx) {
+        String dots = null;
+        String division = null;
+        AccidentalType accidental = null;
+        String letter = ctx.NOTE_LETTER().getText();
 
-        for (MusicSheetParser.SubmeasureContext submeasureContext: ctx.submeasure()) {
-            subMeasures.add(this.visitSubmeasure(submeasureContext));
+        if (ctx.DOTS() != null) {
+            dots = ctx.DOTS().getText();
         }
 
-        return new Measure(subMeasures);
+        if (ctx.DIVISION() != null) {
+            division = ctx.DIVISION().getText();
+        }
+
+        if (ctx.ACCIDENTAL() != null) {
+            if (ctx.ACCIDENTAL().getText().equals("#")) {
+                accidental = AccidentalType.SHARP;
+            } else if (ctx.ACCIDENTAL().getText().equals("b")) {
+                accidental = AccidentalType.FLAT;
+            } else {
+                throw new RuntimeException("Lexer error: tokenized accidental type that is not # or b");
+            }
+        }
+
+        return new Note(letter, accidental, dots, division);
     }
 
     @Override
-    public SubMeasure visitSubmeasure(MusicSheetParser.SubmeasureContext ctx) {
-        SubMeasureType subMeasureType;
-        String content = ctx.getText();
-        if (ctx.NOTE() != null) {
-            subMeasureType = SubMeasureType.note;
-        } else if (ctx.REST() != null) {
-            subMeasureType = SubMeasureType.rest;
-        } else {
-            throw new RuntimeException("Lexer error: submeasure is not of type note or rest");
+    public Measure visitMeasure(MusicSheetParser.MeasureContext ctx) {
+        List<Note> notes = new ArrayList<>();
+
+        for (MusicSheetParser.NoteContext noteContext: ctx.note()) {
+            notes.add(this.visitNote(noteContext));
         }
-        return new SubMeasure(subMeasureType, content);
+
+        return new Measure(notes);
     }
+
 }
