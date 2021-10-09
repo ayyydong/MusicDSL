@@ -1,4 +1,4 @@
-// Generated from /home/ammanz/Projects/CPSC-410/Project1Group22/src/parser/MusicSheetParser.g4 by ANTLR 4.9.1
+// Generated from C:/Users/danie/OneDrive/Documents/School/2021W1/CPSC410/MusicSheetGenerator/src/parser\MusicSheetParser.g4 by ANTLR 4.9.1
 package parser;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -53,9 +53,9 @@ public interface MusicSheetParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMeasure(MusicSheetParser.MeasureContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MusicSheetParser#submeasure}.
+	 * Visit a parse tree produced by {@link MusicSheetParser#note}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSubmeasure(MusicSheetParser.SubmeasureContext ctx);
+	T visitNote(MusicSheetParser.NoteContext ctx);
 }

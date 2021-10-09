@@ -1,4 +1,4 @@
-// Generated from /home/ammanz/Projects/CPSC-410/Project1Group22/src/parser/MusicSheetParser.g4 by ANTLR 4.9.1
+// Generated from C:/Users/danie/OneDrive/Documents/School/2021W1/CPSC410/MusicSheetGenerator/src/parser\MusicSheetParser.g4 by ANTLR 4.9.1
 package parser;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
@@ -66,5 +66,5 @@ public class MusicSheetParserBaseVisitor<T> extends AbstractParseTreeVisitor<T> 
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitSubmeasure(MusicSheetParser.SubmeasureContext ctx) { return visitChildren(ctx); }
+	@Override public T visitNote(MusicSheetParser.NoteContext ctx) { return visitChildren(ctx); }
 }
