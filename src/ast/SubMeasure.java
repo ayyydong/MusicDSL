@@ -10,7 +10,7 @@ public class SubMeasure extends Node {
     }
 
     @Override
-    public void evaluate() {
-
+    public <T> T accept(Visitor<T> v) {
+        return v.visit(new Title("What is this class?"));
     }
 }

@@ -9,8 +9,16 @@ public class Key extends Node {
         this.note = note;
     }
 
-    @Override
-    public void evaluate() {
+    public KeyType getKeyType() {
+        return keyType;
+    }
 
+    public Note getNote() {
+        return note;
+    }
+
+    @Override
+    public <T> T accept(Visitor<T> v) {
+        return v.visit(this);
     }
 }

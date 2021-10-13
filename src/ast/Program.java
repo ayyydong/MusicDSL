@@ -12,8 +12,16 @@ public class Program extends Node {
         this.parts = parts;
     }
 
-    @Override
-    public void evaluate() {
+    public Title getTitle() {
+        return title;
+    }
 
+    public List<Part> getParts() {
+        return parts;
+    }
+
+    @Override
+    public <T> T accept(Visitor<T> v) {
+        return v.visit(this);
     }
 }

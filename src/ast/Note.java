@@ -13,8 +13,24 @@ public class Note extends Node {
         this.division = division;
     }
 
-    @Override
-    public void evaluate() {
+    public String getLetter() {
+        return letter;
+    }
 
+    public AccidentalType getAccidental() {
+        return accidental;
+    }
+
+    public String getDots() {
+        return dots;
+    }
+
+    public String getDivision() {
+        return division;
+    }
+
+    @Override
+    public <T> T accept(Visitor<T> v) {
+        return v.visit(this);
     }
 }

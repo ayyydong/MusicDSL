@@ -15,8 +15,24 @@ public class Sheet extends Node {
         this.measures = measures;
     }
 
-    @Override
-    public void evaluate() {
+    public Clef getClef() {
+        return clef;
+    }
 
+    public Key getKey() {
+        return key;
+    }
+
+    public double getTime() {
+        return time;
+    }
+
+    public List<Measure> getMeasures() {
+        return measures;
+    }
+
+    @Override
+    public <T> T accept(Visitor<T> v) {
+        return v.visit(this);
     }
 }

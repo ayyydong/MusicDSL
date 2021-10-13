@@ -1,0 +1,108 @@
+package ast;
+
+import jm.music.data.Score;
+import jm.music.data.Phrase;
+
+public class Evaluator implements Visitor<Void> {
+    private Score score;
+    private int partCounter;
+    private Part tempPart;
+    private Phrase tempPhrase;
+
+    public Evaluator(Score score) {
+        this.score = score;
+        partCounter = 0;
+        tempPart = null;
+        tempPhrase = null;
+    }
+
+    @Override
+    public Void visit(Clef c) {
+        // Nothing to be done here?
+        return null;
+    }
+
+    @Override
+    public Void visit(Key k) {
+        KeyType kt = k.getKeyType();
+        int quality = 0;
+        if (kt == KeyType.MINOR) {
+            quality = 1;
+        }
+        score.setKeyQuality(quality);
+        // Process number of sharps and flats based on quality/note
+        return null;
+    }
+
+    @Override
+    public Void visit(Measure m) {
+        for(Note note : m.getNotes()) {
+            note.accept(this);
+        }
+        return null;
+    }
+
+    @Override
+    public Void visit(Name n) {
+        jm.music.data.Part temp = score.getPart(partCounter);
+        temp.setTitle(n.getName());
+        score.removeLastPart();
+        score.add(temp);
+        return null;
+    }
+
+    @Override
+    public Void visit(Note n) {
+        String noteString = n.getLetter();
+        AccidentalType accidental = n.getAccidental();
+        // Need to account for nonexistent sharps/flats
+        if (accidental != null && accidental == AccidentalType.SHARP) {
+            noteString += "_SHARP";
+        } else if (accidental != null && accidental == AccidentalType.FLAT) {
+            noteString += "_FLAT";
+        }
+        jm.music.data.Note temp = new jm.music.data.Note(noteString);
+        return null;
+    }
+
+    @Override
+    public Void visit(Part p) {
+        score.createPart();
+        p.getName().accept(this);
+        p.getSheet().accept(this);
+        partCounter++;
+        return null;
+    }
+
+    @Override
+    public Void visit(Program p) {
+        p.getTitle().accept(this);
+        for(Part part : p.getParts()) {
+            part.accept(this);
+        }
+        return null;
+    }
+    
+    @Override
+    public Void visit(Sheet s) {
+        score.createPart();
+        tempPhrase = new Phrase();
+        s.getClef().accept(this);
+        s.getKey().accept(this);
+        //Not touching time cause double is not the way to go
+        for(Measure measure : s.getMeasures()) {
+            measure.accept(this);
+        }
+        jm.music.data.Part temp = score.getPart(partCounter);
+        temp.add(tempPhrase);
+        score.removeLastPart();
+        score.add(temp);
+        return null;
+    }
+
+    @Override
+    public Void visit(Title t) {
+        score.setTitle(t.getTitle());
+        return null;
+    }
+}

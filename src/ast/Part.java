@@ -9,8 +9,16 @@ public class Part extends Node {
         this.sheet = sheet;
     }
 
-    @Override
-    public void evaluate() {
+    public Name getName() {
+        return name;
+    }
 
+    public Sheet getSheet() {
+        return sheet;
+    }
+
+    @Override
+    public <T> T accept(Visitor<T> v) {
+        return v.visit(this);
     }
 }

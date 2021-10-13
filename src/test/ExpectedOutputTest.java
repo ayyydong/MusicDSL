@@ -8,8 +8,8 @@ import jm.music.data.Phrase;
 import jm.music.data.Score;
 import jm.util.View;
 import jm.util.Write;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+// import org.junit.jupiter.api.BeforeEach;
+// import org.junit.jupiter.api.Test;
 
 import static jm.constants.Durations.MINIM;
 import static jm.constants.Pitches.C4;
@@ -19,11 +19,11 @@ import static jm.constants.Pitches.C4;
 
 class ExpectedOutputTest {
 
-    @BeforeEach
+    // @BeforeEach
     void setUp() {
     }
 
-    @Test
+    // @Test
     void main() {
         Score score = new Score(new Part(new Phrase(new Note(C4, MINIM))));
         Write.midi(score, "expected_output");

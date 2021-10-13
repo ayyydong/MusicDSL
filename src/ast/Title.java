@@ -7,8 +7,12 @@ public class Title extends Node {
         this.title = title;
     }
 
-    @Override
-    public void evaluate() {
+    public String getTitle() {
+        return title;
+    }
 
+    @Override
+    public <T> T accept(Visitor<T> v) {
+        return v.visit(this);
     }
 }
