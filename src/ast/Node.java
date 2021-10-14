@@ -2,5 +2,5 @@ package ast;
 
 
 public abstract class Node {
-    abstract public <T> T accept(Visitor<T> v);
+    abstract public <T> T accept(Visitor<T> v) throws IllegalAccessException;
 }

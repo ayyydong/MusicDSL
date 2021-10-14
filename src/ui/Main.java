@@ -11,6 +11,18 @@ import parser.ParsedTreeToAST;
 
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
+import inst.SawtoothInst;
+import jm.audio.Instrument;
+import jm.music.data.Note;
+import jm.music.data.Part;
+import jm.music.data.Phrase;
+import jm.music.data.Score;
+import jm.util.View;
+
+import java.io.IOException;
+
+import static jm.constants.Durations.MINIM;
+import static jm.constants.Pitches.C4;
 
 public class Main {
 
@@ -37,13 +49,13 @@ public class Main {
         System.out.println("Done parsing");
     }
 
-//        parsedProgram.evaluate();
-
+////        parsedProgram.evaluate();
+//
 //        Score score = new Score(new Part(new Phrase(new Note(C4, MINIM))));
-//        Write.midi(score, "expected_output");
+////        Write.midi(score, "expected_output");
 //        Instrument inst = new SawtoothInst(44100);
-//        Write.au(score, "expected_output_au", inst);
-//        Write.xml(score,"expected_output_xml");
+////        Write.au(score, "expected_output_au", inst);
+////        Write.xml(score,"expected_output_xml");
 //        View.notate(score);
 //    }
 }

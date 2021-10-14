@@ -9,3 +9,5 @@ sheet: CLEF key TIME measure+;
 key: note KEYTYPE;
 measure: MEASURE_START note+ MEASURE_END;
 note: NOTE_LETTER ACCIDENTAL? DURATION_START? DOTS? DIVISION?;
+// fix division DIVISION
+// add loops and checkout repeat in JMusic

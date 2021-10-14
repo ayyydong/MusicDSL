@@ -81,6 +81,14 @@ public class ParsedTreeToAST extends AbstractParseTreeVisitor<Node> implements M
         String dots = null;
         String division = null;
         AccidentalType accidental = null;
+        SubMeasureType subMeasureType;
+        if (ctx.NOTE_LETTER().getText().equals("R")){
+            subMeasureType = SubMeasureType.rest;
+        } else if (ctx.NOTE_LETTER().getText().matches("[A-G]")) {
+            subMeasureType = SubMeasureType.note;
+        } else {
+            throw new RuntimeException("Lexer error: tokenized submeasure type that is not note or rest");
+        }
         String letter = ctx.NOTE_LETTER().getText();
 
         if (ctx.DOTS() != null) {
@@ -101,7 +109,7 @@ public class ParsedTreeToAST extends AbstractParseTreeVisitor<Node> implements M
             }
         }
 
-        return new Note(letter, accidental, dots, division);
+        return new Note(subMeasureType, letter, accidental, dots, division);
     }
 
     @Override
