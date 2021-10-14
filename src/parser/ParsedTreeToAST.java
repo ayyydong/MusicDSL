@@ -49,7 +49,9 @@ public class ParsedTreeToAST extends AbstractParseTreeVisitor<Node> implements M
         }
 
         String[] timeValues = ctx.TIME().toString().split("/");
-        double time = (double) Integer.parseInt(timeValues[0]) / Integer.parseInt(timeValues[1]);
+//        double time = (double) Integer.parseInt(timeValues[0]) / Integer.parseInt(timeValues[1]);
+        int timenum = Integer.parseInt(timeValues[0]);
+        int timedem = Integer.parseInt(timeValues[1]);
 
         Key key = this.visitKey(ctx.key());
 
@@ -58,8 +60,9 @@ public class ParsedTreeToAST extends AbstractParseTreeVisitor<Node> implements M
             measures.add(this.visitMeasure(measureContext));
         }
 
-        return new Sheet(clef, key, time, measures);
+        return new Sheet(clef, key, timenum, timedem, measures);
     }
+
 
     @Override
     public Key visitKey(MusicSheetParser.KeyContext ctx) {

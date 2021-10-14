@@ -13,7 +13,7 @@ public class Evaluator implements Visitor<Void> {
     private static final double DEFAULT_RHYTHM_VALUE = jm.music.data.Note.DEFAULT_RHYTHM_VALUE;
     private Score score;
     private int partCounter;
-    private Part tempPart;
+    private jm.music.data.Part tempPart;
     private Phrase tempPhrase;
 
     public Evaluator(Score score) {
@@ -36,7 +36,8 @@ public class Evaluator implements Visitor<Void> {
         if (kt == KeyType.MINOR) {
             quality = 1;
         }
-        score.setKeyQuality(quality);
+        //score.setKeyQuality(quality); // this sets score, should be setting part instead
+        tempPart.setKeyQuality(quality);
         // Process number of sharps and flats based on quality/note
         return null;
     }
@@ -81,6 +82,7 @@ public class Evaluator implements Visitor<Void> {
         // Check whether or not note is letter or rest
         if (noteType == SubMeasureType.rest) {
             temp = new jm.music.data.Note(REST, DEFAULT_RHYTHM_VALUE);
+            tempPhrase.addNote(temp);
             return null;
         }
         // Note is a letter
@@ -93,6 +95,7 @@ public class Evaluator implements Visitor<Void> {
             noteString += "_FLAT";
         }
         temp = new jm.music.data.Note(noteString);
+        tempPhrase.addNote(temp);
         return null;
     }
 
@@ -118,17 +121,22 @@ public class Evaluator implements Visitor<Void> {
     
     @Override
     public Void visit(Sheet s) {
-        score.createPart();
+//        score.createPart(); // we called createPart in visit(Part p)
         tempPhrase = new Phrase();
+        jm.music.data.Part temp = score.getPart(partCounter);
+        tempPart = temp;
         s.getClef().accept(this);
         s.getKey().accept(this);
         //Not touching time cause double is not the way to go
+        // score.setTimeSignature(s.getTimeNum(),s.getTimeDem());
         // Will need this when we do error checking
         for(Measure measure : s.getMeasures()) {
             measure.accept(this);
         }
-        jm.music.data.Part temp = score.getPart(partCounter);
         temp.add(tempPhrase);
+        temp.setNumerator(s.getTimeNum());
+        temp.setDenominator(s.getTimeDem());
+//        temp.setKeySignature();
         score.removeLastPart();
         score.add(temp);
         return null;
