@@ -80,10 +80,10 @@ public class Evaluator implements Visitor<Void> {
         // https://stackoverflow.com/questions/9700081/in-java-how-to-iterate-on-the-constants-of-an-interface
         HashMap<String,Integer> map = new HashMap<>();
         for (Field f : jm.constants.ProgramChanges.class.getFields()) {
-                int modifiers = f.getModifiers();
-                if (Modifier.isPublic(modifiers)) { //check if the field is public
-                    map.put(f.getName(), (Integer) f.get(null));
-                }
+            int modifiers = f.getModifiers();
+            if (Modifier.isPublic(modifiers)) { //check if the field is public
+                map.put(f.getName(), (Integer) f.get(null));
+            }
         }
         return map;
     }
@@ -157,7 +157,7 @@ public class Evaluator implements Visitor<Void> {
         }
         return null;
     }
-    
+
     @Override
     public Void visit(Sheet s) throws IllegalAccessException {
 //        score.createPart(); // we called createPart in visit(Part p)

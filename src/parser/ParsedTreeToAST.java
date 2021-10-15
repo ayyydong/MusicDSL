@@ -81,8 +81,8 @@ public class ParsedTreeToAST extends AbstractParseTreeVisitor<Node> implements M
 
     @Override
     public Note visitNote(MusicSheetParser.NoteContext ctx) {
-        Integer dots = null;
-        Integer division = null;
+        String dots = null;
+        String division = null;
         AccidentalType accidental = null;
         SubMeasureType subMeasureType;
         if (ctx.NOTE_LETTER().getText().equals("R")){
@@ -95,11 +95,11 @@ public class ParsedTreeToAST extends AbstractParseTreeVisitor<Node> implements M
         String letter = ctx.NOTE_LETTER().getText();
 
         if (ctx.DOTS() != null) {
-            dots = ctx.DOTS().getText().length();
+            dots = ctx.DOTS().getText();
         }
 
         if (ctx.DIVISION() != null) {
-            division = Integer.parseInt(ctx.DIVISION().getText());
+            division = ctx.DIVISION().getText();
         }
 
         if (ctx.ACCIDENTAL() != null) {

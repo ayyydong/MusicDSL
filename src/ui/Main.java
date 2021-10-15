@@ -85,11 +85,8 @@ public class Main {
 // https://i.pinimg.com/originals/03/45/5e/03455e5f600c75ab2c22f00d2bce8a3a.gif
 
 /**
-
  * This is the simplest jMusic program of all.
-
  * The eqivalent to a programming language's 'Hello World'
-
  */
 //// Check common practice notation
 //// https://explodingart.com/jmusic/jmtutorial/CPN.html
