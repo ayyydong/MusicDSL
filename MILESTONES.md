@@ -139,3 +139,23 @@ errors/difficulties the user encounters while performing the tasks.
 * Further implementation refinements (Oct 15)
 * Demo video production (Oct 17)
 
+
+### Milestone 5
+##### Status of implementation 
+* Tokenization, parsing, AST conversion have been completed.
+* Evaluation completed.
+* Testing and working out bugs. Fleshing out any remaining static/dynamic checks needed
+* Planning to finish the remainder of the implementation by tonight (Oct 15)
+
+##### Status of final user study
+* Will be carried out over the weekend.
+* Similar to the pre-implementation user study. 
+* Will ask the user to perform a task given our DSL, and a scribe will take notes on any 
+errors/difficulties the user encounters while performing the tasks.
+* Task will cover all the features in our grammar.
+
+##### Planned timeline for the remaining days
+* Finalize code by tonight (Oct 15)
+* Final user study over the weekend (Oct 16-17)
+* Demo video production (Oct 17)
+
