@@ -95,7 +95,7 @@ public class Evaluator implements Visitor<Void> {
         String division = n.getDivision();
         // Check whether or not note is letter or rest
         if (noteType == SubMeasureType.rest) {
-            temp = new jm.music.data.Note(REST, jm.music.data.Note.DEFAULT_RHYTHM_VALUE);
+            temp = new jm.music.data.Note(REST, tempPart.getNumerator()/(Integer.parseInt(division)));
             tempPhrase.addNote(temp);
             return null;
         }
