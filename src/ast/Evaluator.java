@@ -95,7 +95,8 @@ public class Evaluator implements Visitor<Void> {
         String division = n.getDivision();
         // Check whether or not note is letter or rest
         if (noteType == SubMeasureType.rest) {
-            temp = new jm.music.data.Note(REST, tempPart.getNumerator()/(Integer.parseInt(division)));
+//            temp = new jm.music.data.Note(REST, tempPart.getNumerator()/(Integer.parseInt(division)));
+            temp = new jm.music.data.Note(REST, 1.5);
             tempPhrase.addNote(temp);
             return null;
         }
@@ -115,7 +116,8 @@ public class Evaluator implements Visitor<Void> {
         }
         noteString += division;
         if (pitchmap.containsKey(noteString)) {
-            temp = new jm.music.data.Note(pitchmap.get(noteString), tempPart.getNumerator()/(Integer.parseInt(division)));
+//            temp = new jm.music.data.Note(pitchmap.get(noteString), tempPart.getNumerator()/(Integer.parseInt(division)));
+            temp = new jm.music.data.Note(pitchmap.get(noteString), 1.5);
             tempPhrase.addNote(temp);
         } else {
             if (accidental == null) {

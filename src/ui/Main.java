@@ -65,8 +65,8 @@ public class Main {
         // TODO: should count #notes and update time signature
         // TODO: update key signature // JMusic does not support key signatures and clefs! (terrible)
         // TODO: checkout treble/bass stave
-        Score score = new Score(new Part(new Phrase(new Note(C4, MINIM))));
-//        Play.midi(score);
+//        Score score = new Score(new Part(new Phrase(new Note(G4, MINIM))));
+        Play.midi(e.getScore());
 //        View.notate(score);
     }
 
