@@ -4,8 +4,8 @@ public class Note extends Node {
     private final SubMeasureType subMeasureType;
     private final String letter;
     private final AccidentalType accidental;
-    private final String dots;
-    private final String division;
+    private final Integer dots;
+    private final Integer division;
 
     public Note(SubMeasureType subMeasureType, String letter, AccidentalType accidental, String dots, String division) {
         this.subMeasureType = subMeasureType;

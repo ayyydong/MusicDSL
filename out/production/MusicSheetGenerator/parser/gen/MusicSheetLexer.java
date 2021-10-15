@@ -1,5 +1,4 @@
-// Generated from /Users/andydong/Desktop/Project1Group22/src/parser/MusicSheetLexer.g4 by ANTLR 4.9.1
-package parser;
+// Generated from C:/Users/danie/OneDrive/Documents/School/2021W1/CPSC410/MusicSheetGenerator/out/production/MusicSheetGenerator/parser\MusicSheetLexer.g4 by ANTLR 4.9.1
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;

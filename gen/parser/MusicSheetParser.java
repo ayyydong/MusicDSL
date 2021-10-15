@@ -17,9 +17,9 @@ public class MusicSheetParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		TITLE_START=1, PART_START=2, CLEF=3, NOTE_LETTER=4, ACCIDENTAL=5, DURATION_START=6, 
-		DOTS=7, DIVISION=8, KEYTYPE=9, TIME=10, MEASURE_START=11, MEASURE_END=12, 
-		WS=13, TEXT=14;
+		TITLE_START=1, PART_START=2, CLEF=3, NOTE_LETTER=4, ACCIDENTAL=5, DOTS=6, 
+		DIVISION=7, KEYTYPE=8, TIME=9, MEASURE_START=10, MEASURE_END=11, MEASURE_GROUP_START=12, 
+		MEASURE_GROUP_END=13, WS=14, TEXT=15;
 	public static final int
 		RULE_program = 0, RULE_title = 1, RULE_part = 2, RULE_name = 3, RULE_sheet = 4, 
 		RULE_key = 5, RULE_measure = 6, RULE_note = 7;
@@ -32,16 +32,16 @@ public class MusicSheetParser extends Parser {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, null, null, null, null, null, "'*'", null, null, null, null, "'['", 
-			"']'"
+			null, null, null, null, null, null, null, null, null, null, "'['", "']'", 
+			"'('", "')'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
 			null, "TITLE_START", "PART_START", "CLEF", "NOTE_LETTER", "ACCIDENTAL", 
-			"DURATION_START", "DOTS", "DIVISION", "KEYTYPE", "TIME", "MEASURE_START", 
-			"MEASURE_END", "WS", "TEXT"
+			"DOTS", "DIVISION", "KEYTYPE", "TIME", "MEASURE_START", "MEASURE_END", 
+			"MEASURE_GROUP_START", "MEASURE_GROUP_END", "WS", "TEXT"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -485,10 +485,9 @@ public class MusicSheetParser extends Parser {
 
 	public static class NoteContext extends ParserRuleContext {
 		public TerminalNode NOTE_LETTER() { return getToken(MusicSheetParser.NOTE_LETTER, 0); }
-		public TerminalNode ACCIDENTAL() { return getToken(MusicSheetParser.ACCIDENTAL, 0); }
-		public TerminalNode DURATION_START() { return getToken(MusicSheetParser.DURATION_START, 0); }
-		public TerminalNode DOTS() { return getToken(MusicSheetParser.DOTS, 0); }
 		public TerminalNode DIVISION() { return getToken(MusicSheetParser.DIVISION, 0); }
+		public TerminalNode ACCIDENTAL() { return getToken(MusicSheetParser.ACCIDENTAL, 0); }
+		public TerminalNode DOTS() { return getToken(MusicSheetParser.DOTS, 0); }
 		public NoteContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -530,9 +529,10 @@ public class MusicSheetParser extends Parser {
 			setState(56);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if (_la==DURATION_START) {
+			if (_la==DOTS) {
 				{
 				setState(55);
+<<<<<<< HEAD
 				match(DURATION_START);
 				}
 			}
@@ -554,9 +554,14 @@ public class MusicSheetParser extends Parser {
 				{
 				setState(61);
 				match(DIVISION);
+=======
+				match(DOTS);
+>>>>>>> master
 				}
 			}
 
+			setState(58);
+			match(DIVISION);
 			}
 		}
 		catch (RecognitionException re) {
@@ -571,10 +576,11 @@ public class MusicSheetParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\20C\4\2\t\2\4\3\t"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\21?\4\2\t\2\4\3\t"+
 		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\3\2\3\2\7\2\25\n\2"+
 		"\f\2\16\2\30\13\2\3\3\3\3\3\3\3\4\3\4\3\4\3\4\3\5\3\5\3\6\3\6\3\6\3\6"+
 		"\6\6\'\n\6\r\6\16\6(\3\7\3\7\3\7\3\b\3\b\6\b\60\n\b\r\b\16\b\61\3\b\3"+
+<<<<<<< HEAD
 		"\b\3\t\3\t\5\t8\n\t\3\t\5\t;\n\t\3\t\5\t>\n\t\3\t\5\tA\n\t\3\t\2\2\n\2"+
 		"\4\6\b\n\f\16\20\2\2\2A\2\22\3\2\2\2\4\31\3\2\2\2\6\34\3\2\2\2\b \3\2"+
 		"\2\2\n\"\3\2\2\2\f*\3\2\2\2\16-\3\2\2\2\20\65\3\2\2\2\22\26\5\4\3\2\23"+
@@ -588,6 +594,20 @@ public class MusicSheetParser extends Parser {
 		"\66\3\2\2\2\678\3\2\2\28:\3\2\2\29;\7\b\2\2:9\3\2\2\2:;\3\2\2\2;=\3\2"+
 		"\2\2<>\7\t\2\2=<\3\2\2\2=>\3\2\2\2>@\3\2\2\2?A\7\n\2\2@?\3\2\2\2@A\3\2"+
 		"\2\2A\21\3\2\2\2\t\26(\61\67:=@";
+=======
+		"\b\3\t\3\t\5\t8\n\t\3\t\5\t;\n\t\3\t\3\t\3\t\2\2\n\2\4\6\b\n\f\16\20\2"+
+		"\2\2;\2\22\3\2\2\2\4\31\3\2\2\2\6\34\3\2\2\2\b \3\2\2\2\n\"\3\2\2\2\f"+
+		"*\3\2\2\2\16-\3\2\2\2\20\65\3\2\2\2\22\26\5\4\3\2\23\25\5\6\4\2\24\23"+
+		"\3\2\2\2\25\30\3\2\2\2\26\24\3\2\2\2\26\27\3\2\2\2\27\3\3\2\2\2\30\26"+
+		"\3\2\2\2\31\32\7\3\2\2\32\33\7\21\2\2\33\5\3\2\2\2\34\35\7\4\2\2\35\36"+
+		"\5\b\5\2\36\37\5\n\6\2\37\7\3\2\2\2 !\7\21\2\2!\t\3\2\2\2\"#\7\5\2\2#"+
+		"$\5\f\7\2$&\7\13\2\2%\'\5\16\b\2&%\3\2\2\2\'(\3\2\2\2(&\3\2\2\2()\3\2"+
+		"\2\2)\13\3\2\2\2*+\5\20\t\2+,\7\n\2\2,\r\3\2\2\2-/\7\f\2\2.\60\5\20\t"+
+		"\2/.\3\2\2\2\60\61\3\2\2\2\61/\3\2\2\2\61\62\3\2\2\2\62\63\3\2\2\2\63"+
+		"\64\7\r\2\2\64\17\3\2\2\2\65\67\7\6\2\2\668\7\7\2\2\67\66\3\2\2\2\678"+
+		"\3\2\2\28:\3\2\2\29;\7\b\2\2:9\3\2\2\2:;\3\2\2\2;<\3\2\2\2<=\7\t\2\2="+
+		"\21\3\2\2\2\7\26(\61\67:";
+>>>>>>> master
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
