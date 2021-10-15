@@ -9,8 +9,12 @@ public class Measure extends Node {
         this.notes = notes;
     }
 
-    @Override
-    public void evaluate() {
+    public List<Note> getNotes() {
+        return notes;
+    }
 
+    @Override
+    public <T> T accept(Visitor<T> v) {
+        return v.visit(this);
     }
 }

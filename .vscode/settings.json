@@ -1,0 +1,8 @@
+{
+    "java.project.sourcePaths": [
+        "gen",
+        "src",
+        "inst",
+        "jm"
+    ]
+}
