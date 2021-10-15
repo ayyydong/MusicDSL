@@ -7,13 +7,16 @@ CLEF: 'treble' | 'bass';
 //NOTE: [A-G] ('#' | 'b')? ('*' '.'* [1-9]+)? ;
 NOTE_LETTER: [A-G] | 'R';
 ACCIDENTAL: '#' | 'b';
-DURATION_START: '*' ;
+//DURATION_START: '*' ;
 DOTS: '.'+;
 DIVISION: [1-9]+;
 KEYTYPE: 'major' | 'minor';
 TIME: [1-9]+ '/' [1-9]+;
 MEASURE_START: '[';
 MEASURE_END: ']';
+MEASURE_GROUP_START: '(';
+MEASURE_GROUP_END: ')';
+
 
 // White space Handling
 WS : [\n\t\r ] -> channel(HIDDEN);
