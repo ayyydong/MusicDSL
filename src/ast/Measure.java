@@ -14,7 +14,7 @@ public class Measure extends Node {
     }
 
     @Override
-    public <T> T accept(Visitor<T> v) {
+    public <T> T accept(Visitor<T> v) throws IllegalAccessException {
         return v.visit(this);
     }
 }

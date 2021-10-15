@@ -15,12 +15,18 @@ public class Evaluator implements Visitor<Void> {
     private int partCounter;
     private jm.music.data.Part tempPart;
     private Phrase tempPhrase;
+    private HashMap<String, Integer> pitchmap = new HashMap<>();
+    private HashMap<String, Integer> instmap = new HashMap<>();
 
     public Evaluator(Score score) {
         this.score = score;
         this.partCounter = 0;
         this.tempPart = null;
         this.tempPhrase = null;
+    }
+
+    public Score getScore() {
+        return this.score;
     }
 
     @Override
@@ -43,7 +49,7 @@ public class Evaluator implements Visitor<Void> {
     }
 
     @Override
-    public Void visit(Measure m) {
+    public Void visit(Measure m) throws IllegalAccessException {
         for(Note note : m.getNotes()) {
             note.accept(this);
         }
@@ -54,19 +60,12 @@ public class Evaluator implements Visitor<Void> {
     public Void visit(Name n) throws IllegalAccessException {
         jm.music.data.Part temp = score.getPart(partCounter);
         temp.setTitle(n.getName());
-        // name can be searched in instrument library
-        // https://stackoverflow.com/questions/22230787/string-values-of-field-constants-in-java
-        // https://stackoverflow.com/questions/9700081/in-java-how-to-iterate-on-the-constants-of-an-interface
-        HashMap<String,Integer> map = new HashMap<>();
-        for (Field f : jm.constants.ProgramChanges.class.getFields()) {
-                int modifiers = f.getModifiers();//check if the field is public and static
-                if (Modifier.isPublic(modifiers)) {
-                    map.put(f.getName(), (Integer) f.get(null));
-                }
+        if (instmap.isEmpty()) {
+            instmap = getInstrumentMap();
         }
         String instName = n.getName().replaceAll(" ", "_").toUpperCase(Locale.ROOT);
-        if (map.containsKey(instName)) {
-            temp.setInstrument(map.get(instName));
+        if (instmap.containsKey(instName)) {
+            temp.setInstrument(instmap.get(instName));
         } else {
             System.out.println("Instrument: " + n.getName() + "was not found");
         }
@@ -75,28 +74,68 @@ public class Evaluator implements Visitor<Void> {
         return null;
     }
 
+    private HashMap<String, Integer> getInstrumentMap() throws IllegalAccessException {
+        // name can be searched in instrument library
+        // https://stackoverflow.com/questions/22230787/string-values-of-field-constants-in-java
+        // https://stackoverflow.com/questions/9700081/in-java-how-to-iterate-on-the-constants-of-an-interface
+        HashMap<String,Integer> map = new HashMap<>();
+        for (Field f : jm.constants.ProgramChanges.class.getFields()) {
+                int modifiers = f.getModifiers();
+                if (Modifier.isPublic(modifiers)) { //check if the field is public
+                    map.put(f.getName(), (Integer) f.get(null));
+                }
+        }
+        return map;
+    }
+
     @Override
-    public Void visit(Note n) {
+    public Void visit(Note n) throws IllegalAccessException {
         SubMeasureType noteType = n.getType();
         jm.music.data.Note temp;
+        String division = n.getDivision();
         // Check whether or not note is letter or rest
         if (noteType == SubMeasureType.rest) {
-            temp = new jm.music.data.Note(REST, DEFAULT_RHYTHM_VALUE);
+            temp = new jm.music.data.Note(REST, tempPart.getNumerator()/(Integer.parseInt(division)));
             tempPhrase.addNote(temp);
             return null;
         }
-        // Note is a letter
-        AccidentalType accidental = n.getAccidental();
-        String noteString = n.getLetter();
-        // Need to account for nonexistent sharps/flats
-        if (accidental != null && accidental == AccidentalType.SHARP) {
-            noteString += "_SHARP";
-        } else if (accidental != null && accidental == AccidentalType.FLAT) {
-            noteString += "_FLAT";
+        if (pitchmap.isEmpty()) {
+            pitchmap = getPitchMap();
         }
-        temp = new jm.music.data.Note(noteString);
-        tempPhrase.addNote(temp);
+        // pitchmap now contains all string keys of the constants originally defined for ints
+        // Note is a letter
+        String noteString = n.getLetter();
+        AccidentalType accidental = n.getAccidental();
+        // Need to account for nonexistent sharps/flats
+        // Change to pitch instead of noteString
+        if (accidental != null && accidental == AccidentalType.SHARP) {
+            noteString += "S";
+        } else if (accidental != null && accidental == AccidentalType.FLAT) {
+            noteString += "F";
+        }
+        noteString += division;
+        if (pitchmap.containsKey(noteString)) {
+            temp = new jm.music.data.Note(pitchmap.get(noteString), tempPart.getNumerator()/(Integer.parseInt(division)));
+            tempPhrase.addNote(temp);
+        } else {
+            if (accidental == null) {
+                System.out.println("Note: " + n.getLetter() + n.getDivision() + " was not found");
+            } else {
+                System.out.println("Note: " + n.getLetter() + n.getAccidental().name() + n.getDivision() + " was not found");
+            }
+        }
         return null;
+    }
+
+    private HashMap<String, Integer> getPitchMap() throws IllegalAccessException {
+        HashMap<String,Integer> pitchmap = new HashMap<>();
+        for (Field f : jm.constants.Pitches.class.getFields()) {
+            int modifiers = f.getModifiers();
+            if (Modifier.isPublic(modifiers)) { //check if the field is public
+                pitchmap.put(f.getName(), (Integer) f.get(null));
+            }
+        }
+        return pitchmap;
     }
 
     @Override
@@ -120,7 +159,7 @@ public class Evaluator implements Visitor<Void> {
     }
     
     @Override
-    public Void visit(Sheet s) {
+    public Void visit(Sheet s) throws IllegalAccessException {
 //        score.createPart(); // we called createPart in visit(Part p)
         tempPhrase = new Phrase();
         jm.music.data.Part temp = score.getPart(partCounter);
