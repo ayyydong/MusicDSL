@@ -5,13 +5,15 @@ import java.util.List;
 public class Sheet extends Node {
     private final Clef clef;
     private final Key key;
-    private final double time;
+    private final int timenum;
+    private final int timedem;
     private final List<Measure> measures;
 
-    public Sheet(Clef clef, Key key, double time, List<Measure> measures) {
+    public Sheet(Clef clef, Key key, int timenum, int timedem, List<Measure> measures) {
         this.clef = clef;
         this.key = key;
-        this.time = time;
+        this.timenum = timenum;
+        this.timedem = timedem;
         this.measures = measures;
     }
 
@@ -23,8 +25,12 @@ public class Sheet extends Node {
         return key;
     }
 
-    public double getTime() {
-        return time;
+    public int getTimeNum() {
+        return timenum;
+    }
+
+    public int getTimeDem() {
+        return timedem;
     }
 
     public List<Measure> getMeasures() {

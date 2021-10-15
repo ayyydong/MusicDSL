@@ -1,5 +1,6 @@
 package ui;
 
+import ast.Evaluator;
 import ast.Program;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -11,10 +12,22 @@ import parser.ParsedTreeToAST;
 
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
+import inst.SawtoothInst;
+import jm.audio.Instrument;
+import jm.music.data.Note;
+import jm.music.data.Part;
+import jm.music.data.Phrase;
+import jm.music.data.Score;
+import jm.util.View;
+
+import java.io.IOException;
+
+import static jm.constants.Durations.*;
+import static jm.constants.Pitches.*;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, IllegalAccessException {
         MusicSheetLexer lexer;
         try {
             lexer = new MusicSheetLexer(CharStreams.fromFileName("test_sheet.txt"));
@@ -35,15 +48,31 @@ public class Main {
         ParsedTreeToAST visitor = new ParsedTreeToAST();
         Program parsedProgram = visitor.visitProgram(parser.program());
         System.out.println("Done parsing");
+
+        Evaluator e = new Evaluator(new Score());
+        parsedProgram.accept(e);
+        System.out.println("completed successfully");
+        // Score (Contains any number of Parts)
+        //   |
+        //   +---- Part (Contains any number of Phrases)
+        //           |
+        //           +---- Phrase (Contains any number of Notes.)
+        //                    |
+        //                    +---- Note (Holds information about a single musical event.)
+        // TODO: update phrase count
+        // TODO: should count #notes and update time signature
+        // TODO: update key signature
+        // JMusic does not support key signatures and clefs! (terrible)
     }
 
-//        parsedProgram.evaluate();
 
 //        Score score = new Score(new Part(new Phrase(new Note(C4, MINIM))));
-//        Write.midi(score, "expected_output");
-//        Instrument inst = new SawtoothInst(44100);
-//        Write.au(score, "expected_output_au", inst);
-//        Write.xml(score,"expected_output_xml");
+//        score.setKeyQuality(1);
+//        score.setKeySignature(3);
+//       Write.midi(score, "expected_output");
+//       Instrument inst = new SawtoothInst(44100);
+//       Write.au(score, "expected_output_au", inst);
+//       Write.xml(score,"expected_output_xml");
 //        View.notate(score);
 //    }
 }
@@ -70,3 +99,6 @@ public class Main {
 //        View.notate(phr);
 //    }
 //}
+// a score contains 2 parts
+// a part contains 2 phrases
+// a phrase contains 4 notes

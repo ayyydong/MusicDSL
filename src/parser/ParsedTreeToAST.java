@@ -49,7 +49,9 @@ public class ParsedTreeToAST extends AbstractParseTreeVisitor<Node> implements M
         }
 
         String[] timeValues = ctx.TIME().toString().split("/");
-        double time = (double) Integer.parseInt(timeValues[0]) / Integer.parseInt(timeValues[1]);
+//        double time = (double) Integer.parseInt(timeValues[0]) / Integer.parseInt(timeValues[1]);
+        int timenum = Integer.parseInt(timeValues[0]);
+        int timedem = Integer.parseInt(timeValues[1]);
 
         Key key = this.visitKey(ctx.key());
 
@@ -58,8 +60,9 @@ public class ParsedTreeToAST extends AbstractParseTreeVisitor<Node> implements M
             measures.add(this.visitMeasure(measureContext));
         }
 
-        return new Sheet(clef, key, time, measures);
+        return new Sheet(clef, key, timenum, timedem, measures);
     }
+
 
     @Override
     public Key visitKey(MusicSheetParser.KeyContext ctx) {
@@ -81,6 +84,14 @@ public class ParsedTreeToAST extends AbstractParseTreeVisitor<Node> implements M
         String dots = null;
         String division = null;
         AccidentalType accidental = null;
+        SubMeasureType subMeasureType;
+        if (ctx.NOTE_LETTER().getText().equals("R")){
+            subMeasureType = SubMeasureType.rest;
+        } else if (ctx.NOTE_LETTER().getText().matches("[A-G]")) {
+            subMeasureType = SubMeasureType.note;
+        } else {
+            throw new RuntimeException("Lexer error: tokenized submeasure type that is not note or rest");
+        }
         String letter = ctx.NOTE_LETTER().getText();
 
         if (ctx.DOTS() != null) {
@@ -101,7 +112,7 @@ public class ParsedTreeToAST extends AbstractParseTreeVisitor<Node> implements M
             }
         }
 
-        return new Note(letter, accidental, dots, division);
+        return new Note(subMeasureType, letter, accidental, dots, division);
     }
 
     @Override

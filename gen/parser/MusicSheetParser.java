@@ -1,4 +1,4 @@
-// Generated from C:/Users/danie/OneDrive/Documents/School/2021W1/CPSC410/MusicSheetGenerator/src/parser\MusicSheetParser.g4 by ANTLR 4.9.1
+// Generated from /Users/andydong/Desktop/Project1Group22/src/parser/MusicSheetParser.g4 by ANTLR 4.9.1
 package parser;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -527,33 +527,33 @@ public class MusicSheetParser extends Parser {
 				}
 			}
 
-			setState(62);
+			setState(56);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==DURATION_START) {
 				{
 				setState(55);
 				match(DURATION_START);
-				setState(57);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				if (_la==DOTS) {
-					{
-					setState(56);
-					match(DOTS);
-					}
 				}
+			}
 
-				setState(60);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				if (_la==DIVISION) {
-					{
-					setState(59);
-					match(DIVISION);
-					}
+			setState(59);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			if (_la==DOTS) {
+				{
+				setState(58);
+				match(DOTS);
 				}
+			}
 
+			setState(62);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			if (_la==DIVISION) {
+				{
+				setState(61);
+				match(DIVISION);
 				}
 			}
 
@@ -575,7 +575,7 @@ public class MusicSheetParser extends Parser {
 		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\3\2\3\2\7\2\25\n\2"+
 		"\f\2\16\2\30\13\2\3\3\3\3\3\3\3\4\3\4\3\4\3\4\3\5\3\5\3\6\3\6\3\6\3\6"+
 		"\6\6\'\n\6\r\6\16\6(\3\7\3\7\3\7\3\b\3\b\6\b\60\n\b\r\b\16\b\61\3\b\3"+
-		"\b\3\t\3\t\5\t8\n\t\3\t\3\t\5\t<\n\t\3\t\5\t?\n\t\5\tA\n\t\3\t\2\2\n\2"+
+		"\b\3\t\3\t\5\t8\n\t\3\t\5\t;\n\t\3\t\5\t>\n\t\3\t\5\tA\n\t\3\t\2\2\n\2"+
 		"\4\6\b\n\f\16\20\2\2\2A\2\22\3\2\2\2\4\31\3\2\2\2\6\34\3\2\2\2\b \3\2"+
 		"\2\2\n\"\3\2\2\2\f*\3\2\2\2\16-\3\2\2\2\20\65\3\2\2\2\22\26\5\4\3\2\23"+
 		"\25\5\6\4\2\24\23\3\2\2\2\25\30\3\2\2\2\26\24\3\2\2\2\26\27\3\2\2\2\27"+
@@ -585,9 +585,9 @@ public class MusicSheetParser extends Parser {
 		"&\3\2\2\2()\3\2\2\2)\13\3\2\2\2*+\5\20\t\2+,\7\13\2\2,\r\3\2\2\2-/\7\r"+
 		"\2\2.\60\5\20\t\2/.\3\2\2\2\60\61\3\2\2\2\61/\3\2\2\2\61\62\3\2\2\2\62"+
 		"\63\3\2\2\2\63\64\7\16\2\2\64\17\3\2\2\2\65\67\7\6\2\2\668\7\7\2\2\67"+
-		"\66\3\2\2\2\678\3\2\2\28@\3\2\2\29;\7\b\2\2:<\7\t\2\2;:\3\2\2\2;<\3\2"+
-		"\2\2<>\3\2\2\2=?\7\n\2\2>=\3\2\2\2>?\3\2\2\2?A\3\2\2\2@9\3\2\2\2@A\3\2"+
-		"\2\2A\21\3\2\2\2\t\26(\61\67;>@";
+		"\66\3\2\2\2\678\3\2\2\28:\3\2\2\29;\7\b\2\2:9\3\2\2\2:;\3\2\2\2;=\3\2"+
+		"\2\2<>\7\t\2\2=<\3\2\2\2=>\3\2\2\2>@\3\2\2\2?A\7\n\2\2@?\3\2\2\2@A\3\2"+
+		"\2\2A\21\3\2\2\2\t\26(\61\67:=@";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
