@@ -50,19 +50,19 @@ public class Evaluator implements Visitor<Void> {
         Note sigNote = k.getNote();
         AccidentalType keyAcc = sigNote.getAccidental();
         if (kt == KeyType.MAJOR) {
-            if (sigNote.getLetter() == "A") {
+            if (sigNote.getLetter().equals("A")) {
                 if (keyAcc == AccidentalType.FLAT) {
                     keySig = -4;
                 } else {
                     keySig = 3;
                 }
-            } else if (sigNote.getLetter() == "B") {
+            } else if (sigNote.getLetter().equals("B")) {
                 if (keyAcc == AccidentalType.FLAT) {
                     keySig = -2;
                 } else {
                     keySig = 5;
                 }
-            } else if (sigNote.getLetter() == "C") {
+            } else if (sigNote.getLetter().equals("C")) {
                 if (keyAcc == AccidentalType.SHARP) {
                     keySig = 7;
                 } else if (keyAcc == AccidentalType.FLAT) {
@@ -70,25 +70,25 @@ public class Evaluator implements Visitor<Void> {
                 } else {
                     keySig = 0;
                 }
-            } else if (sigNote.getLetter() == "D") {
+            } else if (sigNote.getLetter().equals("D")) {
                 if (keyAcc == AccidentalType.FLAT) {
                     keySig = -5;
                 } else {
                     keySig = 2;
                 }
-            } else if (sigNote.getLetter() == "E") {
+            } else if (sigNote.getLetter().equals("E")) {
                 if (keyAcc == AccidentalType.FLAT) {
                     keySig = -3;
                 } else {
                     keySig = 4;
                 }
-            } else if (sigNote.getLetter() == "F") {
+            } else if (sigNote.getLetter().equals("F")) {
                 if (keyAcc == AccidentalType.SHARP) {
                     keySig = 6;
                 } else {
                     keySig = -1;
                 }
-            } else if (sigNote.getLetter() == "G") {
+            } else if (sigNote.getLetter().equals("G")) {
                 if (keyAcc == AccidentalType.FLAT) {
                     keySig = -6;
                 } else {
@@ -96,43 +96,43 @@ public class Evaluator implements Visitor<Void> {
                 }
             }
         } else if (kt == KeyType.MINOR) {
-            if (sigNote.getLetter() == "A") {
+            if (sigNote.getLetter().equals("A")) {
                 if (keyAcc == AccidentalType.SHARP) {
                     keySig = 7;
                 } else if (keyAcc == AccidentalType.FLAT) {
                     keySig = -7;
                 }
-            } else if (sigNote.getLetter() == "B") {
+            } else if (sigNote.getLetter().equals("B")) {
                 if (keyAcc == AccidentalType.FLAT) {
                     keySig = -5;
                 } else {
                     keySig = 2;
                 }
-            } else if (sigNote.getLetter() == "C") {
+            } else if (sigNote.getLetter().equals("C")) {
                 if (keyAcc == AccidentalType.SHARP) {
                     keySig = 4;
                 } else {
                     keySig = -3;
                 }
-            } else if (sigNote.getLetter() == "D") {
+            } else if (sigNote.getLetter().equals("D")) {
                 if (keyAcc == AccidentalType.SHARP) {
                     keySig = 6;
                 } else {
                     keySig = -1;
                 }
-            } else if (sigNote.getLetter() == "E") {
+            } else if (sigNote.getLetter().equals("E")) {
                 if (keyAcc == AccidentalType.FLAT) {
                     keySig = -6;
                 } else {
                     keySig = 1;
                 }
-            } else if (sigNote.getLetter() == "F") {
+            } else if (sigNote.getLetter().equals("F")) {
                 if (keyAcc == AccidentalType.SHARP) {
                     keySig = 3;
                 } else {
                     keySig = -4;
                 }
-            } else if (sigNote.getLetter() == "G") {
+            } else if (sigNote.getLetter().equals("G")) {
                 if (keyAcc == AccidentalType.SHARP) {
                     keySig = 5;
                 } else {
