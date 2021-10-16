@@ -23,4 +23,3 @@ WS : [\n\t\r ] -> channel(HIDDEN);
 // Modes
 mode TEXT_MODE;
 TEXT: ~[\n\t\r]+ -> mode(DEFAULT_MODE);
-

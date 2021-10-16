@@ -4,8 +4,8 @@ public class Note extends Node {
     private final SubMeasureType subMeasureType;
     private final String letter;
     private final AccidentalType accidental;
-    private final Integer dots;
-    private final Integer division;
+    private final String dots;
+    private final String division;
 
     public Note(SubMeasureType subMeasureType, String letter, AccidentalType accidental, String dots, String division) {
         this.subMeasureType = subMeasureType;
@@ -36,7 +36,7 @@ public class Note extends Node {
     }
 
     @Override
-    public <T> T accept(Visitor<T> v) {
+    public <T> T accept(Visitor<T> v) throws IllegalAccessException {
         return v.visit(this);
     }
 }

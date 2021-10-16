@@ -2,6 +2,7 @@ package ui;
 
 import ast.Evaluator;
 import ast.Program;
+import jm.util.Play;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
@@ -51,6 +52,7 @@ public class Main {
 
         Evaluator e = new Evaluator(new Score());
         parsedProgram.accept(e);
+//        Play.midi(e.getScore());
         System.out.println("completed successfully");
         // Score (Contains any number of Parts)
         //   |
@@ -61,8 +63,11 @@ public class Main {
         //                    +---- Note (Holds information about a single musical event.)
         // TODO: update phrase count
         // TODO: should count #notes and update time signature
-        // TODO: update key signature
-        // JMusic does not support key signatures and clefs! (terrible)
+        // TODO: update key signature // JMusic does not support key signatures and clefs! (terrible)
+        // TODO: checkout treble/bass stave
+//        Score score = new Score(new Part(new Phrase(new Note(G4, MINIM))));
+        Play.midi(e.getScore());
+//        View.notate(score);
     }
 
 
@@ -77,12 +82,11 @@ public class Main {
 //    }
 }
 
+// https://i.pinimg.com/originals/03/45/5e/03455e5f600c75ab2c22f00d2bce8a3a.gif
+
 /**
-
  * This is the simplest jMusic program of all.
-
  * The eqivalent to a programming language's 'Hello World'
-
  */
 //// Check common practice notation
 //// https://explodingart.com/jmusic/jmtutorial/CPN.html

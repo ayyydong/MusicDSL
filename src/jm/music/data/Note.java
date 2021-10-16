@@ -167,21 +167,25 @@ public class Note implements Cloneable, Serializable{
     public static final int PAN_ENV = 3;
 
     /** string constants for keys on the keyboard */
+    public static final String F = "F";
     public static final String C = "C";
     public static final String G = "G";
     public static final String D = "D";
     public static final String A = "A";
     public static final String E = "E";
+    public static final String F_FLAT = "E";
     public static final String B = "B";
-    public static final String F_SHARP = "F#";
-    public static final String C_SHARP = "C#";
-    public static final String G_SHARP = "Ab";
-    public static final String D_SHARP = "Eb";
-    public static final String A_SHARP = "Bb";
-    public static final String A_FLAT = "Ab";
-    public static final String E_FLAT = "Eb";
-    public static final String B_FLAT = "Bb";
-    public static final String F = "F";
+    public static final String F_SHARP = "F#"; //G_FLAT
+    public static final String G_FLAT = "F#"; //added
+    public static final String D_FLAT = "C#"; //added
+    public static final String C_SHARP = "C#"; //D_FLAT
+    public static final String G_SHARP = "Ab"; //Covered
+    public static final String D_SHARP = "Eb"; //Covered
+    public static final String A_SHARP = "Bb"; //Covered
+    public static final String A_FLAT = "Ab"; //Covered
+    public static final String E_FLAT = "Eb"; //Covered
+    public static final String B_FLAT = "Bb"; //Covered
+
 
     /** the string that this note maps to being one of the 12 string constants */
     private String noteString = "";
@@ -892,7 +896,7 @@ public class Note implements Cloneable, Serializable{
             pitch = 62;
 	} else if (noteString.equals(E_FLAT)) {
             pitch = 63;
-	} else if (noteString.equals(E)) {
+	} else if (noteString.equals(E) || noteString.equals(F_FLAT)) { //these changes cant affect the library :( -Andy
             pitch = 64;
 	} else if (noteString.equals(F)) {
             pitch = 65;

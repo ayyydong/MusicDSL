@@ -15,12 +15,18 @@ public class Evaluator implements Visitor<Void> {
     private int partCounter;
     private jm.music.data.Part tempPart;
     private Phrase tempPhrase;
+    private HashMap<String, Integer> pitchmap = new HashMap<>();
+    private HashMap<String, Integer> instmap = new HashMap<>();
 
     public Evaluator(Score score) {
         this.score = score;
         this.partCounter = 0;
         this.tempPart = null;
         this.tempPhrase = null;
+    }
+
+    public Score getScore() {
+        return this.score;
     }
 
     @Override
@@ -88,7 +94,7 @@ public class Evaluator implements Visitor<Void> {
                 } else {
                     keySig = 1;
                 }
-            } 
+            }
         } else if (kt == KeyType.MINOR) {
             if (sigNote.getLetter() == "A") {
                 if (keyAcc == AccidentalType.SHARP) {
@@ -132,7 +138,7 @@ public class Evaluator implements Visitor<Void> {
                 } else {
                     keySig = -2;
                 }
-            } 
+            }
         }
         tempPart.setKeySignature(keySig);
 
@@ -140,7 +146,7 @@ public class Evaluator implements Visitor<Void> {
     }
 
     @Override
-    public Void visit(Measure m) {
+    public Void visit(Measure m) throws IllegalAccessException {
         for(Note note : m.getNotes()) {
             note.accept(this);
         }
@@ -149,62 +155,84 @@ public class Evaluator implements Visitor<Void> {
 
     @Override
     public Void visit(Name n) throws IllegalAccessException {
+
         tempPart.setTitle(n.getName());
-        // name can be searched in instrument library
-        // https://stackoverflow.com/questions/22230787/string-values-of-field-constants-in-java
-        // https://stackoverflow.com/questions/9700081/in-java-how-to-iterate-on-the-constants-of-an-interface
-        HashMap<String,Integer> map = new HashMap<>();
-        for (Field f : jm.constants.ProgramChanges.class.getFields()) {
-                int modifiers = f.getModifiers();//check if the field is public and static
-                if (Modifier.isPublic(modifiers)) {
-                    map.put(f.getName(), (Integer) f.get(null));
-                }
+        if (instmap.isEmpty()) {
+            instmap = getInstrumentMap();
         }
         String instName = n.getName().replaceAll(" ", "_").toUpperCase(Locale.ROOT);
-        if (map.containsKey(instName)) {
-            tempPart.setInstrument(map.get(instName));
+        if (instmap.containsKey(instName)) {
+            tempPart.setInstrument(instmap.get(instName));
         } else {
             System.out.println("Instrument: " + n.getName() + "was not found");
         }
         return null;
     }
 
+    private HashMap<String, Integer> getInstrumentMap() throws IllegalAccessException {
+        // name can be searched in instrument library
+        // https://stackoverflow.com/questions/22230787/string-values-of-field-constants-in-java
+        // https://stackoverflow.com/questions/9700081/in-java-how-to-iterate-on-the-constants-of-an-interface
+        HashMap<String,Integer> map = new HashMap<>();
+        for (Field f : jm.constants.ProgramChanges.class.getFields()) {
+            int modifiers = f.getModifiers();
+            if (Modifier.isPublic(modifiers)) { //check if the field is public
+                map.put(f.getName(), (Integer) f.get(null));
+            }
+        }
+        return map;
+    }
+
     @Override
-    public Void visit(Note n) {
-        // NOTES NEED A DURATION
+    public Void visit(Note n) throws IllegalAccessException {
         SubMeasureType noteType = n.getType();
         jm.music.data.Note temp;
+        String division = n.getDivision();
         // Check whether or not note is letter or rest
         if (noteType == SubMeasureType.rest) {
-            temp = new jm.music.data.Note(REST, DEFAULT_RHYTHM_VALUE);
+//            temp = new jm.music.data.Note(REST, tempPart.getNumerator()/(Integer.parseInt(division)));
+            temp = new jm.music.data.Note(REST, 1.5);
             tempPhrase.addNote(temp);
             return null;
         }
+        if (pitchmap.isEmpty()) {
+            pitchmap = getPitchMap();
+        }
+        // pitchmap now contains all string keys of the constants originally defined for ints
         // Note is a letter
-        AccidentalType accidental = n.getAccidental();
         String noteString = n.getLetter();
+        AccidentalType accidental = n.getAccidental();
+        // Need to account for nonexistent sharps/flats
+        // Change to pitch instead of noteString
         if (accidental != null && accidental == AccidentalType.SHARP) {
-            noteString += "_SHARP";
-            if (noteString == "B_SHARP") {
-                noteString = "C";
-            } else if (noteString == "E_SHARP") {
-                noteString = "F";
-            }
+            noteString += "S";
         } else if (accidental != null && accidental == AccidentalType.FLAT) {
-            noteString += "_FLAT";
-            if (noteString == "C_FLAT") {
-                noteString = "B";
-            } else if (noteString == "D_FLAT") {
-                noteString = "C_SHARP";
-            } else if (noteString == "F_FLAT") {
-                noteString = "E";
-            } else if (noteString == "G_FLAT") {
-                noteString = "F_SHARP";
+            noteString += "F";
+        }
+        noteString += division;
+        if (pitchmap.containsKey(noteString)) {
+//            temp = new jm.music.data.Note(pitchmap.get(noteString), tempPart.getNumerator()/(Integer.parseInt(division)));
+            temp = new jm.music.data.Note(pitchmap.get(noteString), 1.5);
+            tempPhrase.addNote(temp);
+        } else {
+            if (accidental == null) {
+                System.out.println("Note: " + n.getLetter() + n.getDivision() + " was not found");
+            } else {
+                System.out.println("Note: " + n.getLetter() + n.getAccidental().name() + n.getDivision() + " was not found");
             }
         }
-        temp = new jm.music.data.Note(noteString);
-        tempPhrase.addNote(temp);
         return null;
+    }
+
+    private HashMap<String, Integer> getPitchMap() throws IllegalAccessException {
+        HashMap<String,Integer> pitchmap = new HashMap<>();
+        for (Field f : jm.constants.Pitches.class.getFields()) {
+            int modifiers = f.getModifiers();
+            if (Modifier.isPublic(modifiers)) { //check if the field is public
+                pitchmap.put(f.getName(), (Integer) f.get(null));
+            }
+        }
+        return pitchmap;
     }
 
     @Override
@@ -226,9 +254,9 @@ public class Evaluator implements Visitor<Void> {
         }
         return null;
     }
-    
+
     @Override
-    public Void visit(Sheet s) {
+    public Void visit(Sheet s) throws IllegalAccessException {
 //        score.createPart(); // we called createPart in visit(Part p)
         tempPhrase = new Phrase();
         s.getClef().accept(this);

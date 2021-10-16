@@ -1,10 +1,6 @@
 Title: Test Sheet
 Part: Piano
-treble F# major 4/4 [A.4 C G G][G R F# G]
+treble F#4 major 4/4 [A.4 C4 G4 G4][G4 R4 F#4 G4]
 Part: Violin
-<<<<<<< HEAD
-treble F# minor 3/4 [G*.4 C G*..4 G][G R Fb*8 G]
+treble F#4 minor 3/4 [G.4 C8 G..4 G8][G4 A4 Fb8 G4]
 
-=======
-treble F# minor 3/4 ([G.4 G C G..4 G][G R Fb8 G])
->>>>>>> master
