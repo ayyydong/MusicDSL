@@ -58,4 +58,10 @@ public interface MusicSheetParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitNote(MusicSheetParser.NoteContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MusicSheetParser#loop}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLoop(MusicSheetParser.LoopContext ctx);
 }

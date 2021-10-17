@@ -7,14 +7,17 @@ public class Sheet extends Node {
     private final Key key;
     private final int timenum;
     private final int timedem;
-    private final List<Measure> measures;
+//    private final List<Measure> measures;
+    private final List<Object> measures;
+//    private final List<Loop> loopMeasures;
 
-    public Sheet(Clef clef, Key key, int timenum, int timedem, List<Measure> measures) {
+    public Sheet(Clef clef, Key key, int timenum, int timedem, List<Object> measures) {// List<Loop> loopMeasures) {
         this.clef = clef;
         this.key = key;
         this.timenum = timenum;
         this.timedem = timedem;
         this.measures = measures;
+//        this.loopMeasures = loopMeasures;
     }
 
     public Clef getClef() {
@@ -33,9 +36,13 @@ public class Sheet extends Node {
         return timedem;
     }
 
-    public List<Measure> getMeasures() {
+    public List<Object> getMeasures() {
         return measures;
     }
+//
+//    public List<Loop> getLoopMeasures() {
+//        return loopMeasures;
+//    }
 
     @Override
     public <T> T accept(Visitor<T> v) throws IllegalAccessException {

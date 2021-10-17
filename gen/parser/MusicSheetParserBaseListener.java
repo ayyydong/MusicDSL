@@ -107,6 +107,18 @@ public class MusicSheetParserBaseListener implements MusicSheetParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitNote(MusicSheetParser.NoteContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterLoop(MusicSheetParser.LoopContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLoop(MusicSheetParser.LoopContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
