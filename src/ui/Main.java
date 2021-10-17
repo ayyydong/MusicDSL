@@ -3,6 +3,7 @@ package ui;
 import ast.Evaluator;
 import ast.Program;
 import jm.util.Play;
+import jm.util.Write;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
@@ -22,6 +23,7 @@ import jm.music.data.Score;
 import jm.util.View;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import static jm.constants.Durations.*;
 import static jm.constants.Pitches.*;
@@ -31,7 +33,7 @@ public class Main {
     public static void main(String[] args) throws IOException, IllegalAccessException {
         MusicSheetLexer lexer;
         try {
-            lexer = new MusicSheetLexer(CharStreams.fromFileName("test_sheet.txt"));
+            lexer = new MusicSheetLexer(CharStreams.fromFileName("test_sheet_proper.txt"));
 
         } catch (NoSuchFileException e) {
             System.out.println("ERROR: File not found\n" + e);
@@ -66,7 +68,13 @@ public class Main {
         // TODO: update key signature // JMusic does not support key signatures and clefs! (terrible)
         // TODO: checkout treble/bass stave
 //        Score score = new Score(new Part(new Phrase(new Note(G4, MINIM))));
-        Play.midi(e.getScore());
+        //Score outScore = e.getScore();
+        //Write.xml(outScore);
+        //Play.midi(e.getScore());
+        PrintWriter out = new PrintWriter("out.mxl");
+        out.println(e.getMusicXML());
+        out.close();
+
 //        View.notate(score);
     }
 
