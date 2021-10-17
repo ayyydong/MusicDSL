@@ -207,7 +207,8 @@ public class Evaluator implements Visitor<Void> {
     public Void visit(Note n) throws IllegalAccessException {
         SubMeasureType noteType = n.getType();
         jm.music.data.Note temp;
-        String division = n.getDivision();
+        String octave = n.getOctave();
+        String division = n.getDivision().replace("$","");
         int numDiv = Integer.parseInt(division);
         double rhythmValue = tempPart.getNumerator() / numDiv;
         int dotCount = 0;
@@ -242,7 +243,7 @@ public class Evaluator implements Visitor<Void> {
         } else if (accidental != null && accidental == AccidentalType.FLAT) {
             noteString += "F";
         }
-        noteString += division;
+        noteString += octave;
         if (pitchmap.containsKey(noteString)) {
             if (dotCount == 0) {
                 temp = new jm.music.data.Note(pitchmap.get(noteString), rhythmValue);

@@ -1,12 +1,5 @@
 Title: Test Sheet
 Part: Piano
-treble F#4 minor 4/4 [D.4 D4 E4 D4][G4 F#4 R4 R4]
-[D.4 D4 E4 D4][A4 G4 R4 R4]
-[D.4 D4 D4 B4][G4 F#4 E4 R4]
-[C.4 C4 B4 G4][A4 G4]
-Part: Violin
-treble F#4 minor 4/4 [D.4 D4 E4 D4][G4 F#4 R4 R4]
-                     [D.4 D4 E4 D4][A4 G4 R4 R4]
-                     [D.4 D4 D4 B4][G4 F#4 E4 R4]
-                     [C.4 C4 B4 G4][A4 G4]
+treble F#3$4 minor 4/4 loop2([D3$4 D4$4 E3$4 D4$4 G3$4 F#4$4 R4$4 R4$4])
+
 
