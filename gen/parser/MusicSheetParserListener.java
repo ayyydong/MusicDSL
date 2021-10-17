@@ -87,4 +87,14 @@ public interface MusicSheetParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitNote(MusicSheetParser.NoteContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MusicSheetParser#loop}.
+	 * @param ctx the parse tree
+	 */
+	void enterLoop(MusicSheetParser.LoopContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MusicSheetParser#loop}.
+	 * @param ctx the parse tree
+	 */
+	void exitLoop(MusicSheetParser.LoopContext ctx);
 }

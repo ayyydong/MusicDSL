@@ -10,4 +10,5 @@ public interface Visitor<T> {
   T visit(Program p) throws IllegalAccessException;
   T visit(Sheet s) throws IllegalAccessException;
   T visit(Title t);
+  T visit(Loop l) throws IllegalAccessException;
 }

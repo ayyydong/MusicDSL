@@ -6,17 +6,25 @@ import jm.music.data.Phrase;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+
+import static jm.music.tools.Mod.append;
+import static jm.music.tools.Mod.repeat;
 
 public class Evaluator implements Visitor<Void> {
     private static final int REST = jm.music.data.Note.REST;
-    private static final double DEFAULT_RHYTHM_VALUE = jm.music.data.Note.DEFAULT_RHYTHM_VALUE;
+//    private static final double DEFAULT_RHYTHM_VALUE = jm.music.data.Note.DEFAULT_RHYTHM_VALUE;
     private Score score;
     private int partCounter;
+    private int loopCounter;
+    private int listPhraseSize;
+    private int measureCounter;
     private jm.music.data.Part tempPart;
     private Phrase tempPhrase;
     private HashMap<String, Integer> pitchmap = new HashMap<>();
     private HashMap<String, Integer> instmap = new HashMap<>();
+    private Phrase previousPhrases;
 
     public Evaluator(Score score) {
         this.score = score;
@@ -147,15 +155,27 @@ public class Evaluator implements Visitor<Void> {
 
     @Override
     public Void visit(Measure m) throws IllegalAccessException {
+        tempPhrase = new Phrase();
         for(Note note : m.getNotes()) {
             note.accept(this);
         }
+        // if know that it is loop use repeat
+        if (loopCounter != 0) {
+            if (measureCounter < listPhraseSize){
+                append(previousPhrases, tempPhrase);
+                return null; //break before tempPart adding
+            } else if (measureCounter == listPhraseSize) {
+                append(previousPhrases, tempPhrase);
+                repeat(previousPhrases, loopCounter);
+                tempPhrase = previousPhrases;
+            }
+        }
+        tempPart.add(tempPhrase);
         return null;
     }
 
     @Override
     public Void visit(Name n) throws IllegalAccessException {
-
         tempPart.setTitle(n.getName());
         if (instmap.isEmpty()) {
             instmap = getInstrumentMap();
@@ -190,8 +210,8 @@ public class Evaluator implements Visitor<Void> {
         String division = n.getDivision();
         // Check whether or not note is letter or rest
         if (noteType == SubMeasureType.rest) {
-//            temp = new jm.music.data.Note(REST, tempPart.getNumerator()/(Integer.parseInt(division)));
-            temp = new jm.music.data.Note(REST, 1.5);
+            temp = new jm.music.data.Note(REST, tempPart.getNumerator()/(Integer.parseInt(division)));
+//            temp = new jm.music.data.Note(REST, 1.5);
             tempPhrase.addNote(temp);
             return null;
         }
@@ -211,8 +231,9 @@ public class Evaluator implements Visitor<Void> {
         }
         noteString += division;
         if (pitchmap.containsKey(noteString)) {
-//            temp = new jm.music.data.Note(pitchmap.get(noteString), tempPart.getNumerator()/(Integer.parseInt(division)));
-            temp = new jm.music.data.Note(pitchmap.get(noteString), 1.5);
+            temp = new jm.music.data.Note(pitchmap.get(noteString), tempPart.getNumerator()/(Integer.parseInt(division)));
+//            System.out.println(Integer.toString(tempPhrase.getNumerator()));
+//            temp = new jm.music.data.Note(pitchmap.get(noteString), 1.5);
             tempPhrase.addNote(temp);
         } else {
             if (accidental == null) {
@@ -258,18 +279,21 @@ public class Evaluator implements Visitor<Void> {
     @Override
     public Void visit(Sheet s) throws IllegalAccessException {
 //        score.createPart(); // we called createPart in visit(Part p)
-        tempPhrase = new Phrase();
+        tempPart.setNumerator(s.getTimeNum());
+        tempPart.setDenominator(s.getTimeDem());
         s.getClef().accept(this);
         s.getKey().accept(this);
         //Not touching time cause double is not the way to go
         // score.setTimeSignature(s.getTimeNum(),s.getTimeDem());
         // Will need this when we do error checking
-        for(Measure measure : s.getMeasures()) {
-            measure.accept(this);
+        for(Object measures : s.getMeasures()) {
+            if (measures instanceof Loop) {
+                ((Loop) measures).accept(this);
+            } else {
+                loopCounter = 0;
+                ((Measure) measures).accept(this);
+            }
         }
-        tempPart.add(tempPhrase);
-        tempPart.setNumerator(s.getTimeNum());
-        tempPart.setDenominator(s.getTimeDem());
 //        temp.setKeySignature();
         return null;
     }
@@ -277,6 +301,21 @@ public class Evaluator implements Visitor<Void> {
     @Override
     public Void visit(Title t) {
         score.setTitle(t.getTitle());
+        return null;
+    }
+
+    @Override
+    public Void visit(Loop l) throws IllegalAccessException {
+        // Note: Phrase = measure
+        previousPhrases = new Phrase();
+        loopCounter = l.getCount(); //how many times the user specified the looping
+        List<Measure> measures = l.getMeasures();
+        listPhraseSize = measures.size(); // # of measures in the whole loop
+        for (Measure measure : measures) {
+            measureCounter++;
+            measure.accept(this);
+        }
+        measureCounter = 0;
         return null;
     }
 }

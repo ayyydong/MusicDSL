@@ -1,6 +1,7 @@
 package parser;
 
 import ast.*;
+import jm.music.data.Phrase;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 import java.util.ArrayList;
@@ -55,11 +56,15 @@ public class ParsedTreeToAST extends AbstractParseTreeVisitor<Node> implements M
 
         Key key = this.visitKey(ctx.key());
 
-        List<Measure> measures = new ArrayList<>();
-        for(MusicSheetParser.MeasureContext measureContext: ctx.measure()) {
-            measures.add(this.visitMeasure(measureContext));
+        List<Object> measures = new ArrayList<>();
+        for (Object sheetContext: ctx.children) {
+            if (sheetContext instanceof MusicSheetParser.MeasureContext){
+                measures.add(this.visitMeasure((MusicSheetParser.MeasureContext) sheetContext));
+            }
+            else if (sheetContext instanceof MusicSheetParser.LoopContext){
+                measures.add(this.visitLoop((MusicSheetParser.LoopContext) sheetContext));
+            }
         }
-
         return new Sheet(clef, key, timenum, timedem, measures);
     }
 
@@ -113,6 +118,17 @@ public class ParsedTreeToAST extends AbstractParseTreeVisitor<Node> implements M
         }
 
         return new Note(subMeasureType, letter, accidental, dots, division);
+    }
+
+    @Override
+    public Loop visitLoop(MusicSheetParser.LoopContext ctx) {
+        String[] countValue = ctx.LOOP_DECLARE().toString().split("loop");
+        int count = Integer.parseInt(countValue[1]);
+        List<Measure> measures = new ArrayList<>();
+        for (MusicSheetParser.MeasureContext measureContext : ctx.measure()) {
+            measures.add(this.visitMeasure(measureContext));
+        }
+        return new Loop(measures, count);
     }
 
     @Override

@@ -1,8 +1,3 @@
 Title: Test Sheet 2
-func f1
 Part: Piano
-treble F# major 4/4 [A*.4 C G G][G R F# G]
-loop
-end
-Part: Violin
-treble F# minor 3/4 [G*.4 C G*..4 G][G R Fb*8 G]
+treble G#4 major 4/4 loop3([D.4 D4 E4 D4][G4 F#4 R#4 R4])

@@ -22,7 +22,10 @@ import jm.music.data.Score;
 import jm.util.View;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import static ast.SubMeasureType.note;
 import static jm.constants.Durations.*;
 import static jm.constants.Pitches.*;
 
@@ -31,7 +34,7 @@ public class Main {
     public static void main(String[] args) throws IOException, IllegalAccessException {
         MusicSheetLexer lexer;
         try {
-            lexer = new MusicSheetLexer(CharStreams.fromFileName("test_sheet.txt"));
+            lexer = new MusicSheetLexer(CharStreams.fromFileName("test_sheet2.txt"));
 
         } catch (NoSuchFileException e) {
             System.out.println("ERROR: File not found\n" + e);
@@ -65,9 +68,13 @@ public class Main {
         // TODO: should count #notes and update time signature
         // TODO: update key signature // JMusic does not support key signatures and clefs! (terrible)
         // TODO: checkout treble/bass stave
-//        Score score = new Score(new Part(new Phrase(new Note(G4, MINIM))));
+        // Repeat barlines dont exist in JMusic? will look into it: https://www.studybass.com/lessons/reading-music/repeats-and-endings/
+        // public static void repeat(Phrase phrase, int n)
+//        Phrase[] phrases = {new Phrase(new Note(G4, MINIM)),new Phrase(new Note(C4, MINIM)),new Phrase(new Note(G4, MINIM)),new Phrase(new Note(G9, MINIM))};
+//        Score score = new Score(new Part(phrases,"piano",40));
+//        Play.midi(score);
         Play.midi(e.getScore());
-//        View.notate(score);
+//        View.notate(e.getScore());
     }
 
 
