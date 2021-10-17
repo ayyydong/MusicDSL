@@ -55,99 +55,101 @@ public class Evaluator implements Visitor<Void> {
         // Process number of sharps and flats based on quality/note
 
         int keySig = 0;
-        Note sigNote = k.getNote();
-        AccidentalType keyAcc = sigNote.getAccidental();
-        if (kt == KeyType.MAJOR) {
-            if (sigNote.getLetter().equals("A")) {
-                if (keyAcc == AccidentalType.FLAT) {
-                    keySig = -4;
-                } else {
-                    keySig = 3;
-                }
-            } else if (sigNote.getLetter().equals("B")) {
-                if (keyAcc == AccidentalType.FLAT) {
-                    keySig = -2;
-                } else {
-                    keySig = 5;
-                }
-            } else if (sigNote.getLetter().equals("C")) {
-                if (keyAcc == AccidentalType.SHARP) {
-                    keySig = 7;
-                } else if (keyAcc == AccidentalType.FLAT) {
-                    keySig = -7;
-                } else {
-                    keySig = 0;
-                }
-            } else if (sigNote.getLetter().equals("D")) {
-                if (keyAcc == AccidentalType.FLAT) {
-                    keySig = -5;
-                } else {
-                    keySig = 2;
-                }
-            } else if (sigNote.getLetter().equals("E")) {
-                if (keyAcc == AccidentalType.FLAT) {
-                    keySig = -3;
-                } else {
-                    keySig = 4;
-                }
-            } else if (sigNote.getLetter().equals("F")) {
-                if (keyAcc == AccidentalType.SHARP) {
-                    keySig = 6;
-                } else {
-                    keySig = -1;
-                }
-            } else if (sigNote.getLetter().equals("G")) {
-                if (keyAcc == AccidentalType.FLAT) {
-                    keySig = -6;
-                } else {
-                    keySig = 1;
-                }
-            }
-        } else if (kt == KeyType.MINOR) {
-            if (sigNote.getLetter().equals("A")) {
-                if (keyAcc == AccidentalType.SHARP) {
-                    keySig = 7;
-                } else if (keyAcc == AccidentalType.FLAT) {
-                    keySig = -7;
-                }
-            } else if (sigNote.getLetter().equals("B")) {
-                if (keyAcc == AccidentalType.FLAT) {
-                    keySig = -5;
-                } else {
-                    keySig = 2;
-                }
-            } else if (sigNote.getLetter().equals("C")) {
-                if (keyAcc == AccidentalType.SHARP) {
-                    keySig = 4;
-                } else {
-                    keySig = -3;
-                }
-            } else if (sigNote.getLetter().equals("D")) {
-                if (keyAcc == AccidentalType.SHARP) {
-                    keySig = 6;
-                } else {
-                    keySig = -1;
-                }
-            } else if (sigNote.getLetter().equals("E")) {
-                if (keyAcc == AccidentalType.FLAT) {
-                    keySig = -6;
-                } else {
-                    keySig = 1;
-                }
-            } else if (sigNote.getLetter().equals("F")) {
-                if (keyAcc == AccidentalType.SHARP) {
-                    keySig = 3;
-                } else {
-                    keySig = -4;
-                }
-            } else if (sigNote.getLetter().equals("G")) {
-                if (keyAcc == AccidentalType.SHARP) {
-                    keySig = 5;
-                } else {
-                    keySig = -2;
-                }
-            }
-        }
+        String sigNote = k.getNote();
+        AccidentalType keyAcc = k.getAccidentalType();
+        System.out.println(sigNote);
+        System.out.println(keyAcc);
+//        if (kt == KeyType.MAJOR) {
+//            if (sigNote.getLetter().equals("A")) {
+//                if (keyAcc == AccidentalType.FLAT) {
+//                    keySig = -4;
+//                } else {
+//                    keySig = 3;
+//                }
+//            } else if (sigNote.getLetter().equals("B")) {
+//                if (keyAcc == AccidentalType.FLAT) {
+//                    keySig = -2;
+//                } else {
+//                    keySig = 5;
+//                }
+//            } else if (sigNote.getLetter().equals("C")) {
+//                if (keyAcc == AccidentalType.SHARP) {
+//                    keySig = 7;
+//                } else if (keyAcc == AccidentalType.FLAT) {
+//                    keySig = -7;
+//                } else {
+//                    keySig = 0;
+//                }
+//            } else if (sigNote.getLetter().equals("D")) {
+//                if (keyAcc == AccidentalType.FLAT) {
+//                    keySig = -5;
+//                } else {
+//                    keySig = 2;
+//                }
+//            } else if (sigNote.getLetter().equals("E")) {
+//                if (keyAcc == AccidentalType.FLAT) {
+//                    keySig = -3;
+//                } else {
+//                    keySig = 4;
+//                }
+//            } else if (sigNote.getLetter().equals("F")) {
+//                if (keyAcc == AccidentalType.SHARP) {
+//                    keySig = 6;
+//                } else {
+//                    keySig = -1;
+//                }
+//            } else if (sigNote.getLetter().equals("G")) {
+//                if (keyAcc == AccidentalType.FLAT) {
+//                    keySig = -6;
+//                } else {
+//                    keySig = 1;
+//                }
+//            }
+//        } else if (kt == KeyType.MINOR) {
+//            if (sigNote.getLetter().equals("A")) {
+//                if (keyAcc == AccidentalType.SHARP) {
+//                    keySig = 7;
+//                } else if (keyAcc == AccidentalType.FLAT) {
+//                    keySig = -7;
+//                }
+//            } else if (sigNote.getLetter().equals("B")) {
+//                if (keyAcc == AccidentalType.FLAT) {
+//                    keySig = -5;
+//                } else {
+//                    keySig = 2;
+//                }
+//            } else if (sigNote.getLetter().equals("C")) {
+//                if (keyAcc == AccidentalType.SHARP) {
+//                    keySig = 4;
+//                } else {
+//                    keySig = -3;
+//                }
+//            } else if (sigNote.getLetter().equals("D")) {
+//                if (keyAcc == AccidentalType.SHARP) {
+//                    keySig = 6;
+//                } else {
+//                    keySig = -1;
+//                }
+//            } else if (sigNote.getLetter().equals("E")) {
+//                if (keyAcc == AccidentalType.FLAT) {
+//                    keySig = -6;
+//                } else {
+//                    keySig = 1;
+//                }
+//            } else if (sigNote.getLetter().equals("F")) {
+//                if (keyAcc == AccidentalType.SHARP) {
+//                    keySig = 3;
+//                } else {
+//                    keySig = -4;
+//                }
+//            } else if (sigNote.getLetter().equals("G")) {
+//                if (keyAcc == AccidentalType.SHARP) {
+//                    keySig = 5;
+//                } else {
+//                    keySig = -2;
+//                }
+//            }
+//        }
         tempPart.setKeySignature(keySig);
 
         return null;
@@ -205,7 +207,7 @@ public class Evaluator implements Visitor<Void> {
 
     @Override
     public Void visit(Note n) throws IllegalAccessException {
-        SubMeasureType noteType = n.getType();
+        NoteType noteType = n.getType();
         jm.music.data.Note temp;
         String octave = n.getOctave();
         String division = n.getDivision().replace("$","");
@@ -217,7 +219,7 @@ public class Evaluator implements Visitor<Void> {
         }
         double extraRhythm = 0;
         // Check whether or not note is letter or rest
-        if (noteType == SubMeasureType.rest) {
+        if (noteType == NoteType.rest) {
             if (dotCount == 0) {
                 temp = new jm.music.data.Note(REST, rhythmValue);
             } else {
@@ -234,7 +236,7 @@ public class Evaluator implements Visitor<Void> {
         }
         // pitchmap now contains all string keys of the constants originally defined for ints
         // Note is a letter
-        String noteString = n.getLetter();
+        String noteString = n.getLetter().toUpperCase(Locale.ROOT);
         AccidentalType accidental = n.getAccidental();
         // Need to account for nonexistent sharps/flats
         // Change to pitch instead of noteString

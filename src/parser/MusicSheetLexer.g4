@@ -5,7 +5,7 @@ TITLE_START: 'Title:' WS* -> mode(TEXT_MODE);
 PART_START: 'Part:' WS* -> mode(TEXT_MODE);
 CLEF: 'treble' | 'bass';
 //NOTE: [A-G] ('#' | 'b')? ('*' '.'* [1-9]+)? ;
-NOTE_LETTER: [A-G] | 'R';
+NOTE_LETTER: [a-gA-G] | 'R';
 ACCIDENTAL: '#' | 'b';
 //DURATION_START: '*' ;
 DOTS: '.'+;
@@ -20,6 +20,7 @@ LOOP_DECLARE: 'loop' [2-9]+;
 LOOP_START: '(';
 LOOP_END: ')';
 OCTAVE: [0-9];
+KEY_LETTER: [a-gA-G];
 
 // White space Handling
 WS : [\n\t\r ] -> channel(HIDDEN);
