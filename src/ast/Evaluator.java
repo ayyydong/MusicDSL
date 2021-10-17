@@ -208,10 +208,23 @@ public class Evaluator implements Visitor<Void> {
         SubMeasureType noteType = n.getType();
         jm.music.data.Note temp;
         String division = n.getDivision();
+        int numDiv = Integer.parseInt(division);
+        double rhythmValue = tempPart.getNumerator() / numDiv;
+        int dotCount = 0;
+        if (n.getDots() != null) {
+            dotCount = n.getDots().length();
+        }
+        double extraRhythm = 0;
         // Check whether or not note is letter or rest
         if (noteType == SubMeasureType.rest) {
-            temp = new jm.music.data.Note(REST, tempPart.getNumerator()/(Integer.parseInt(division)));
-//            temp = new jm.music.data.Note(REST, 1.5);
+            if (dotCount == 0) {
+                temp = new jm.music.data.Note(REST, rhythmValue);
+            } else {
+                for (int i = 0; i <= dotCount; i++) {
+                    extraRhythm += rhythmValue * Math.pow(0.5, i); // added length for dots
+                }
+                temp = new jm.music.data.Note(REST, extraRhythm);
+            }
             tempPhrase.addNote(temp);
             return null;
         }
@@ -231,15 +244,21 @@ public class Evaluator implements Visitor<Void> {
         }
         noteString += division;
         if (pitchmap.containsKey(noteString)) {
-            temp = new jm.music.data.Note(pitchmap.get(noteString), tempPart.getNumerator()/(Integer.parseInt(division)));
-//            System.out.println(Integer.toString(tempPhrase.getNumerator()));
-//            temp = new jm.music.data.Note(pitchmap.get(noteString), 1.5);
+            if (dotCount == 0) {
+                temp = new jm.music.data.Note(pitchmap.get(noteString), rhythmValue);
+            } else {
+                for (int i = 0; i <= dotCount; i++) {
+                    extraRhythm += rhythmValue * Math.pow(0.5, i); // added length for dots
+                }
+//                System.out.println(extraRhythm);
+                temp = new jm.music.data.Note(pitchmap.get(noteString), extraRhythm);
+            }
             tempPhrase.addNote(temp);
         } else {
             if (accidental == null) {
-                System.out.println("Note: " + n.getLetter() + n.getDivision() + " was not found");
+                System.out.println("Note: " + n.getLetter() + division + " was not found");
             } else {
-                System.out.println("Note: " + n.getLetter() + n.getAccidental().name() + n.getDivision() + " was not found");
+                System.out.println("Note: " + n.getLetter() + n.getAccidental().name() + division + " was not found");
             }
         }
         return null;

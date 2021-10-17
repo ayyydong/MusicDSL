@@ -55,7 +55,7 @@ public class Main {
 
         Evaluator e = new Evaluator(new Score());
         parsedProgram.accept(e);
-//        Play.midi(e.getScore());
+//       Play.midi(e.getScore());
         System.out.println("completed successfully");
         // Score (Contains any number of Parts)
         //   |
@@ -64,16 +64,15 @@ public class Main {
         //           +---- Phrase (Contains any number of Notes.)
         //                    |
         //                    +---- Note (Holds information about a single musical event.)
-        // TODO: update phrase count
-        // TODO: should count #notes and update time signature
-        // TODO: update key signature // JMusic does not support key signatures and clefs! (terrible)
-        // TODO: checkout treble/bass stave
+        // Looked at: update key signature // JMusic does not support key signatures and clefs! (terrible)
+        // Looked at: checkout treble/bass stave
+        // TODO: include octaves
         // Repeat barlines dont exist in JMusic? will look into it: https://www.studybass.com/lessons/reading-music/repeats-and-endings/
         // public static void repeat(Phrase phrase, int n)
 //        Phrase[] phrases = {new Phrase(new Note(G4, MINIM)),new Phrase(new Note(C4, MINIM)),new Phrase(new Note(G4, MINIM)),new Phrase(new Note(G9, MINIM))};
 //        Score score = new Score(new Part(phrases,"piano",40));
 //        Play.midi(score);
-        Play.midi(e.getScore());
+//        Play.midi(e.getScore());
 //        View.notate(e.getScore());
     }
 
@@ -91,10 +90,7 @@ public class Main {
 
 // https://i.pinimg.com/originals/03/45/5e/03455e5f600c75ab2c22f00d2bce8a3a.gif
 
-/**
- * This is the simplest jMusic program of all.
- * The eqivalent to a programming language's 'Hello World'
- */
+
 //// Check common practice notation
 //// https://explodingart.com/jmusic/jmtutorial/CPN.html
 // public final class Main implements JMC {
@@ -110,6 +106,3 @@ public class Main {
 //        View.notate(phr);
 //    }
 //}
-// a score contains 2 parts
-// a part contains 2 phrases
-// a phrase contains 4 notes
