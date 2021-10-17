@@ -506,6 +506,7 @@ public class MusicSheetParser extends Parser {
 
 	public static class NoteContext extends ParserRuleContext {
 		public TerminalNode NOTE_LETTER() { return getToken(MusicSheetParser.NOTE_LETTER, 0); }
+		public TerminalNode OCTAVE() { return getToken(MusicSheetParser.OCTAVE, 0); }
 		public TerminalNode DIVISION() { return getToken(MusicSheetParser.DIVISION, 0); }
 		public TerminalNode ACCIDENTAL() { return getToken(MusicSheetParser.ACCIDENTAL, 0); }
 		public TerminalNode DOTS() { return getToken(MusicSheetParser.DOTS, 0); }
@@ -547,17 +548,19 @@ public class MusicSheetParser extends Parser {
 				}
 			}
 
-			setState(59);
+			setState(58);
+			match(OCTAVE);
+			setState(60);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==DOTS) {
 				{
-				setState(58);
+				setState(59);
 				match(DOTS);
 				}
 			}
 
-			setState(61);
+			setState(62);
 			match(DIVISION);
 			}
 		}
@@ -608,25 +611,25 @@ public class MusicSheetParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(63);
-			match(LOOP_DECLARE);
 			setState(64);
+			match(LOOP_DECLARE);
+			setState(65);
 			match(LOOP_START);
-			setState(66); 
+			setState(67); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(65);
+				setState(66);
 				measure();
 				}
 				}
-				setState(68); 
+				setState(69); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==MEASURE_START );
-			setState(70);
+			setState(71);
 			match(LOOP_END);
 			}
 		}
@@ -642,24 +645,25 @@ public class MusicSheetParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\23K\4\2\t\2\4\3\t"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\23L\4\2\t\2\4\3\t"+
 		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\3\2\3\2\7\2"+
 		"\27\n\2\f\2\16\2\32\13\2\3\3\3\3\3\3\3\4\3\4\3\4\3\4\3\5\3\5\3\6\3\6\3"+
 		"\6\3\6\3\6\6\6*\n\6\r\6\16\6+\3\7\3\7\3\7\3\b\3\b\6\b\63\n\b\r\b\16\b"+
-		"\64\3\b\3\b\3\t\3\t\5\t;\n\t\3\t\5\t>\n\t\3\t\3\t\3\n\3\n\3\n\6\nE\n\n"+
-		"\r\n\16\nF\3\n\3\n\3\n\2\2\13\2\4\6\b\n\f\16\20\22\2\2\2H\2\24\3\2\2\2"+
-		"\4\33\3\2\2\2\6\36\3\2\2\2\b\"\3\2\2\2\n$\3\2\2\2\f-\3\2\2\2\16\60\3\2"+
-		"\2\2\208\3\2\2\2\22A\3\2\2\2\24\30\5\4\3\2\25\27\5\6\4\2\26\25\3\2\2\2"+
-		"\27\32\3\2\2\2\30\26\3\2\2\2\30\31\3\2\2\2\31\3\3\2\2\2\32\30\3\2\2\2"+
-		"\33\34\7\3\2\2\34\35\7\23\2\2\35\5\3\2\2\2\36\37\7\4\2\2\37 \5\b\5\2 "+
-		"!\5\n\6\2!\7\3\2\2\2\"#\7\23\2\2#\t\3\2\2\2$%\7\5\2\2%&\5\f\7\2&)\7\13"+
-		"\2\2\'*\5\22\n\2(*\5\16\b\2)\'\3\2\2\2)(\3\2\2\2*+\3\2\2\2+)\3\2\2\2+"+
-		",\3\2\2\2,\13\3\2\2\2-.\5\20\t\2./\7\n\2\2/\r\3\2\2\2\60\62\7\f\2\2\61"+
-		"\63\5\20\t\2\62\61\3\2\2\2\63\64\3\2\2\2\64\62\3\2\2\2\64\65\3\2\2\2\65"+
-		"\66\3\2\2\2\66\67\7\r\2\2\67\17\3\2\2\28:\7\6\2\29;\7\7\2\2:9\3\2\2\2"+
-		":;\3\2\2\2;=\3\2\2\2<>\7\b\2\2=<\3\2\2\2=>\3\2\2\2>?\3\2\2\2?@\7\t\2\2"+
-		"@\21\3\2\2\2AB\7\16\2\2BD\7\17\2\2CE\5\16\b\2DC\3\2\2\2EF\3\2\2\2FD\3"+
-		"\2\2\2FG\3\2\2\2GH\3\2\2\2HI\7\20\2\2I\23\3\2\2\2\t\30)+\64:=F";
+		"\64\3\b\3\b\3\t\3\t\5\t;\n\t\3\t\3\t\5\t?\n\t\3\t\3\t\3\n\3\n\3\n\6\n"+
+		"F\n\n\r\n\16\nG\3\n\3\n\3\n\2\2\13\2\4\6\b\n\f\16\20\22\2\2\2I\2\24\3"+
+		"\2\2\2\4\33\3\2\2\2\6\36\3\2\2\2\b\"\3\2\2\2\n$\3\2\2\2\f-\3\2\2\2\16"+
+		"\60\3\2\2\2\208\3\2\2\2\22B\3\2\2\2\24\30\5\4\3\2\25\27\5\6\4\2\26\25"+
+		"\3\2\2\2\27\32\3\2\2\2\30\26\3\2\2\2\30\31\3\2\2\2\31\3\3\2\2\2\32\30"+
+		"\3\2\2\2\33\34\7\3\2\2\34\35\7\23\2\2\35\5\3\2\2\2\36\37\7\4\2\2\37 \5"+
+		"\b\5\2 !\5\n\6\2!\7\3\2\2\2\"#\7\23\2\2#\t\3\2\2\2$%\7\5\2\2%&\5\f\7\2"+
+		"&)\7\13\2\2\'*\5\22\n\2(*\5\16\b\2)\'\3\2\2\2)(\3\2\2\2*+\3\2\2\2+)\3"+
+		"\2\2\2+,\3\2\2\2,\13\3\2\2\2-.\5\20\t\2./\7\n\2\2/\r\3\2\2\2\60\62\7\f"+
+		"\2\2\61\63\5\20\t\2\62\61\3\2\2\2\63\64\3\2\2\2\64\62\3\2\2\2\64\65\3"+
+		"\2\2\2\65\66\3\2\2\2\66\67\7\r\2\2\67\17\3\2\2\28:\7\6\2\29;\7\7\2\2:"+
+		"9\3\2\2\2:;\3\2\2\2;<\3\2\2\2<>\7\21\2\2=?\7\b\2\2>=\3\2\2\2>?\3\2\2\2"+
+		"?@\3\2\2\2@A\7\t\2\2A\21\3\2\2\2BC\7\16\2\2CE\7\17\2\2DF\5\16\b\2ED\3"+
+		"\2\2\2FG\3\2\2\2GE\3\2\2\2GH\3\2\2\2HI\3\2\2\2IJ\7\20\2\2J\23\3\2\2\2"+
+		"\t\30)+\64:>G";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

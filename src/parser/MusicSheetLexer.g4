@@ -9,7 +9,7 @@ NOTE_LETTER: [A-G] | 'R';
 ACCIDENTAL: '#' | 'b';
 //DURATION_START: '*' ;
 DOTS: '.'+;
-DIVISION: [1-9]+;
+DIVISION: '$' [1-9]+;
 KEYTYPE: 'major' | 'minor';
 TIME: [1-9]+ '/' [1-9]+;
 MEASURE_START: '[';

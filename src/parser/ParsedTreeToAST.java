@@ -1,7 +1,6 @@
 package parser;
 
 import ast.*;
-import jm.music.data.Phrase;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 import java.util.ArrayList;
@@ -89,6 +88,7 @@ public class ParsedTreeToAST extends AbstractParseTreeVisitor<Node> implements M
         String dots = null;
         String division = null;
         AccidentalType accidental = null;
+        String octave;
         SubMeasureType subMeasureType;
         if (ctx.NOTE_LETTER().getText().equals("R")){
             subMeasureType = SubMeasureType.rest;
@@ -99,6 +99,11 @@ public class ParsedTreeToAST extends AbstractParseTreeVisitor<Node> implements M
         }
         String letter = ctx.NOTE_LETTER().getText();
 
+        if (ctx.OCTAVE() != null) {
+            octave = ctx.OCTAVE().getText();
+        } else {
+            throw new RuntimeException("Lexer error: missing tokenized octave");
+        }
         if (ctx.DOTS() != null) {
             dots = ctx.DOTS().getText();
         }
@@ -117,7 +122,7 @@ public class ParsedTreeToAST extends AbstractParseTreeVisitor<Node> implements M
             }
         }
 
-        return new Note(subMeasureType, letter, accidental, dots, division);
+        return new Note(subMeasureType, letter, accidental, octave, dots, division);
     }
 
     @Override
