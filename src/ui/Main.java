@@ -2,6 +2,7 @@ package ui;
 
 import ast.Evaluator;
 import ast.Program;
+import ast.StaticChecker;
 import jm.util.Play;
 import jm.util.Write;
 import org.antlr.v4.runtime.CharStreams;
@@ -55,6 +56,9 @@ public class Main {
         Program parsedProgram = visitor.visitProgram(parser.program());
         System.out.println("Done parsing");
 
+        StaticChecker checker = new StaticChecker();
+        parsedProgram.accept(checker);
+
         Evaluator e = new Evaluator(new Score());
         parsedProgram.accept(e);
 //       Play.midi(e.getScore());
@@ -79,7 +83,7 @@ public class Main {
 //Score outScore = e.getScore();
         //Write.xml(outScore);
         //Play.midi(e.getScore());
-        PrintWriter out = new PrintWriter("out.mxl");
+        PrintWriter out = new PrintWriter("out.xml");
         out.println(e.getMusicXML());
         out.close();
     }

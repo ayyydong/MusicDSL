@@ -8,6 +8,9 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 import static jm.music.tools.Mod.append;
 import static jm.music.tools.Mod.repeat;
@@ -28,11 +31,16 @@ public class Evaluator implements Visitor<Void> {
 
     private String musicXMLPre;
     private String musicXMLPartList;
+    private ArrayList<String> musicXMLParts;
     private String musicXMLPost;
     private String measureAttributes;
+    private String measureXML;
+    private String partXML;
     private int partCounter;
     private int measureCounterXML;
     private int baseOctave;
+    private ArrayList<Integer> measureCounts;
+    private int currMeasures;
 
     public Evaluator(Score score) {
         this.score = score;
@@ -40,11 +48,16 @@ public class Evaluator implements Visitor<Void> {
         this.tempPhrase = null;
         musicXMLPre = "";
         musicXMLPartList = "";
+        musicXMLParts = new ArrayList<>();
         musicXMLPost = "";
         measureAttributes = "";
+        measureXML = "";
+        partXML = "";
         partCounter = 0;
         measureCounter = 0;
         baseOctave = 5;
+        measureCounts = new ArrayList<>();
+        currMeasures = 0;
     }
 
     public Score getScore() {
@@ -130,6 +143,8 @@ public class Evaluator implements Visitor<Void> {
                     keySig = 7;
                 } else if (keyAcc == AccidentalType.FLAT) {
                     keySig = -7;
+                } else {
+                    keySig = 0;
                 }
             } else if (sigNote.getLetter().equals("B")) {
                 if (keyAcc == AccidentalType.FLAT) {
@@ -178,11 +193,12 @@ public class Evaluator implements Visitor<Void> {
 
     @Override
     public Void visit(Measure m) throws IllegalAccessException {
-        musicXMLPost += "<measure number=\"" + measureCounterXML + "\">" + measureAttributes;
+        measureXML += "<measure number=\"" + measureCounterXML + "\">" + measureAttributes;
         tempPhrase = new Phrase();
         for(Note note : m.getNotes()) {
             note.accept(this);
         }
+        measureXML += "</measure>";
         // if know that it is loop use repeat
         if (loopCounter != 0) {
             if (measureCounter < listPhraseSize){
@@ -191,11 +207,12 @@ public class Evaluator implements Visitor<Void> {
             } else if (measureCounter == listPhraseSize) {
                 append(previousPhrases, tempPhrase);
                 repeat(previousPhrases, loopCounter);
+                measureXML = measureXML.repeat(loopCounter);
                 tempPhrase = previousPhrases;
             }
         }
+        partXML += measureXML;
         tempPart.add(tempPhrase);
-        musicXMLPost += "</measure>";
         return null;
     }
 
@@ -231,7 +248,7 @@ public class Evaluator implements Visitor<Void> {
 
     @Override
     public Void visit(Note n) throws IllegalAccessException {
-        musicXMLPost += "<note>";
+        measureXML += "<note>";
         SubMeasureType noteType = n.getType();
         jm.music.data.Note temp;
         String division = n.getDivision();
@@ -250,12 +267,12 @@ public class Evaluator implements Visitor<Void> {
             typeCount++;
         }
         int duration = 256/div;
-        for (int i = 0; i < n.getDots(); i++) {
+        for (int i = 0; i < dotCount; i++) {
             div *= 2;
             duration += 256/div;
         }
         String durationAndType = "<duration>" + duration + "</duration><type>" + types[typeCount] + "</type>";
-        for (int i = 0; i < n.getDots(); i++) {
+        for (int i = 0; i < dotCount; i++) {
             durationAndType += "<dot/>";
         }
 
@@ -269,7 +286,7 @@ public class Evaluator implements Visitor<Void> {
                 temp = new jm.music.data.Note(REST, extraRhythm);
             }
             tempPhrase.addNote(temp);
-            musicXMLPost += "<rest/>" + durationAndType + "</note>";
+            measureXML += "<rest/>" + durationAndType + "</note>";
             return null;
         }
         if (pitchmap.isEmpty()) {
@@ -278,29 +295,29 @@ public class Evaluator implements Visitor<Void> {
         // pitchmap now contains all string keys of the constants originally defined for ints
         // Note is a letter
         String noteString = n.getLetter();
-        musicXMLPost += "<pitch><step>" + noteString + "</step>";
+        measureXML += "<pitch><step>" + noteString + "</step>";
         AccidentalType accidental = n.getAccidental();
         if (accidental == AccidentalType.FLAT) {
-            musicXMLPost += "<alter>-1</alter>";
+            measureXML += "<alter>-1</alter>";
         } else if (accidental == AccidentalType.SHARP) {
-            musicXMLPost += "<alter>1</alter>";
+            measureXML += "<alter>1</alter>";
         }
 
         // Figuring this out on the fly
         if (baseOctave == 5) {
             if (noteString.compareTo("E") > 0 || noteString.compareTo("C") < 0) {
-                musicXMLPost += "<octave>4</octave>";
+                measureXML += "<octave>4</octave>";
             } else {
-                musicXMLPost += "<octave>5</octave>";
+                measureXML += "<octave>5</octave>";
             }
         } else if(baseOctave == 3) {
             if (noteString.compareTo("D") < 0) {
-                musicXMLPost += "<octave>2</octave>";
+                measureXML += "<octave>2</octave>";
             } else {
-                musicXMLPost += "<octave>3</octave>";
+                measureXML += "<octave>3</octave>";
             }
         }
-        musicXMLPost += "</pitch>" + durationAndType + "</note>";
+        measureXML += "</pitch>" + durationAndType + "</note>";
 
         // Need to account for nonexistent sharps/flats
         // Change to pitch instead of noteString
@@ -345,7 +362,6 @@ public class Evaluator implements Visitor<Void> {
     @Override
     public Void visit(Part p) throws IllegalAccessException {
         musicXMLPartList += "<score-part id=\"" + partCounter + "\">";
-        musicXMLPost += "<part id=\"" + partCounter + "\">";
         tempPart = new jm.music.data.Part();
         // name can be searched in instrument library
         p.getName().accept(this);
@@ -353,7 +369,6 @@ public class Evaluator implements Visitor<Void> {
         // 2 instruments cannot play at the same time?
         score.add(tempPart);
         musicXMLPartList += "</score-part>";
-        musicXMLPost += "</part>";
         partCounter++;
         return null;
     }
@@ -367,6 +382,18 @@ public class Evaluator implements Visitor<Void> {
         for(Part part : p.getParts()) {
             part.accept(this);
         }
+
+        int maxMeasures = Collections.max(measureCounts);
+        for (int i = 0; i < musicXMLParts.size(); i++) {
+            musicXMLPost += "<part id=\"" + i + "\">";
+            int thisMeasures = measureCounts.get(i);
+            String thisPartXML = musicXMLParts.get(i);
+            while (thisMeasures < maxMeasures) {
+                thisPartXML += "<measure></measure>";
+                thisMeasures++;
+            }
+            musicXMLPost += thisPartXML + "</part>";;
+        }
         musicXMLPartList += "</part-list>";
         musicXMLPost += "</score-partwise>";
         return null;
@@ -374,6 +401,9 @@ public class Evaluator implements Visitor<Void> {
 
     @Override
     public Void visit(Sheet s) throws IllegalAccessException {
+        currMeasures = 0;
+        partXML = "";
+
         measureAttributes = "<attributes><divisions>64</divisions>";
         measureCounterXML = 1;
 //        score.createPart(); // we called createPart in visit(Part p)
@@ -385,13 +415,17 @@ public class Evaluator implements Visitor<Void> {
         measureAttributes += "</attributes>";
         // Will need this when we do error checking
         for(Object measures : s.getMeasures()) {
+            measureXML = "";
             if (measures instanceof Loop) {
                 ((Loop) measures).accept(this);
             } else {
+                currMeasures++;
                 loopCounter = 0;
                 ((Measure) measures).accept(this);
             }
         }
+        musicXMLParts.add(partXML);
+        measureCounts.add(currMeasures);
 //        temp.setKeySignature();
         return null;
     }
@@ -415,6 +449,7 @@ public class Evaluator implements Visitor<Void> {
             measureCounter++;
             measure.accept(this);
         }
+        currMeasures += loopCounter * listPhraseSize;
         measureCounter = 0;
         return null;
     }
