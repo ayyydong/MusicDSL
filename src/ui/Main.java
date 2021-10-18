@@ -3,6 +3,7 @@ package ui;
 import ast.Evaluator;
 import ast.Program;
 import ast.StaticChecker;
+import jm.music.data.Score;
 import jm.util.Play;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -13,11 +14,8 @@ import parser.MusicSheetParser;
 import parser.ParsedTreeToAST;
 
 import java.io.IOException;
-import java.nio.file.NoSuchFileException;
-
-import jm.music.data.Score;
-
 import java.io.PrintWriter;
+import java.nio.file.NoSuchFileException;
 
 public class Main {
 
