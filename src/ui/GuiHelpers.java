@@ -4,6 +4,7 @@ import ast.Evaluator;
 import ast.Program;
 import ast.StaticChecker;
 import exceptions.FailedStaticCheckException;
+import exceptions.ThrowingErrorListener;
 import jm.music.data.Score;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -25,22 +26,20 @@ public class GuiHelpers {
 
     }
 
-    public String init(String input, String outputFile) {
-        try {
-            tokens = tokenize(input);
-            parsedProgram = parse();
-            performStaticChecks();
-            evaluator = evaluate();
-            write(outputFile);
-        } catch (FailedStaticCheckException | FileNotFoundException e) {
-            return e.getMessage();
-        }
+    public String init(String input, String outputFile) throws FailedStaticCheckException, FileNotFoundException  {
+        tokens = tokenize(input);
+        parsedProgram = parse();
+        performStaticChecks();
+        evaluator = evaluate();
+        write(outputFile);
 
-        return "Generated Successfully";
+        return "Generated Successfully at: " + outputFile;
     }
 
     public CommonTokenStream tokenize(String input) {
         MusicSheetLexer lexer = new MusicSheetLexer(CharStreams.fromString(input));
+        lexer.removeErrorListeners();
+        lexer.addErrorListener(ThrowingErrorListener.INSTANCE);
 
         for (Token token : lexer.getAllTokens()) {
             System.out.println(token);
@@ -54,6 +53,10 @@ public class GuiHelpers {
 
     public Program parse() {
         MusicSheetParser parser = new MusicSheetParser(tokens);
+
+        parser.removeErrorListeners();
+        parser.addErrorListener(ThrowingErrorListener.INSTANCE);
+
         ParsedTreeToAST visitor = new ParsedTreeToAST();
         System.out.println("Done parsing");
         return visitor.visitProgram(parser.program());

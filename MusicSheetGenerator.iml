@@ -28,6 +28,5 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="JavaFX (windows)" level="project" />
-    <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>
