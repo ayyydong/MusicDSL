@@ -39,7 +39,6 @@ public class Evaluator implements Visitor<Void> {
     private String partXML;
     private int partCounter;
     private int measureCounterXML;
-    private int baseOctave;
     private ArrayList<Integer> measureCounts;
     private int currMeasures;
     private boolean noLoop;
@@ -61,7 +60,6 @@ public class Evaluator implements Visitor<Void> {
         partXML = "";
         partCounter = 0;
         measureCounter = 0;
-        baseOctave = 5;
         measureCounts = new ArrayList<>();
         currMeasures = 0;
         noLoop = false;
@@ -89,7 +87,6 @@ public class Evaluator implements Visitor<Void> {
         if (c == Clef.bass) {
             clefSymbol = "F";
             staffLine = 4;
-            baseOctave = 3;
         }
         measureAttributes += "<clef><sign>" + clefSymbol + "</sign><line>" + staffLine + "</line></clef>";
         return null;
@@ -296,7 +293,6 @@ public class Evaluator implements Visitor<Void> {
         if (n.getDots() != null) {
             dotCount = n.getDots().length();
         }
-        double extraRhythm = 0;
         // Check whether or not note is letter or rest
 
         int div = Integer.parseInt(division);
@@ -332,21 +328,8 @@ public class Evaluator implements Visitor<Void> {
             noteXML += "<alter>1</alter>";
         }
 
-        // Figuring this out on the fly
-        if (baseOctave == 5) {
-            if (noteString.compareTo("E") > 0 || noteString.compareTo("C") < 0) {
-                noteXML += "<octave>4</octave>";
-            } else {
-                noteXML += "<octave>5</octave>";
-            }
-        } else if(baseOctave == 3) {
-            if (noteString.compareTo("D") < 0) {
-                noteXML += "<octave>2</octave>";
-            } else {
-                noteXML += "<octave>3</octave>";
-            }
-        }
-        noteXML += "</pitch>" + durationAndType + "</note>";
+        // Add note Octave
+        noteXML += "<octave>" + octave + "</octave></pitch>" + durationAndType + "</note>";
 
         // Need to account for nonexistent sharps/flats
         if (accidental != null && accidental == AccidentalType.SHARP) {

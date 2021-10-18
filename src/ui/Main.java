@@ -53,7 +53,7 @@ public class Main {
 
         Evaluator e = new Evaluator(new Score());
         parsedProgram.accept(e);
-        Play.midi(e.getScore());
+        //Play.midi(e.getScore());
         System.out.println("completed successfully");
         // Score (Contains any number of Parts)
         //   |
