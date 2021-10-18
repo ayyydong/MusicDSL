@@ -1,3 +1,3 @@
 Title: Test Sheet 2
 Part: Piano
-treble G#4 major 4/4 loop2([D.4 D4 E4 D4][G4 F#4 R#4 R4])
+treble G major 4/4 loop2([D4.$4 D4.$4 E4$8 D4$8][G4$4 F#4$4 R4$4 R4$4])
