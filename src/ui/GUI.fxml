@@ -24,7 +24,7 @@
                         <Insets left="10.0" />
                      </padding>
                   </Label>
-                  <TextField fx:id="outputFile" layoutX="33.0" layoutY="176.0" text="out.xml" />
+                  <TextField fx:id="outputFile" layoutX="33.0" layoutY="176.0" text="output/out" />
                   <Label layoutX="14.0" layoutY="98.0" lineSpacing="2.0" prefHeight="42.0" prefWidth="123.0" text="Settings:" textFill="WHITE" wrapText="true">
                      <font>
                         <Font name="System Bold Italic" size="25.0" />
@@ -61,7 +61,12 @@
                         <Font name="Corbel" size="36.0" />
                      </font>
                   </Text>
-                  <Button fx:id="generateButton" layoutX="305.0" layoutY="336.0" mnemonicParsing="false" onAction="#generate" prefHeight="42.0" prefWidth="177.0" text="Generate" textFill="#f5f5f5">
+                  <Button fx:id="generateButton" layoutX="133.0" layoutY="336.0" mnemonicParsing="false" onAction="#generate" prefHeight="42.0" prefWidth="177.0" text="Generate" textFill="#f5f5f5">
+                     <font>
+                        <Font name="Corbel" size="18.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="playButton" layoutX="477.0" layoutY="336.0" mnemonicParsing="false" onAction="#play" prefHeight="42.0" prefWidth="177.0" text="Play" textFill="#f5f5f5">
                      <font>
                         <Font name="Corbel" size="18.0" />
                      </font>

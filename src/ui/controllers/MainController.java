@@ -2,7 +2,6 @@ package ui.controllers;
 
 import exceptions.FailedStaticCheckException;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -14,7 +13,6 @@ import java.io.FileNotFoundException;
 public class MainController {
     @FXML private TextArea mainInput;
     @FXML private TextField outputFile;
-    @FXML private Button generateButton;
     @FXML private Label errorLabel;
     @FXML private Label successLabel;
 
@@ -38,6 +36,14 @@ public class MainController {
         errorLabel.setVisible(false);
         successLabel.setVisible(true);
         successLabel.setText(result);
+    }
+
+    public void play() {
+        if (!guiHelpers.play()) {
+            successLabel.setVisible(false);
+            errorLabel.setVisible(true);
+            errorLabel.setText("Generate first!");
+        }
     }
 }
 

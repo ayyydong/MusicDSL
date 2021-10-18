@@ -6,6 +6,8 @@ import ast.StaticChecker;
 import exceptions.FailedStaticCheckException;
 import exceptions.ThrowingErrorListener;
 import jm.music.data.Score;
+import jm.util.Play;
+import jm.util.Write;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
@@ -85,11 +87,21 @@ public class GuiHelpers {
     }
 
     public void write(String outputFile) throws FileNotFoundException {
-        PrintWriter out = new PrintWriter(outputFile);
+        PrintWriter out = new PrintWriter(outputFile + ".xml");
         out.println(evaluator.getMusicXML());
         out.close();
 
+        Write.midi(evaluator.getScore(), outputFile + ".midi");
+
         System.out.println("Done Writing");
+    }
+
+    public boolean play() {
+        if (evaluator != null) {
+            Play.midi(evaluator.getScore());
+            return true;
+        }
+        return false;
     }
 
 
