@@ -5,6 +5,7 @@ import ast.Program;
 import ast.StaticChecker;
 import jm.music.data.Score;
 import jm.util.Play;
+import jm.util.View;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
@@ -22,7 +23,7 @@ public class Main {
     public static void main(String[] args) throws IOException, IllegalAccessException {
         MusicSheetLexer lexer;
         try {
-            lexer = new MusicSheetLexer(CharStreams.fromFileName("test_sheet2.txt"));
+            lexer = new MusicSheetLexer(CharStreams.fromFileName("test_sheet3.txt"));
         } catch (NoSuchFileException e) {
             System.out.println("ERROR: File not found\n" + e);
             return;
@@ -45,7 +46,8 @@ public class Main {
 
         Evaluator e = new Evaluator(new Score());
         parsedProgram.accept(e);
-        Play.midi(e.getScore());
+//        Play.midi(e.getScore());
+//        View.notate(e.getScore());
         System.out.println("completed successfully");
 
         PrintWriter out = new PrintWriter("src/output/out.xml");

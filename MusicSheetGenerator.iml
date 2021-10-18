@@ -6,6 +6,7 @@
       <sourceFolder url="file://$MODULE_DIR$/gen" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib/javafx-sdk-17.0.0.1" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -28,5 +29,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="JavaFX (windows)" level="project" />
+    <orderEntry type="library" name="javafx-sdk-17.0.0" level="project" />
   </component>
 </module>
