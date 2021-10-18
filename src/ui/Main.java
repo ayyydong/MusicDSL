@@ -3,8 +3,7 @@ package ui;
 import ast.Evaluator;
 import ast.Program;
 import ast.StaticChecker;
-import jm.util.Play;
-import jm.util.Write;
+import jm.music.data.Score;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
@@ -14,16 +13,8 @@ import parser.MusicSheetParser;
 import parser.ParsedTreeToAST;
 
 import java.io.IOException;
-import java.nio.file.NoSuchFileException;
-import jm.music.data.Score;
-import jm.util.View;
-
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-
-import jm.music.data.Score;
+import java.nio.file.NoSuchFileException;
 
 public class Main {
 
@@ -42,7 +33,7 @@ public class Main {
         }
         lexer.reset();
         TokenStream tokens = new CommonTokenStream(lexer);
-        System.out.println("Done tokenizing");
+
 
         MusicSheetParser parser = new MusicSheetParser(tokens);
         ParsedTreeToAST visitor = new ParsedTreeToAST();
