@@ -213,7 +213,7 @@ public class Evaluator implements Visitor<Void> {
         String octave = n.getOctave();
         String division = n.getDivision().replace("$", "");
         int numDiv = Integer.parseInt(division);
-        double rhythmValue = tempPart.getNumerator() / numDiv;
+        double rhythmValue = (double) tempPart.getNumerator() / numDiv;
         int dotCount = 0;
         if (n.getDots() != null) {
             dotCount = n.getDots().length();
