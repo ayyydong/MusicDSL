@@ -13,7 +13,7 @@ public class ParsedTreeToAST extends AbstractParseTreeVisitor<Node> implements M
         Title title = this.visitTitle(ctx.title());
         List<Part> parts = new ArrayList<>();
 
-        for (MusicSheetParser.PartContext partContext: ctx.part()) {
+        for (MusicSheetParser.PartContext partContext : ctx.part()) {
             parts.add(this.visitPart(partContext));
         }
 
@@ -22,7 +22,8 @@ public class ParsedTreeToAST extends AbstractParseTreeVisitor<Node> implements M
 
     @Override
     public Title visitTitle(MusicSheetParser.TitleContext ctx) {
-        return new Title(ctx.TITLE_START().getText());
+        Name name = this.visitName(ctx.name());
+        return new Title(name.getName());
     }
 
     @Override
@@ -47,33 +48,27 @@ public class ParsedTreeToAST extends AbstractParseTreeVisitor<Node> implements M
         } else {
             throw new RuntimeException("Lexer error: tokenized clef that is not treble or bass");
         }
-
         String[] timeValues = ctx.TIME().toString().split("/");
-//        double time = (double) Integer.parseInt(timeValues[0]) / Integer.parseInt(timeValues[1]);
-        int timenum = Integer.parseInt(timeValues[0]);
-        int timedem = Integer.parseInt(timeValues[1]);
-
+        int timeNum = Integer.parseInt(timeValues[0]);
+        int timeDen = Integer.parseInt(timeValues[1]);
         Key key = this.visitKey(ctx.key());
-
         List<Object> measures = new ArrayList<>();
-        for (Object sheetContext: ctx.children) {
-            if (sheetContext instanceof MusicSheetParser.MeasureContext){
+        for (Object sheetContext : ctx.children) {
+            if (sheetContext instanceof MusicSheetParser.MeasureContext) {
                 measures.add(this.visitMeasure((MusicSheetParser.MeasureContext) sheetContext));
-            }
-            else if (sheetContext instanceof MusicSheetParser.LoopContext){
+            } else if (sheetContext instanceof MusicSheetParser.LoopContext) {
                 measures.add(this.visitLoop((MusicSheetParser.LoopContext) sheetContext));
             }
         }
-        return new Sheet(clef, key, timenum, timedem, measures);
+        return new Sheet(clef, key, timeNum, timeDen, measures);
     }
-
 
     @Override
     public Key visitKey(MusicSheetParser.KeyContext ctx) {
-        String note = null;
+        String note;
         AccidentalType accidental = null;
         KeyType keyType;
-        if (ctx.NOTE_LETTER().getText().equals("R")){
+        if (ctx.NOTE_LETTER().getText().equals("R")) {
             throw new RuntimeException("Lexer error: key note type cannot be rest");
         } else if (ctx.NOTE_LETTER().getText().matches("[a-gA-G]")) {
             note = ctx.NOTE_LETTER().getText();
@@ -107,7 +102,7 @@ public class ParsedTreeToAST extends AbstractParseTreeVisitor<Node> implements M
         AccidentalType accidental = null;
         String octave;
         NoteType noteType;
-        if (ctx.NOTE_LETTER().getText().equals("R")){
+        if (ctx.NOTE_LETTER().getText().equals("R")) {
             noteType = NoteType.rest;
         } else if (ctx.NOTE_LETTER().getText().matches("[a-gA-G]")) {
             noteType = NoteType.note;
@@ -115,20 +110,17 @@ public class ParsedTreeToAST extends AbstractParseTreeVisitor<Node> implements M
             throw new RuntimeException("Lexer error: tokenized note type that is not note or rest");
         }
         String letter = ctx.NOTE_LETTER().getText();
-//        Type type = this.visitType(ctx.type());
         if (ctx.OCTAVE() != null) {
-                octave = ctx.OCTAVE().getText();
+            octave = ctx.OCTAVE().getText();
         } else {
             throw new RuntimeException("Lexer error: missing tokenized octave");
         }
         if (ctx.DOTS() != null) {
             dots = ctx.DOTS().getText();
         }
-
         if (ctx.DIVISION() != null) {
             division = ctx.DIVISION().getText();
         }
-
         if (ctx.ACCIDENTAL() != null) {
             if (ctx.ACCIDENTAL().getText().equals("#")) {
                 accidental = AccidentalType.SHARP;
@@ -138,8 +130,6 @@ public class ParsedTreeToAST extends AbstractParseTreeVisitor<Node> implements M
                 throw new RuntimeException("Lexer error: tokenized accidental type that is not # or b");
             }
         }
-
-//        return new Note(type, octave, dots, division);
         return new Note(noteType, letter, accidental, octave, dots, division);
     }
 
@@ -154,38 +144,12 @@ public class ParsedTreeToAST extends AbstractParseTreeVisitor<Node> implements M
         return new Loop(measures, count);
     }
 
-//    @Override
-//    public Type visitType(MusicSheetParser.TypeContext ctx) {
-//        SubNoteType subNoteType;
-//        AccidentalType accidental = null;
-//        if (ctx.NOTE_LETTER().getText().equals("R")){
-//            subNoteType = SubNoteType.rest;
-//        } else if (ctx.NOTE_LETTER().getText().matches("[a-gA-G]")) {
-//            subNoteType = SubNoteType.note;
-//        } else {
-//            throw new RuntimeException("Lexer error: tokenized submeasure type that is not note or rest");
-//        }
-//        String letter = ctx.NOTE_LETTER().getText();
-//        if (ctx.ACCIDENTAL() != null) {
-//            if (ctx.ACCIDENTAL().getText().equals("#")) {
-//                accidental = AccidentalType.SHARP;
-//            } else if (ctx.ACCIDENTAL().getText().equals("b")) {
-//                accidental = AccidentalType.FLAT;
-//            } else {
-//                throw new RuntimeException("Lexer error: tokenized accidental type that is not # or b");
-//            }
-//        }
-//        return new Type(subNoteType, letter, accidental);
-//    }
-
     @Override
     public Measure visitMeasure(MusicSheetParser.MeasureContext ctx) {
         List<Note> notes = new ArrayList<>();
-
-        for (MusicSheetParser.NoteContext noteContext: ctx.note()) {
+        for (MusicSheetParser.NoteContext noteContext : ctx.note()) {
             notes.add(this.visitNote(noteContext));
         }
-
         return new Measure(notes);
     }
 

@@ -42,53 +42,7 @@ public class Main {
 
         Evaluator e = new Evaluator(new Score());
         parsedProgram.accept(e);
-//        Play.midi(e.getScore());
+        Play.midi(e.getScore());
         System.out.println("completed successfully");
-        // Score (Contains any number of Parts)
-        //   |
-        //   +---- Part (Contains any number of Phrases)
-        //           |
-        //           +---- Phrase (Contains any number of Notes.)
-        //                    |
-        //                    +---- Note (Holds information about a single musical event.)
-        // Looked at: update key signature // JMusic does not support key signatures and clefs! (terrible)
-        // Looked at: checkout treble/bass stave
-        // Repeat barlines dont exist in JMusic? will look into it: https://www.studybass.com/lessons/reading-music/repeats-and-endings/
-        // public static void repeat(Phrase phrase, int n)
-//        Phrase[] phrases = {new Phrase(new Note(G4, MINIM)),new Phrase(new Note(C4, MINIM)),new Phrase(new Note(G4, MINIM)),new Phrase(new Note(G9, MINIM))};
-//        Score score = new Score(new Part(phrases,"piano",40));
-//        Play.midi(score);
-//        Play.midi(e.getScore());
-//        View.notate(e.getScore());
     }
-
-
-//        Score score = new Score(new Part(new Phrase(new Note(C4, MINIM))));
-//        score.setKeyQuality(1);
-//        score.setKeySignature(3);
-//       Write.midi(score, "expected_output");
-//       Instrument inst = new SawtoothInst(44100);
-//       Write.au(score, "expected_output_au", inst);
-//       Write.xml(score,"expected_output_xml");
-//        View.notate(score);
-//    }
 }
-
-// https://i.pinimg.com/originals/03/45/5e/03455e5f600c75ab2c22f00d2bce8a3a.gif
-
-
-//// Check common practice notation
-//// https://explodingart.com/jmusic/jmtutorial/CPN.html
-// public final class Main implements JMC {
-//
-//    public static void main(String[] args) {
-//        Phrase phr = new Phrase();
-//        for(int i = 0; i< 50; i++) {
-//            Note n = new Note((int)(Math.random()*60 + 30), SQ * (int)(Math.random()*8 + 1));
-//            phr.addNote(n);
-//        }
-////        View.print(phr);
-////        View.pianoRoll(phr);
-//        View.notate(phr);
-//    }
-//}

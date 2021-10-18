@@ -9,7 +9,6 @@ public class Key extends Node {
         this.note = note;
         this.accidentalType = accidentalType;
         this.keyType = keyType;
-//        this.note = note;
     }
 
     public KeyType getKeyType() {
