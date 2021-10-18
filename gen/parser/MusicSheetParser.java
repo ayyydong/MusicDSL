@@ -19,7 +19,7 @@ public class MusicSheetParser extends Parser {
 	public static final int
 		TITLE_START=1, PART_START=2, CLEF=3, NOTE_LETTER=4, ACCIDENTAL=5, DOTS=6, 
 		DIVISION=7, KEYTYPE=8, TIME=9, MEASURE_START=10, MEASURE_END=11, LOOP_DECLARE=12, 
-		LOOP_START=13, LOOP_END=14, OCTAVE=15, WS=16, TEXT=17;
+		LOOP_START=13, LOOP_END=14, OCTAVE=15, KEY_LETTER=16, WS=17, TEXT=18;
 	public static final int
 		RULE_program = 0, RULE_title = 1, RULE_part = 2, RULE_name = 3, RULE_sheet = 4, 
 		RULE_key = 5, RULE_measure = 6, RULE_note = 7, RULE_loop = 8;
@@ -42,7 +42,8 @@ public class MusicSheetParser extends Parser {
 		return new String[] {
 			null, "TITLE_START", "PART_START", "CLEF", "NOTE_LETTER", "ACCIDENTAL", 
 			"DOTS", "DIVISION", "KEYTYPE", "TIME", "MEASURE_START", "MEASURE_END", 
-			"LOOP_DECLARE", "LOOP_START", "LOOP_END", "OCTAVE", "WS", "TEXT"
+			"LOOP_DECLARE", "LOOP_START", "LOOP_END", "OCTAVE", "KEY_LETTER", "WS", 
+			"TEXT"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -163,7 +164,9 @@ public class MusicSheetParser extends Parser {
 
 	public static class TitleContext extends ParserRuleContext {
 		public TerminalNode TITLE_START() { return getToken(MusicSheetParser.TITLE_START, 0); }
-		public TerminalNode TEXT() { return getToken(MusicSheetParser.TEXT, 0); }
+		public NameContext name() {
+			return getRuleContext(NameContext.class,0);
+		}
 		public TitleContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -192,7 +195,7 @@ public class MusicSheetParser extends Parser {
 			setState(25);
 			match(TITLE_START);
 			setState(26);
-			match(TEXT);
+			name();
 			}
 		}
 		catch (RecognitionException re) {
@@ -392,10 +395,9 @@ public class MusicSheetParser extends Parser {
 	}
 
 	public static class KeyContext extends ParserRuleContext {
-		public NoteContext note() {
-			return getRuleContext(NoteContext.class,0);
-		}
+		public TerminalNode NOTE_LETTER() { return getToken(MusicSheetParser.NOTE_LETTER, 0); }
 		public TerminalNode KEYTYPE() { return getToken(MusicSheetParser.KEYTYPE, 0); }
+		public TerminalNode ACCIDENTAL() { return getToken(MusicSheetParser.ACCIDENTAL, 0); }
 		public KeyContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -418,12 +420,23 @@ public class MusicSheetParser extends Parser {
 	public final KeyContext key() throws RecognitionException {
 		KeyContext _localctx = new KeyContext(_ctx, getState());
 		enterRule(_localctx, 10, RULE_key);
+		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(43);
-			note();
-			setState(44);
+			match(NOTE_LETTER);
+			setState(45);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			if (_la==ACCIDENTAL) {
+				{
+				setState(44);
+				match(ACCIDENTAL);
+				}
+			}
+
+			setState(47);
 			match(KEYTYPE);
 			}
 		}
@@ -473,23 +486,23 @@ public class MusicSheetParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(46);
+			setState(49);
 			match(MEASURE_START);
-			setState(48); 
+			setState(51); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(47);
+				setState(50);
 				note();
 				}
 				}
-				setState(50); 
+				setState(53); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==NOTE_LETTER );
-			setState(52);
+			setState(55);
 			match(MEASURE_END);
 			}
 		}
@@ -536,31 +549,31 @@ public class MusicSheetParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(54);
+			setState(57);
 			match(NOTE_LETTER);
-			setState(56);
+			setState(59);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==ACCIDENTAL) {
 				{
-				setState(55);
+				setState(58);
 				match(ACCIDENTAL);
 				}
 			}
 
-			setState(58);
+			setState(61);
 			match(OCTAVE);
-			setState(60);
+			setState(63);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==DOTS) {
 				{
-				setState(59);
+				setState(62);
 				match(DOTS);
 				}
 			}
 
-			setState(62);
+			setState(65);
 			match(DIVISION);
 			}
 		}
@@ -611,25 +624,25 @@ public class MusicSheetParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(64);
+			setState(67);
 			match(LOOP_DECLARE);
-			setState(65);
+			setState(68);
 			match(LOOP_START);
-			setState(67); 
+			setState(70); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(66);
+				setState(69);
 				measure();
 				}
 				}
-				setState(69); 
+				setState(72); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==MEASURE_START );
-			setState(71);
+			setState(74);
 			match(LOOP_END);
 			}
 		}
@@ -645,25 +658,25 @@ public class MusicSheetParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\23L\4\2\t\2\4\3\t"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\24O\4\2\t\2\4\3\t"+
 		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\3\2\3\2\7\2"+
 		"\27\n\2\f\2\16\2\32\13\2\3\3\3\3\3\3\3\4\3\4\3\4\3\4\3\5\3\5\3\6\3\6\3"+
-		"\6\3\6\3\6\6\6*\n\6\r\6\16\6+\3\7\3\7\3\7\3\b\3\b\6\b\63\n\b\r\b\16\b"+
-		"\64\3\b\3\b\3\t\3\t\5\t;\n\t\3\t\3\t\5\t?\n\t\3\t\3\t\3\n\3\n\3\n\6\n"+
-		"F\n\n\r\n\16\nG\3\n\3\n\3\n\2\2\13\2\4\6\b\n\f\16\20\22\2\2\2I\2\24\3"+
-		"\2\2\2\4\33\3\2\2\2\6\36\3\2\2\2\b\"\3\2\2\2\n$\3\2\2\2\f-\3\2\2\2\16"+
-		"\60\3\2\2\2\208\3\2\2\2\22B\3\2\2\2\24\30\5\4\3\2\25\27\5\6\4\2\26\25"+
-		"\3\2\2\2\27\32\3\2\2\2\30\26\3\2\2\2\30\31\3\2\2\2\31\3\3\2\2\2\32\30"+
-		"\3\2\2\2\33\34\7\3\2\2\34\35\7\23\2\2\35\5\3\2\2\2\36\37\7\4\2\2\37 \5"+
-		"\b\5\2 !\5\n\6\2!\7\3\2\2\2\"#\7\23\2\2#\t\3\2\2\2$%\7\5\2\2%&\5\f\7\2"+
-		"&)\7\13\2\2\'*\5\22\n\2(*\5\16\b\2)\'\3\2\2\2)(\3\2\2\2*+\3\2\2\2+)\3"+
-		"\2\2\2+,\3\2\2\2,\13\3\2\2\2-.\5\20\t\2./\7\n\2\2/\r\3\2\2\2\60\62\7\f"+
-		"\2\2\61\63\5\20\t\2\62\61\3\2\2\2\63\64\3\2\2\2\64\62\3\2\2\2\64\65\3"+
-		"\2\2\2\65\66\3\2\2\2\66\67\7\r\2\2\67\17\3\2\2\28:\7\6\2\29;\7\7\2\2:"+
-		"9\3\2\2\2:;\3\2\2\2;<\3\2\2\2<>\7\21\2\2=?\7\b\2\2>=\3\2\2\2>?\3\2\2\2"+
-		"?@\3\2\2\2@A\7\t\2\2A\21\3\2\2\2BC\7\16\2\2CE\7\17\2\2DF\5\16\b\2ED\3"+
-		"\2\2\2FG\3\2\2\2GE\3\2\2\2GH\3\2\2\2HI\3\2\2\2IJ\7\20\2\2J\23\3\2\2\2"+
-		"\t\30)+\64:>G";
+		"\6\3\6\3\6\6\6*\n\6\r\6\16\6+\3\7\3\7\5\7\60\n\7\3\7\3\7\3\b\3\b\6\b\66"+
+		"\n\b\r\b\16\b\67\3\b\3\b\3\t\3\t\5\t>\n\t\3\t\3\t\5\tB\n\t\3\t\3\t\3\n"+
+		"\3\n\3\n\6\nI\n\n\r\n\16\nJ\3\n\3\n\3\n\2\2\13\2\4\6\b\n\f\16\20\22\2"+
+		"\2\2M\2\24\3\2\2\2\4\33\3\2\2\2\6\36\3\2\2\2\b\"\3\2\2\2\n$\3\2\2\2\f"+
+		"-\3\2\2\2\16\63\3\2\2\2\20;\3\2\2\2\22E\3\2\2\2\24\30\5\4\3\2\25\27\5"+
+		"\6\4\2\26\25\3\2\2\2\27\32\3\2\2\2\30\26\3\2\2\2\30\31\3\2\2\2\31\3\3"+
+		"\2\2\2\32\30\3\2\2\2\33\34\7\3\2\2\34\35\5\b\5\2\35\5\3\2\2\2\36\37\7"+
+		"\4\2\2\37 \5\b\5\2 !\5\n\6\2!\7\3\2\2\2\"#\7\24\2\2#\t\3\2\2\2$%\7\5\2"+
+		"\2%&\5\f\7\2&)\7\13\2\2\'*\5\22\n\2(*\5\16\b\2)\'\3\2\2\2)(\3\2\2\2*+"+
+		"\3\2\2\2+)\3\2\2\2+,\3\2\2\2,\13\3\2\2\2-/\7\6\2\2.\60\7\7\2\2/.\3\2\2"+
+		"\2/\60\3\2\2\2\60\61\3\2\2\2\61\62\7\n\2\2\62\r\3\2\2\2\63\65\7\f\2\2"+
+		"\64\66\5\20\t\2\65\64\3\2\2\2\66\67\3\2\2\2\67\65\3\2\2\2\678\3\2\2\2"+
+		"89\3\2\2\29:\7\r\2\2:\17\3\2\2\2;=\7\6\2\2<>\7\7\2\2=<\3\2\2\2=>\3\2\2"+
+		"\2>?\3\2\2\2?A\7\21\2\2@B\7\b\2\2A@\3\2\2\2AB\3\2\2\2BC\3\2\2\2CD\7\t"+
+		"\2\2D\21\3\2\2\2EF\7\16\2\2FH\7\17\2\2GI\5\16\b\2HG\3\2\2\2IJ\3\2\2\2"+
+		"JH\3\2\2\2JK\3\2\2\2KL\3\2\2\2LM\7\20\2\2M\23\3\2\2\2\n\30)+/\67=AJ";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

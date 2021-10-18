@@ -22,7 +22,7 @@ public class ParsedTreeToAST extends AbstractParseTreeVisitor<Node> implements M
 
     @Override
     public Title visitTitle(MusicSheetParser.TitleContext ctx) {
-        return new Title(ctx.TEXT().getText());
+        return new Title(ctx.TITLE_START().getText());
     }
 
     @Override
@@ -70,8 +70,25 @@ public class ParsedTreeToAST extends AbstractParseTreeVisitor<Node> implements M
 
     @Override
     public Key visitKey(MusicSheetParser.KeyContext ctx) {
-        Note note = visitNote(ctx.note());
+        String note = null;
+        AccidentalType accidental = null;
         KeyType keyType;
+        if (ctx.NOTE_LETTER().getText().equals("R")){
+            throw new RuntimeException("Lexer error: key note type cannot be rest");
+        } else if (ctx.NOTE_LETTER().getText().matches("[a-gA-G]")) {
+            note = ctx.NOTE_LETTER().getText();
+        } else {
+            throw new RuntimeException("Lexer error: tokenized note type that is not note or rest");
+        }
+        if (ctx.ACCIDENTAL() != null) {
+            if (ctx.ACCIDENTAL().getText().equals("#")) {
+                accidental = AccidentalType.SHARP;
+            } else if (ctx.ACCIDENTAL().getText().equals("b")) {
+                accidental = AccidentalType.FLAT;
+            } else {
+                throw new RuntimeException("Lexer error: tokenized accidental type that is not # or b");
+            }
+        }
         if (ctx.KEYTYPE().getText().equals("major")) {
             keyType = KeyType.MAJOR;
         } else if (ctx.KEYTYPE().getText().equals("minor")) {
@@ -80,7 +97,7 @@ public class ParsedTreeToAST extends AbstractParseTreeVisitor<Node> implements M
             throw new RuntimeException("Lexer error: tokenized key type that is not major or minor");
         }
 
-        return new Key(keyType, note);
+        return new Key(note, accidental, keyType);
     }
 
     @Override
@@ -89,18 +106,18 @@ public class ParsedTreeToAST extends AbstractParseTreeVisitor<Node> implements M
         String division = null;
         AccidentalType accidental = null;
         String octave;
-        SubMeasureType subMeasureType;
+        NoteType noteType;
         if (ctx.NOTE_LETTER().getText().equals("R")){
-            subMeasureType = SubMeasureType.rest;
-        } else if (ctx.NOTE_LETTER().getText().matches("[A-G]")) {
-            subMeasureType = SubMeasureType.note;
+            noteType = NoteType.rest;
+        } else if (ctx.NOTE_LETTER().getText().matches("[a-gA-G]")) {
+            noteType = NoteType.note;
         } else {
-            throw new RuntimeException("Lexer error: tokenized submeasure type that is not note or rest");
+            throw new RuntimeException("Lexer error: tokenized note type that is not note or rest");
         }
         String letter = ctx.NOTE_LETTER().getText();
-
+//        Type type = this.visitType(ctx.type());
         if (ctx.OCTAVE() != null) {
-            octave = ctx.OCTAVE().getText();
+                octave = ctx.OCTAVE().getText();
         } else {
             throw new RuntimeException("Lexer error: missing tokenized octave");
         }
@@ -122,7 +139,8 @@ public class ParsedTreeToAST extends AbstractParseTreeVisitor<Node> implements M
             }
         }
 
-        return new Note(subMeasureType, letter, accidental, octave, dots, division);
+//        return new Note(type, octave, dots, division);
+        return new Note(noteType, letter, accidental, octave, dots, division);
     }
 
     @Override
@@ -135,6 +153,30 @@ public class ParsedTreeToAST extends AbstractParseTreeVisitor<Node> implements M
         }
         return new Loop(measures, count);
     }
+
+//    @Override
+//    public Type visitType(MusicSheetParser.TypeContext ctx) {
+//        SubNoteType subNoteType;
+//        AccidentalType accidental = null;
+//        if (ctx.NOTE_LETTER().getText().equals("R")){
+//            subNoteType = SubNoteType.rest;
+//        } else if (ctx.NOTE_LETTER().getText().matches("[a-gA-G]")) {
+//            subNoteType = SubNoteType.note;
+//        } else {
+//            throw new RuntimeException("Lexer error: tokenized submeasure type that is not note or rest");
+//        }
+//        String letter = ctx.NOTE_LETTER().getText();
+//        if (ctx.ACCIDENTAL() != null) {
+//            if (ctx.ACCIDENTAL().getText().equals("#")) {
+//                accidental = AccidentalType.SHARP;
+//            } else if (ctx.ACCIDENTAL().getText().equals("b")) {
+//                accidental = AccidentalType.FLAT;
+//            } else {
+//                throw new RuntimeException("Lexer error: tokenized accidental type that is not # or b");
+//            }
+//        }
+//        return new Type(subNoteType, letter, accidental);
+//    }
 
     @Override
     public Measure visitMeasure(MusicSheetParser.MeasureContext ctx) {

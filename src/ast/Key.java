@@ -2,18 +2,25 @@ package ast;
 
 public class Key extends Node {
     private final KeyType keyType;
-    private final Note note;
+    private final String note;
+    private final AccidentalType accidentalType;
 
-    public Key(KeyType keyType, Note note) {
-        this.keyType = keyType;
+    public Key(String note, AccidentalType accidentalType, KeyType keyType) {
         this.note = note;
+        this.accidentalType = accidentalType;
+        this.keyType = keyType;
+//        this.note = note;
     }
 
     public KeyType getKeyType() {
         return keyType;
     }
 
-    public Note getNote() {
+    public AccidentalType getAccidentalType() {
+        return accidentalType;
+    }
+
+    public String getNote() {
         return note;
     }
 

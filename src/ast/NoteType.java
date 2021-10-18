@@ -1,6 +1,6 @@
 package ast;
 
-public enum SubMeasureType {
+public enum NoteType {
     note,
     rest
 }

@@ -15,11 +15,6 @@ import parser.ParsedTreeToAST;
 
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
-import inst.SawtoothInst;
-import jm.audio.Instrument;
-import jm.music.data.Note;
-import jm.music.data.Part;
-import jm.music.data.Phrase;
 import jm.music.data.Score;
 import jm.util.View;
 
@@ -28,9 +23,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ast.SubMeasureType.note;
-import static jm.constants.Durations.*;
-import static jm.constants.Pitches.*;
+import jm.music.data.Score;
 
 public class Main {
 
@@ -61,7 +54,7 @@ public class Main {
 
         Evaluator e = new Evaluator(new Score());
         parsedProgram.accept(e);
-        Play.midi(e.getScore());
+//        Play.midi(e.getScore());
         System.out.println("completed successfully");
         // Score (Contains any number of Parts)
         //   |
@@ -72,9 +65,6 @@ public class Main {
         //                    +---- Note (Holds information about a single musical event.)
         // Looked at: update key signature // JMusic does not support key signatures and clefs! (terrible)
         // Looked at: checkout treble/bass stave
-        // TODO: include octaves
-        // TODO: have a checker that checks if beats allowed = total note length of phrase
-        // TODO: separate key with note (not G#4 -> G#)
         // Repeat barlines dont exist in JMusic? will look into it: https://www.studybass.com/lessons/reading-music/repeats-and-endings/
         // public static void repeat(Phrase phrase, int n)
 //        Phrase[] phrases = {new Phrase(new Note(G4, MINIM)),new Phrase(new Note(C4, MINIM)),new Phrase(new Note(G4, MINIM)),new Phrase(new Note(G9, MINIM))};
