@@ -5,19 +5,16 @@ import java.util.List;
 public class Sheet extends Node {
     private final Clef clef;
     private final Key key;
-    private final int timenum;
-    private final int timedem;
-//    private final List<Measure> measures;
+    private final int timeNum;
+    private final int timeDen;
     private final List<Object> measures;
-//    private final List<Loop> loopMeasures;
 
-    public Sheet(Clef clef, Key key, int timenum, int timedem, List<Object> measures) {// List<Loop> loopMeasures) {
+    public Sheet(Clef clef, Key key, int timeNum, int timeDen, List<Object> measures) {
         this.clef = clef;
         this.key = key;
-        this.timenum = timenum;
-        this.timedem = timedem;
+        this.timeNum = timeNum;
+        this.timeDen = timeDen;
         this.measures = measures;
-//        this.loopMeasures = loopMeasures;
     }
 
     public Clef getClef() {
@@ -29,20 +26,16 @@ public class Sheet extends Node {
     }
 
     public int getTimeNum() {
-        return timenum;
+        return timeNum;
     }
 
     public int getTimeDem() {
-        return timedem;
+        return timeDen;
     }
 
     public List<Object> getMeasures() {
         return measures;
     }
-//
-//    public List<Loop> getLoopMeasures() {
-//        return loopMeasures;
-//    }
 
     @Override
     public <T> T accept(Visitor<T> v) throws IllegalAccessException {

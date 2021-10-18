@@ -31,7 +31,6 @@ public class Main {
         MusicSheetLexer lexer;
         try {
             lexer = new MusicSheetLexer(CharStreams.fromFileName(args[0]));
-
         } catch (NoSuchFileException e) {
             System.out.println("ERROR: File not found\n" + e);
             return;
@@ -54,7 +53,7 @@ public class Main {
 
         Evaluator e = new Evaluator(new Score());
         parsedProgram.accept(e);
-//        Play.midi(e.getScore());
+        Play.midi(e.getScore());
         System.out.println("completed successfully");
         // Score (Contains any number of Parts)
         //   |
@@ -79,34 +78,4 @@ public class Main {
         out.println(e.getMusicXML());
         out.close();
     }
-
-
-//        Score score = new Score(new Part(new Phrase(new Note(C4, MINIM))));
-//        score.setKeyQuality(1);
-//        score.setKeySignature(3);
-//       Write.midi(score, "expected_output");
-//       Instrument inst = new SawtoothInst(44100);
-//       Write.au(score, "expected_output_au", inst);
-//       Write.xml(score,"expected_output_xml");
-//        View.notate(score);
-//    }
 }
-
-// https://i.pinimg.com/originals/03/45/5e/03455e5f600c75ab2c22f00d2bce8a3a.gif
-
-
-//// Check common practice notation
-//// https://explodingart.com/jmusic/jmtutorial/CPN.html
-// public final class Main implements JMC {
-//
-//    public static void main(String[] args) {
-//        Phrase phr = new Phrase();
-//        for(int i = 0; i< 50; i++) {
-//            Note n = new Note((int)(Math.random()*60 + 30), SQ * (int)(Math.random()*8 + 1));
-//            phr.addNote(n);
-//        }
-////        View.print(phr);
-////        View.pianoRoll(phr);
-//        View.notate(phr);
-//    }
-//}
