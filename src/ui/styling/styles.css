@@ -1,0 +1,19 @@
+.mainPanel
+{
+    -fx-background-color: #006495;
+}
+.header
+{
+    -fx-background-color: #006495;
+}
+.button
+{
+    -fx-border-width: 2;
+    -fx-font-size: 18;
+    -fx-background-color: #004C70;
+    -fx-font-weight: 900;
+}
+.button:hover
+{
+    -fx-border-color: white;
+}
