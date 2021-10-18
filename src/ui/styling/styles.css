@@ -17,3 +17,8 @@
 {
     -fx-border-color: white;
 }
+.error-label
+{
+    -fx-alignment: center;
+    -fx-font-weight: 900;
+}

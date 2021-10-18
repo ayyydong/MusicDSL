@@ -45,6 +45,16 @@
             </AnchorPane>
             <AnchorPane prefHeight="693.0" prefWidth="787.0" styleClass="mainPanel" stylesheets="@styling/styles.css" HBox.hgrow="ALWAYS">
                <children>
+                  <Label fx:id="errorLabel" layoutX="67.0" layoutY="387.0" prefHeight="55.0" prefWidth="652.0" styleClass="error-label" text="Errors" textFill="#c91111" visible="false">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="successLabel" layoutX="67.0" layoutY="387.0" prefHeight="55.0" prefWidth="652.0" styleClass="error-label" text="Success" textFill="#12dd67" visible="false">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
                   <TextArea fx:id="mainInput" layoutX="85.0" layoutY="92.0" prefHeight="200.0" prefWidth="617.0" />
                   <Text fill="WHITE" layoutX="310.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Enter Input">
                      <font>

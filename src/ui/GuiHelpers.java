@@ -25,18 +25,14 @@ public class GuiHelpers {
 
     }
 
-    public String init(String input, String outputFile) {
-        try {
-            tokens = tokenize(input);
-            parsedProgram = parse();
-            performStaticChecks();
-            evaluator = evaluate();
-            write(outputFile);
-        } catch (FailedStaticCheckException | FileNotFoundException e) {
-            return e.getMessage();
-        }
+    public String init(String input, String outputFile) throws FailedStaticCheckException, FileNotFoundException  {
+        tokens = tokenize(input);
+        parsedProgram = parse();
+        performStaticChecks();
+        evaluator = evaluate();
+        write(outputFile);
 
-        return "Generated Successfully";
+        return "Generated Successfully at: " + outputFile;
     }
 
     public CommonTokenStream tokenize(String input) {
