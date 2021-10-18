@@ -1,5 +1,5 @@
 Title: Test Sheet 3
 Part: Piano
-treble F# major 4/4 [A4.$4 C4$4 G4$4 G4$4][G4$4 R4$4 F#4$4 G4$4]
+treble F# major 4/4 [A4$4 C4$4 G4$4 G4$4][G4$4 R4$4 F#4$4 G4$4]
 Part: Violin
-treble F# minor 3/4 [G4$4 C4$8 G4$4 G4$8]loop3([G4$4 A4$4 Fb4$8 G4$4])
+treble F# minor 3/4 [G4$4 C4$8 G4$4 G4$8]loop3([G4$4 A4$4 Fb4$8 G4$8])

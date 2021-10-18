@@ -3,8 +3,9 @@ package ui;
 import ast.Evaluator;
 import ast.Program;
 import ast.StaticChecker;
+import jm.music.data.Score;
 import jm.util.Play;
-import jm.util.Write;
+import jm.util.View;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
@@ -14,23 +15,15 @@ import parser.MusicSheetParser;
 import parser.ParsedTreeToAST;
 
 import java.io.IOException;
-import java.nio.file.NoSuchFileException;
-import jm.music.data.Score;
-import jm.util.View;
-
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-
-import jm.music.data.Score;
+import java.nio.file.NoSuchFileException;
 
 public class Main {
 
     public static void main(String[] args) throws IOException, IllegalAccessException {
         MusicSheetLexer lexer;
         try {
-            lexer = new MusicSheetLexer(CharStreams.fromFileName("test_sheet_proper.txt"));
+            lexer = new MusicSheetLexer(CharStreams.fromFileName("test_sheet3.txt"));
         } catch (NoSuchFileException e) {
             System.out.println("ERROR: File not found\n" + e);
             return;
@@ -53,28 +46,11 @@ public class Main {
 
         Evaluator e = new Evaluator(new Score());
         parsedProgram.accept(e);
-        //Play.midi(e.getScore());
-        System.out.println("completed successfully");
-        // Score (Contains any number of Parts)
-        //   |
-        //   +---- Part (Contains any number of Phrases)
-        //           |
-        //           +---- Phrase (Contains any number of Notes.)
-        //                    |
-        //                    +---- Note (Holds information about a single musical event.)
-        // Looked at: update key signature // JMusic does not support key signatures and clefs! (terrible)
-        // Looked at: checkout treble/bass stave
-        // Repeat barlines dont exist in JMusic? will look into it: https://www.studybass.com/lessons/reading-music/repeats-and-endings/
-        // public static void repeat(Phrase phrase, int n)
-//        Phrase[] phrases = {new Phrase(new Note(G4, MINIM)),new Phrase(new Note(C4, MINIM)),new Phrase(new Note(G4, MINIM)),new Phrase(new Note(G9, MINIM))};
-//        Score score = new Score(new Part(phrases,"piano",40));
-//        Play.midi(score);
 //        Play.midi(e.getScore());
 //        View.notate(e.getScore());
-//Score outScore = e.getScore();
-        //Write.xml(outScore);
-        //Play.midi(e.getScore());
-        PrintWriter out = new PrintWriter("output/out.xml");
+        System.out.println("completed successfully");
+
+        PrintWriter out = new PrintWriter("src/output/out.xml");
         out.println(e.getMusicXML());
         out.close();
     }
