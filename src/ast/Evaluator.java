@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 import static jm.music.tools.Mod.append;
@@ -35,12 +34,17 @@ public class Evaluator implements Visitor<Void> {
     private String musicXMLPost;
     private String measureAttributes;
     private String measureXML;
+    private String loopXML;
+    private String noteXML;
     private String partXML;
     private int partCounter;
     private int measureCounterXML;
     private int baseOctave;
     private ArrayList<Integer> measureCounts;
     private int currMeasures;
+    private boolean noLoop;
+    private boolean loop;
+    private boolean loopFirstMeasureDone;
 
     public Evaluator(Score score) {
         this.score = score;
@@ -52,12 +56,17 @@ public class Evaluator implements Visitor<Void> {
         musicXMLPost = "";
         measureAttributes = "";
         measureXML = "";
+        noteXML = "";
+        loopXML = "";
         partXML = "";
         partCounter = 0;
         measureCounter = 0;
         baseOctave = 5;
         measureCounts = new ArrayList<>();
         currMeasures = 0;
+        noLoop = false;
+        loop = false;
+        loopFirstMeasureDone = false;
     }
 
     public Score getScore() {
@@ -91,99 +100,97 @@ public class Evaluator implements Visitor<Void> {
         int keySig = 0;
         String sigNote = k.getNote();
         AccidentalType keyAcc = k.getAccidentalType();
-        System.out.println(sigNote);
-        System.out.println(keyAcc);
-//        if (kt == KeyType.MAJOR) {
-//            if (sigNote.getLetter().equals("A")) {
-//                if (keyAcc == AccidentalType.FLAT) {
-//                    keySig = -4;
-//                } else {
-//                    keySig = 3;
-//                }
-//            } else if (sigNote.getLetter().equals("B")) {
-//                if (keyAcc == AccidentalType.FLAT) {
-//                    keySig = -2;
-//                } else {
-//                    keySig = 5;
-//                }
-//            } else if (sigNote.getLetter().equals("C")) {
-//                if (keyAcc == AccidentalType.SHARP) {
-//                    keySig = 7;
-//                } else if (keyAcc == AccidentalType.FLAT) {
-//                    keySig = -7;
-//                } else {
-//                    keySig = 0;
-//                }
-//            } else if (sigNote.getLetter().equals("D")) {
-//                if (keyAcc == AccidentalType.FLAT) {
-//                    keySig = -5;
-//                } else {
-//                    keySig = 2;
-//                }
-//            } else if (sigNote.getLetter().equals("E")) {
-//                if (keyAcc == AccidentalType.FLAT) {
-//                    keySig = -3;
-//                } else {
-//                    keySig = 4;
-//                }
-//            } else if (sigNote.getLetter().equals("F")) {
-//                if (keyAcc == AccidentalType.SHARP) {
-//                    keySig = 6;
-//                } else {
-//                    keySig = -1;
-//                }
-//            } else if (sigNote.getLetter().equals("G")) {
-//                if (keyAcc == AccidentalType.FLAT) {
-//                    keySig = -6;
-//                } else {
-//                    keySig = 1;
-//                }
-//            }
-//        } else if (kt == KeyType.MINOR) {
-//            if (sigNote.getLetter().equals("A")) {
-//                if (keyAcc == AccidentalType.SHARP) {
-//                    keySig = 7;
-//                } else if (keyAcc == AccidentalType.FLAT) {
-//                    keySig = -7;
-//                }
-//            } else if (sigNote.getLetter().equals("B")) {
-//                if (keyAcc == AccidentalType.FLAT) {
-//                    keySig = -5;
-//                } else {
-//                    keySig = 2;
-//                }
-//            } else if (sigNote.getLetter().equals("C")) {
-//                if (keyAcc == AccidentalType.SHARP) {
-//                    keySig = 4;
-//                } else {
-//                    keySig = -3;
-//                }
-//            } else if (sigNote.getLetter().equals("D")) {
-//                if (keyAcc == AccidentalType.SHARP) {
-//                    keySig = 6;
-//                } else {
-//                    keySig = -1;
-//                }
-//            } else if (sigNote.getLetter().equals("E")) {
-//                if (keyAcc == AccidentalType.FLAT) {
-//                    keySig = -6;
-//                } else {
-//                    keySig = 1;
-//                }
-//            } else if (sigNote.getLetter().equals("F")) {
-//                if (keyAcc == AccidentalType.SHARP) {
-//                    keySig = 3;
-//                } else {
-//                    keySig = -4;
-//                }
-//            } else if (sigNote.getLetter().equals("G")) {
-//                if (keyAcc == AccidentalType.SHARP) {
-//                    keySig = 5;
-//                } else {
-//                    keySig = -2;
-//                }
-//            }
-//        }
+       if (kt == KeyType.MAJOR) {
+           if (sigNote.equals("A")) {
+               if (keyAcc == AccidentalType.FLAT) {
+                   keySig = -4;
+               } else {
+                   keySig = 3;
+               }
+           } else if (sigNote.equals("B")) {
+               if (keyAcc == AccidentalType.FLAT) {
+                   keySig = -2;
+               } else {
+                   keySig = 5;
+               }
+           } else if (sigNote.equals("C")) {
+               if (keyAcc == AccidentalType.SHARP) {
+                   keySig = 7;
+               } else if (keyAcc == AccidentalType.FLAT) {
+                   keySig = -7;
+               } else {
+                   keySig = 0;
+               }
+           } else if (sigNote.equals("D")) {
+               if (keyAcc == AccidentalType.FLAT) {
+                   keySig = -5;
+               } else {
+                   keySig = 2;
+               }
+           } else if (sigNote.equals("E")) {
+               if (keyAcc == AccidentalType.FLAT) {
+                   keySig = -3;
+               } else {
+                   keySig = 4;
+               }
+           } else if (sigNote.equals("F")) {
+               if (keyAcc == AccidentalType.SHARP) {
+                   keySig = 6;
+               } else {
+                   keySig = -1;
+               }
+           } else if (sigNote.equals("G")) {
+               if (keyAcc == AccidentalType.FLAT) {
+                   keySig = -6;
+               } else {
+                   keySig = 1;
+               }
+           }
+       } else if (kt == KeyType.MINOR) {
+           if (sigNote.equals("A")) {
+               if (keyAcc == AccidentalType.SHARP) {
+                   keySig = 7;
+               } else if (keyAcc == AccidentalType.FLAT) {
+                   keySig = -7;
+               }
+           } else if (sigNote.equals("B")) {
+               if (keyAcc == AccidentalType.FLAT) {
+                   keySig = -5;
+               } else {
+                   keySig = 2;
+               }
+           } else if (sigNote.equals("C")) {
+               if (keyAcc == AccidentalType.SHARP) {
+                   keySig = 4;
+               } else {
+                   keySig = -3;
+               }
+           } else if (sigNote.equals("D")) {
+               if (keyAcc == AccidentalType.SHARP) {
+                   keySig = 6;
+               } else {
+                   keySig = -1;
+               }
+           } else if (sigNote.equals("E")) {
+               if (keyAcc == AccidentalType.FLAT) {
+                   keySig = -6;
+               } else {
+                   keySig = 1;
+               }
+           } else if (sigNote.equals("F")) {
+               if (keyAcc == AccidentalType.SHARP) {
+                   keySig = 3;
+               } else {
+                   keySig = -4;
+               }
+           } else if (sigNote.equals("G")) {
+               if (keyAcc == AccidentalType.SHARP) {
+                   keySig = 5;
+               } else {
+                   keySig = -2;
+               }
+           }
+       }
         tempPart.setKeySignature(keySig);
 
         measureAttributes += "<key><fifths>" + keySig + "</fifths></key>";
@@ -193,12 +200,33 @@ public class Evaluator implements Visitor<Void> {
 
     @Override
     public Void visit(Measure m) throws IllegalAccessException {
-        measureXML += "<measure number=\"" + measureCounterXML + "\">" + measureAttributes;
+        if (noLoop && currMeasures == 0) {
+            measureXML += "<measure number=\"" + measureCounterXML + "\">" + measureAttributes;
+        } else if (loop) {
+            if (currMeasures == 0 && !loopFirstMeasureDone) {
+                loopXML += "<measure number=\"" + measureCounterXML + "\">" + measureAttributes;
+                measureXML += "<measure number=\"" + measureCounterXML + "\">" + "<attributes><divisions>64</divisions></attributes>";
+                loopFirstMeasureDone = true;
+            } else {
+                loopXML += "<measure number=\"" + measureCounterXML + "\">" + "<attributes><divisions>64</divisions></attributes>";
+                measureXML += "<measure number=\"" + measureCounterXML + "\">" + "<attributes><divisions>64</divisions></attributes>";
+            }
+        } else {
+            measureXML += "<measure number=\"" + measureCounterXML + "\">" + "<attributes><divisions>64</divisions></attributes>";
+        }
         tempPhrase = new Phrase();
         for(Note note : m.getNotes()) {
+            noteXML = "";
             note.accept(this);
+            if (loop) {
+                loopXML += noteXML;
+            }
+            measureXML += noteXML;
         }
         measureXML += "</measure>";
+        if (loop) {
+            loopXML += "</measure>";
+        }
         // if know that it is loop use repeat
         if (loopCounter != 0) {
             if (measureCounter < listPhraseSize){
@@ -207,10 +235,13 @@ public class Evaluator implements Visitor<Void> {
             } else if (measureCounter == listPhraseSize) {
                 append(previousPhrases, tempPhrase);
                 repeat(previousPhrases, loopCounter);
-                measureXML = measureXML.repeat(loopCounter);
+                measureXML = measureXML.repeat(loopCounter - 1);
+                measureXML = loopXML + measureXML;
                 tempPhrase = previousPhrases;
             }
         }
+        loopFirstMeasureDone = false;
+        measureCounterXML++;
         partXML += measureXML;
         tempPart.add(tempPhrase);
         return null;
@@ -248,7 +279,7 @@ public class Evaluator implements Visitor<Void> {
 
     @Override
     public Void visit(Note n) throws IllegalAccessException {
-        measureXML += "<note>";
+        noteXML += "<note>";
         NoteType noteType = n.getType();
         jm.music.data.Note temp;
         String octave = n.getOctave();
@@ -287,7 +318,7 @@ public class Evaluator implements Visitor<Void> {
                 temp = new jm.music.data.Note(REST, extraRhythm);
             }
             tempPhrase.addNote(temp);
-            measureXML += "<rest/>" + durationAndType + "</note>";
+            noteXML += "<rest/>" + durationAndType + "</note>";
             return null;
         }
         if (pitchmap.isEmpty()) {
@@ -296,29 +327,29 @@ public class Evaluator implements Visitor<Void> {
         // pitchmap now contains all string keys of the constants originally defined for ints
         // Note is a letter
         String noteString = n.getLetter().toUpperCase(Locale.ROOT);
-        measureXML += "<pitch><step>" + noteString + "</step>";
+        noteXML += "<pitch><step>" + noteString + "</step>";
         AccidentalType accidental = n.getAccidental();
         if (accidental == AccidentalType.FLAT) {
-            measureXML += "<alter>-1</alter>";
+            noteXML += "<alter>-1</alter>";
         } else if (accidental == AccidentalType.SHARP) {
-            measureXML += "<alter>1</alter>";
+            noteXML += "<alter>1</alter>";
         }
 
         // Figuring this out on the fly
         if (baseOctave == 5) {
             if (noteString.compareTo("E") > 0 || noteString.compareTo("C") < 0) {
-                measureXML += "<octave>4</octave>";
+                noteXML += "<octave>4</octave>";
             } else {
-                measureXML += "<octave>5</octave>";
+                noteXML += "<octave>5</octave>";
             }
         } else if(baseOctave == 3) {
             if (noteString.compareTo("D") < 0) {
-                measureXML += "<octave>2</octave>";
+                noteXML += "<octave>2</octave>";
             } else {
-                measureXML += "<octave>3</octave>";
+                noteXML += "<octave>3</octave>";
             }
         }
-        measureXML += "</pitch>" + durationAndType + "</note>";
+        noteXML += "</pitch>" + durationAndType + "</note>";
 
         // Need to account for nonexistent sharps/flats
         // Change to pitch instead of noteString
@@ -403,6 +434,8 @@ public class Evaluator implements Visitor<Void> {
     @Override
     public Void visit(Sheet s) throws IllegalAccessException {
         currMeasures = 0;
+        loop = false;
+        noLoop = false;
         partXML = "";
 
         measureAttributes = "<attributes><divisions>64</divisions>";
@@ -418,11 +451,15 @@ public class Evaluator implements Visitor<Void> {
         for(Object measures : s.getMeasures()) {
             measureXML = "";
             if (measures instanceof Loop) {
+                loop = true;
                 ((Loop) measures).accept(this);
+                loop = false;
             } else {
-                currMeasures++;
                 loopCounter = 0;
+                noLoop = true;
                 ((Measure) measures).accept(this);
+                noLoop = false;
+                currMeasures++;
             }
         }
         musicXMLParts.add(partXML);

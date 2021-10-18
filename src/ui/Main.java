@@ -30,7 +30,7 @@ public class Main {
     public static void main(String[] args) throws IOException, IllegalAccessException {
         MusicSheetLexer lexer;
         try {
-            lexer = new MusicSheetLexer(CharStreams.fromFileName("test_sheet_proper.txt"));
+            lexer = new MusicSheetLexer(CharStreams.fromFileName(args[0]));
 
         } catch (NoSuchFileException e) {
             System.out.println("ERROR: File not found\n" + e);
@@ -75,7 +75,7 @@ public class Main {
 //Score outScore = e.getScore();
         //Write.xml(outScore);
         //Play.midi(e.getScore());
-        PrintWriter out = new PrintWriter("out.xml");
+        PrintWriter out = new PrintWriter("output/out.xml");
         out.println(e.getMusicXML());
         out.close();
     }
