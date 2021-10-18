@@ -1,5 +1,6 @@
 package ast;
 
+import exceptions.FailedStaticCheckException;
 import jm.music.data.Score;
 import jm.music.data.Phrase;
 
@@ -17,16 +18,16 @@ import static jm.music.tools.Mod.repeat;
 public class Evaluator implements Visitor<Void> {
     private static final String[] types = {"whole", "half", "quarter", "eighth", "16th", "32nd", "64th", "128th", "256"};
     private static final int REST = jm.music.data.Note.REST;
-//    private static final double DEFAULT_RHYTHM_VALUE = jm.music.data.Note.DEFAULT_RHYTHM_VALUE;
     private Score score;
     private int loopCounter;
     private int listPhraseSize;
     private int measureCounter;
     private jm.music.data.Part tempPart;
     private Phrase tempPhrase;
-    private HashMap<String, Integer> pitchmap = new HashMap<>();
-    private HashMap<String, Integer> instmap = new HashMap<>();
     private Phrase previousPhrases;
+    private jm.music.data.Note tempNote;
+    private HashMap<String, Integer> pitchMap = new HashMap<>();
+    private HashMap<String, Integer> instMap = new HashMap<>();
 
     private String musicXMLPre;
     private String musicXMLPartList;
@@ -69,6 +70,15 @@ public class Evaluator implements Visitor<Void> {
         loopFirstMeasureDone = false;
     }
 
+    // JMusic structure
+    // Score (Contains any number of Parts)
+    //   |
+    //   +---- Part (Contains any number of Phrases)
+    //           |
+    //           +---- Phrase (Contains any number of Notes.)
+    //                    |
+    //                    +---- Note (Holds information about a single musical event.)
+
     public Score getScore() {
         return this.score;
     }
@@ -93,104 +103,102 @@ public class Evaluator implements Visitor<Void> {
         if (kt == KeyType.MINOR) {
             quality = 1;
         }
-        //score.setKeyQuality(quality); // this sets score, should be setting part instead
         tempPart.setKeyQuality(quality);
         // Process number of sharps and flats based on quality/note
-
         int keySig = 0;
         String sigNote = k.getNote();
         AccidentalType keyAcc = k.getAccidentalType();
-       if (kt == KeyType.MAJOR) {
-           if (sigNote.equals("A")) {
-               if (keyAcc == AccidentalType.FLAT) {
-                   keySig = -4;
-               } else {
-                   keySig = 3;
-               }
-           } else if (sigNote.equals("B")) {
-               if (keyAcc == AccidentalType.FLAT) {
-                   keySig = -2;
-               } else {
-                   keySig = 5;
-               }
-           } else if (sigNote.equals("C")) {
-               if (keyAcc == AccidentalType.SHARP) {
-                   keySig = 7;
-               } else if (keyAcc == AccidentalType.FLAT) {
-                   keySig = -7;
-               } else {
-                   keySig = 0;
-               }
-           } else if (sigNote.equals("D")) {
-               if (keyAcc == AccidentalType.FLAT) {
-                   keySig = -5;
-               } else {
-                   keySig = 2;
-               }
-           } else if (sigNote.equals("E")) {
-               if (keyAcc == AccidentalType.FLAT) {
-                   keySig = -3;
-               } else {
-                   keySig = 4;
-               }
-           } else if (sigNote.equals("F")) {
-               if (keyAcc == AccidentalType.SHARP) {
-                   keySig = 6;
-               } else {
-                   keySig = -1;
-               }
-           } else if (sigNote.equals("G")) {
-               if (keyAcc == AccidentalType.FLAT) {
-                   keySig = -6;
-               } else {
-                   keySig = 1;
-               }
-           }
-       } else if (kt == KeyType.MINOR) {
-           if (sigNote.equals("A")) {
-               if (keyAcc == AccidentalType.SHARP) {
-                   keySig = 7;
-               } else if (keyAcc == AccidentalType.FLAT) {
-                   keySig = -7;
-               }
-           } else if (sigNote.equals("B")) {
-               if (keyAcc == AccidentalType.FLAT) {
-                   keySig = -5;
-               } else {
-                   keySig = 2;
-               }
-           } else if (sigNote.equals("C")) {
-               if (keyAcc == AccidentalType.SHARP) {
-                   keySig = 4;
-               } else {
-                   keySig = -3;
-               }
-           } else if (sigNote.equals("D")) {
-               if (keyAcc == AccidentalType.SHARP) {
-                   keySig = 6;
-               } else {
-                   keySig = -1;
-               }
-           } else if (sigNote.equals("E")) {
-               if (keyAcc == AccidentalType.FLAT) {
-                   keySig = -6;
-               } else {
-                   keySig = 1;
-               }
-           } else if (sigNote.equals("F")) {
-               if (keyAcc == AccidentalType.SHARP) {
-                   keySig = 3;
-               } else {
-                   keySig = -4;
-               }
-           } else if (sigNote.equals("G")) {
-               if (keyAcc == AccidentalType.SHARP) {
-                   keySig = 5;
-               } else {
-                   keySig = -2;
-               }
-           }
-       }
+        if (kt == KeyType.MAJOR) {
+            if (sigNote.equals("A")) {
+                if (keyAcc == AccidentalType.FLAT) {
+                    keySig = -4;
+                } else {
+                    keySig = 3;
+                }
+            } else if (sigNote.equals("B")) {
+                if (keyAcc == AccidentalType.FLAT) {
+                    keySig = -2;
+                } else {
+                    keySig = 5;
+                }
+            } else if (sigNote.equals("C")) {
+                if (keyAcc == AccidentalType.SHARP) {
+                    keySig = 7;
+                } else if (keyAcc == AccidentalType.FLAT) {
+                    keySig = -7;
+                } else {
+                    keySig = 0;
+                }
+            } else if (sigNote.equals("D")) {
+                if (keyAcc == AccidentalType.FLAT) {
+                    keySig = -5;
+                } else {
+                    keySig = 2;
+                }
+            } else if (sigNote.equals("E")) {
+                if (keyAcc == AccidentalType.FLAT) {
+                    keySig = -3;
+                } else {
+                    keySig = 4;
+                }
+            } else if (sigNote.equals("F")) {
+                if (keyAcc == AccidentalType.SHARP) {
+                    keySig = 6;
+                } else {
+                    keySig = -1;
+                }
+            } else if (sigNote.equals("G")) {
+                if (keyAcc == AccidentalType.FLAT) {
+                    keySig = -6;
+                } else {
+                    keySig = 1;
+                }
+            }
+        } else if (kt == KeyType.MINOR) {
+            if (sigNote.equals("A")) {
+                if (keyAcc == AccidentalType.SHARP) {
+                    keySig = 7;
+                } else if (keyAcc == AccidentalType.FLAT) {
+                    keySig = -7;
+                }
+            } else if (sigNote.equals("B")) {
+                if (keyAcc == AccidentalType.FLAT) {
+                    keySig = -5;
+                } else {
+                    keySig = 2;
+                }
+            } else if (sigNote.equals("C")) {
+                if (keyAcc == AccidentalType.SHARP) {
+                    keySig = 4;
+                } else {
+                    keySig = -3;
+                }
+            } else if (sigNote.equals("D")) {
+                if (keyAcc == AccidentalType.SHARP) {
+                    keySig = 6;
+                } else {
+                    keySig = -1;
+                }
+            } else if (sigNote.equals("E")) {
+                if (keyAcc == AccidentalType.FLAT) {
+                    keySig = -6;
+                } else {
+                    keySig = 1;
+                }
+            } else if (sigNote.equals("F")) {
+                if (keyAcc == AccidentalType.SHARP) {
+                    keySig = 3;
+                } else {
+                    keySig = -4;
+                }
+            } else if (sigNote.equals("G")) {
+                if (keyAcc == AccidentalType.SHARP) {
+                    keySig = 5;
+                } else {
+                    keySig = -2;
+                }
+            }
+        }
         tempPart.setKeySignature(keySig);
 
         measureAttributes += "<key><fifths>" + keySig + "</fifths></key>";
@@ -215,7 +223,7 @@ public class Evaluator implements Visitor<Void> {
             measureXML += "<measure number=\"" + measureCounterXML + "\">" + "<attributes><divisions>64</divisions></attributes>";
         }
         tempPhrase = new Phrase();
-        for(Note note : m.getNotes()) {
+        for (Note note : m.getNotes()) {
             noteXML = "";
             note.accept(this);
             if (loop) {
@@ -229,7 +237,7 @@ public class Evaluator implements Visitor<Void> {
         }
         // if know that it is loop use repeat
         if (loopCounter != 0) {
-            if (measureCounter < listPhraseSize){
+            if (measureCounter < listPhraseSize) {
                 append(previousPhrases, tempPhrase);
                 return null; //break before tempPart adding
             } else if (measureCounter == listPhraseSize) {
@@ -251,81 +259,68 @@ public class Evaluator implements Visitor<Void> {
     public Void visit(Name n) throws IllegalAccessException {
         musicXMLPartList += "<part-name>" + n.getName() + "</part-name>";
         tempPart.setTitle(n.getName());
-        if (instmap.isEmpty()) {
-            instmap = getInstrumentMap();
+        if (instMap.isEmpty()) {
+            instMap = getInstrumentMap();
         }
         String instName = n.getName().replaceAll(" ", "_").toUpperCase(Locale.ROOT);
-        if (instmap.containsKey(instName)) {
-            tempPart.setInstrument(instmap.get(instName));
+        if (instMap.containsKey(instName)) {
+            tempPart.setInstrument(instMap.get(instName));
         } else {
-            System.out.println("Instrument: " + n.getName() + "was not found");
+            throw new FailedStaticCheckException("Instrument: " + n.getName() + "was not found");
         }
         return null;
     }
 
     private HashMap<String, Integer> getInstrumentMap() throws IllegalAccessException {
-        // name can be searched in instrument library
+        // Given instrument name can be searched in JMusic's instrument library
         // https://stackoverflow.com/questions/22230787/string-values-of-field-constants-in-java
         // https://stackoverflow.com/questions/9700081/in-java-how-to-iterate-on-the-constants-of-an-interface
-        HashMap<String,Integer> map = new HashMap<>();
+        HashMap<String, Integer> instMap = new HashMap<>();
         for (Field f : jm.constants.ProgramChanges.class.getFields()) {
             int modifiers = f.getModifiers();
-            if (Modifier.isPublic(modifiers)) { //check if the field is public
-                map.put(f.getName(), (Integer) f.get(null));
+            if (Modifier.isPublic(modifiers)) { // Check if the field is public
+                instMap.put(f.getName(), (Integer) f.get(null));
             }
         }
-        return map;
+        return instMap;
     }
 
     @Override
     public Void visit(Note n) throws IllegalAccessException {
         noteXML += "<note>";
         NoteType noteType = n.getType();
-        jm.music.data.Note temp;
         String octave = n.getOctave();
-        String division = n.getDivision().replace("$","");
+        String division = n.getDivision().replace("$", "");
         int numDiv = Integer.parseInt(division);
-        double rhythmValue = tempPart.getNumerator() / numDiv;
+        double rhythmValue = (double) tempPart.getNumerator() / numDiv;
         int dotCount = 0;
         if (n.getDots() != null) {
             dotCount = n.getDots().length();
         }
-        double extraRhythm = 0;
-        // Check whether or not note is letter or rest
-
         int div = Integer.parseInt(division);
         int typeCount = 0;
-        for (int i = div; i > 1; i/=2) {
+        for (int i = div; i > 1; i /= 2) {
             typeCount++;
         }
-        int duration = 256/div;
+        int duration = 256 / div;
         for (int i = 0; i < dotCount; i++) {
             div *= 2;
-            duration += 256/div;
+            duration += 256 / div;
         }
         String durationAndType = "<duration>" + duration + "</duration><type>" + types[typeCount] + "</type>";
         for (int i = 0; i < dotCount; i++) {
             durationAndType += "<dot/>";
         }
-
+        // Check whether note is letter or rest
         if (noteType == NoteType.rest) {
-            if (dotCount == 0) {
-                temp = new jm.music.data.Note(REST, rhythmValue);
-            } else {
-                for (int i = 0; i <= dotCount; i++) {
-                    extraRhythm += rhythmValue * Math.pow(0.5, i); // added length for dots
-                }
-                temp = new jm.music.data.Note(REST, extraRhythm);
-            }
-            tempPhrase.addNote(temp);
+            noteHelper(REST, rhythmValue, dotCount);
             noteXML += "<rest/>" + durationAndType + "</note>";
             return null;
         }
-        if (pitchmap.isEmpty()) {
-            pitchmap = getPitchMap();
+        if (pitchMap.isEmpty()) {
+            pitchMap = getPitchMap();
         }
-        // pitchmap now contains all string keys of the constants originally defined for ints
-        // Note is a letter
+        // pitchMap now contains all constant keys in String from Pitch interface
         String noteString = n.getLetter().toUpperCase(Locale.ROOT);
         noteXML += "<pitch><step>" + noteString + "</step>";
         AccidentalType accidental = n.getAccidental();
@@ -342,7 +337,7 @@ public class Evaluator implements Visitor<Void> {
             } else {
                 noteXML += "<octave>5</octave>";
             }
-        } else if(baseOctave == 3) {
+        } else if (baseOctave == 3) {
             if (noteString.compareTo("D") < 0) {
                 noteXML += "<octave>2</octave>";
             } else {
@@ -352,53 +347,54 @@ public class Evaluator implements Visitor<Void> {
         noteXML += "</pitch>" + durationAndType + "</note>";
 
         // Need to account for nonexistent sharps/flats
-        // Change to pitch instead of noteString
         if (accidental != null && accidental == AccidentalType.SHARP) {
             noteString += "S";
         } else if (accidental != null && accidental == AccidentalType.FLAT) {
             noteString += "F";
         }
         noteString += octave;
-        if (pitchmap.containsKey(noteString)) {
-            if (dotCount == 0) {
-                temp = new jm.music.data.Note(pitchmap.get(noteString), rhythmValue);
-            } else {
-                for (int i = 0; i <= dotCount; i++) {
-                    extraRhythm += rhythmValue * Math.pow(0.5, i); // added length for dots
-                }
-//                System.out.println(extraRhythm);
-                temp = new jm.music.data.Note(pitchmap.get(noteString), extraRhythm);
-            }
-            tempPhrase.addNote(temp);
+        if (pitchMap.containsKey(noteString)) {
+            noteHelper(pitchMap.get(noteString), rhythmValue, dotCount);
         } else {
             if (accidental == null) {
-                System.out.println("Note: " + n.getLetter() + division + " was not found");
+                throw new FailedStaticCheckException("Note: " + n.getLetter() + division + " was not found");
             } else {
-                System.out.println("Note: " + n.getLetter() + n.getAccidental().name() + division + " was not found");
+                throw new FailedStaticCheckException("Note: " + n.getLetter() + n.getAccidental().name() + division + " was not found");
             }
         }
         return null;
     }
 
+    private void noteHelper(int pitch, double rhythmValue, int dotCount) {
+        if (dotCount == 0) {
+            tempNote = new jm.music.data.Note(pitch, rhythmValue);
+        } else {
+            double extraRhythm = 0;
+            for (int i = 0; i <= dotCount; i++) {
+                extraRhythm += rhythmValue * Math.pow(0.5, i); // Extra length for dotted notes
+            }
+            tempNote = new jm.music.data.Note(pitch, extraRhythm);
+        }
+        tempPhrase.addNote(tempNote);
+    }
+
     private HashMap<String, Integer> getPitchMap() throws IllegalAccessException {
-        HashMap<String,Integer> pitchmap = new HashMap<>();
+        HashMap<String, Integer> pitchMap = new HashMap<>();
         for (Field f : jm.constants.Pitches.class.getFields()) {
             int modifiers = f.getModifiers();
-            if (Modifier.isPublic(modifiers)) { //check if the field is public
-                pitchmap.put(f.getName(), (Integer) f.get(null));
+            if (Modifier.isPublic(modifiers)) { //Check if the field is public
+                pitchMap.put(f.getName(), (Integer) f.get(null));
             }
         }
-        return pitchmap;
+        return pitchMap;
     }
 
     @Override
     public Void visit(Part p) throws IllegalAccessException {
         musicXMLPartList += "<score-part id=\"" + partCounter + "\">";
         tempPart = new jm.music.data.Part();
-        // name can be searched in instrument library
         p.getName().accept(this);
         p.getSheet().accept(this);
-        // 2 instruments cannot play at the same time?
         score.add(tempPart);
         musicXMLPartList += "</score-part>";
         partCounter++;
@@ -411,7 +407,7 @@ public class Evaluator implements Visitor<Void> {
         musicXMLPartList = "<part-list>";
         musicXMLPost = "";
         p.getTitle().accept(this);
-        for(Part part : p.getParts()) {
+        for (Part part : p.getParts()) {
             part.accept(this);
         }
 
@@ -424,7 +420,8 @@ public class Evaluator implements Visitor<Void> {
                 thisPartXML += "<measure></measure>";
                 thisMeasures++;
             }
-            musicXMLPost += thisPartXML + "</part>";;
+            musicXMLPost += thisPartXML + "</part>";
+            ;
         }
         musicXMLPartList += "</part-list>";
         musicXMLPost += "</score-partwise>";
@@ -440,15 +437,14 @@ public class Evaluator implements Visitor<Void> {
 
         measureAttributes = "<attributes><divisions>64</divisions>";
         measureCounterXML = 1;
-//        score.createPart(); // we called createPart in visit(Part p)
         tempPart.setNumerator(s.getTimeNum());
         tempPart.setDenominator(s.getTimeDem());
         s.getKey().accept(this);
-        measureAttributes += "<time><beats>" + s.getTimeNum() + "</beats><beat-type>" + s.getTimeDem()+ "</beat-type></time>";
+        measureAttributes += "<time><beats>" + s.getTimeNum() + "</beats><beat-type>" + s.getTimeDem() + "</beat-type></time>";
         s.getClef().accept(this);
         measureAttributes += "</attributes>";
         // Will need this when we do error checking
-        for(Object measures : s.getMeasures()) {
+        for (Object measures : s.getMeasures()) {
             measureXML = "";
             if (measures instanceof Loop) {
                 loop = true;
@@ -464,7 +460,6 @@ public class Evaluator implements Visitor<Void> {
         }
         musicXMLParts.add(partXML);
         measureCounts.add(currMeasures);
-//        temp.setKeySignature();
         return null;
     }
 
@@ -475,12 +470,12 @@ public class Evaluator implements Visitor<Void> {
         return null;
     }
 
-    
+
     @Override
     public Void visit(Loop l) throws IllegalAccessException {
-        // Note: Phrase = measure
+        // Note: Phrase used in JMusic is represented by our Measure class
         previousPhrases = new Phrase();
-        loopCounter = l.getCount(); //how many times the user specified the looping
+        loopCounter = l.getCount(); // How many times the user specified the looping
         List<Measure> measures = l.getMeasures();
         listPhraseSize = measures.size(); // # of measures in the whole loop
         for (Measure measure : measures) {

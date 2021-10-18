@@ -19,7 +19,7 @@ public class MusicSheetParser extends Parser {
 	public static final int
 		TITLE_START=1, PART_START=2, CLEF=3, NOTE_LETTER=4, ACCIDENTAL=5, DOTS=6, 
 		DIVISION=7, KEYTYPE=8, TIME=9, MEASURE_START=10, MEASURE_END=11, LOOP_DECLARE=12, 
-		LOOP_START=13, LOOP_END=14, OCTAVE=15, KEY_LETTER=16, WS=17, TEXT=18;
+		LOOP_START=13, LOOP_END=14, OCTAVE=15, WS=16, TEXT=17;
 	public static final int
 		RULE_program = 0, RULE_title = 1, RULE_part = 2, RULE_name = 3, RULE_sheet = 4, 
 		RULE_key = 5, RULE_measure = 6, RULE_note = 7, RULE_loop = 8;
@@ -42,8 +42,7 @@ public class MusicSheetParser extends Parser {
 		return new String[] {
 			null, "TITLE_START", "PART_START", "CLEF", "NOTE_LETTER", "ACCIDENTAL", 
 			"DOTS", "DIVISION", "KEYTYPE", "TIME", "MEASURE_START", "MEASURE_END", 
-			"LOOP_DECLARE", "LOOP_START", "LOOP_END", "OCTAVE", "KEY_LETTER", "WS", 
-			"TEXT"
+			"LOOP_DECLARE", "LOOP_START", "LOOP_END", "OCTAVE", "WS", "TEXT"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -658,7 +657,7 @@ public class MusicSheetParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\24O\4\2\t\2\4\3\t"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\23O\4\2\t\2\4\3\t"+
 		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\3\2\3\2\7\2"+
 		"\27\n\2\f\2\16\2\32\13\2\3\3\3\3\3\3\3\4\3\4\3\4\3\4\3\5\3\5\3\6\3\6\3"+
 		"\6\3\6\3\6\6\6*\n\6\r\6\16\6+\3\7\3\7\5\7\60\n\7\3\7\3\7\3\b\3\b\6\b\66"+
@@ -668,7 +667,7 @@ public class MusicSheetParser extends Parser {
 		"-\3\2\2\2\16\63\3\2\2\2\20;\3\2\2\2\22E\3\2\2\2\24\30\5\4\3\2\25\27\5"+
 		"\6\4\2\26\25\3\2\2\2\27\32\3\2\2\2\30\26\3\2\2\2\30\31\3\2\2\2\31\3\3"+
 		"\2\2\2\32\30\3\2\2\2\33\34\7\3\2\2\34\35\5\b\5\2\35\5\3\2\2\2\36\37\7"+
-		"\4\2\2\37 \5\b\5\2 !\5\n\6\2!\7\3\2\2\2\"#\7\24\2\2#\t\3\2\2\2$%\7\5\2"+
+		"\4\2\2\37 \5\b\5\2 !\5\n\6\2!\7\3\2\2\2\"#\7\23\2\2#\t\3\2\2\2$%\7\5\2"+
 		"\2%&\5\f\7\2&)\7\13\2\2\'*\5\22\n\2(*\5\16\b\2)\'\3\2\2\2)(\3\2\2\2*+"+
 		"\3\2\2\2+)\3\2\2\2+,\3\2\2\2,\13\3\2\2\2-/\7\6\2\2.\60\7\7\2\2/.\3\2\2"+
 		"\2/\60\3\2\2\2\60\61\3\2\2\2\61\62\7\n\2\2\62\r\3\2\2\2\63\65\7\f\2\2"+
