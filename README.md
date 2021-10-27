@@ -17,6 +17,6 @@ dots ::= '.'+
 division ::= '$' [1-9]+
 keyType ::= 'major' | 'minor'
 time ::= [1-9]+ '/' [1-9]+
-loopDeclare: 'loop' [2-9]+
+loopDeclare ::= 'loop' [2-9]+
 octave ::= [0-9]
 ```
