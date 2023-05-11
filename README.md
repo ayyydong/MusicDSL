@@ -3,7 +3,7 @@ CPSC 410 Project 1 2021w-t1
 # MusicDSL
 A domain-specific language for composing music using a variety of instruments.
 
-Here is the grammar defined for this project:
+Here is the grammar defined for the project:
 ```
 program ::= title part*
 title ::= 'Title:' TEXT
