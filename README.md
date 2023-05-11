@@ -1,6 +1,9 @@
-# Project1Group22
-## Grammar
-Below is the grammar for our project:
+CPSC 410 Project 1 2021w-t1
+
+# MusicDSL
+A domain-specific language for composing music using a variety of instruments.
+
+Here is the grammar defined for this project:
 ```
 program ::= title part*
 title ::= 'Title:' TEXT
