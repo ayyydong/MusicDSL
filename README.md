@@ -11,8 +11,15 @@ sheet music. By entering text, the program converts it into individual musical n
 music in text files, offering a convenient alternative to traditional graphical sheet music (modern staff notation)
 commonly found online. Text files eliminate the need for scanning documents or dealing with compatibility issues, while
 also saving space compared to PDF files. Once the user has finished inputting text, they can choose to generate the
-music sheet as either a MIDI or MusicXML file by clicking 'Generate.' Pressing 'Play' will play the generated music
-sheet.
+music sheet as either a MIDI or MusicXML file by clicking 'Generate.' 
+
+![image](https://github.com/user-attachments/assets/5bf0ffde-143d-4a2c-a63d-663899952d72)
+![image](https://github.com/user-attachments/assets/ae803262-46c5-43f6-b429-6fd65be6628d)
+
+Pressing 'Play' will play the generated music
+sheet. Make sure your computer speakers are on!
+
+
 
 Here is the grammar defined for the project:
 
@@ -38,14 +45,14 @@ octave ::= [0-9]
 
 For examples of how to compose a musical sheet, please refer to the *test_sheet* text files, such as *test_sheet2.txt* (
 which plays "Happy Birthday").
-``
+```
 Title: Test Sheet 2
 Part: Piano
 treble G major 3/4 [D4$4 D4$8 E4$4 D4$8][G4$4 F#4$4 R4$8 R4$8]
 [D4$4 D4$8 E4$4 D4$8][A4$4 G4$4 R4$8 R4$8]
 [D4$4 D4$4 D5$8 B4$8][G4$4 F#4$4 E4$8 R4$8]
 [C5$4 C5$4 B4$8 G4$8][A4$4 G4$4 R4$8 R4$8]
-``
+```
 ## Getting Started
 1. Clone the repo
    ```sh
