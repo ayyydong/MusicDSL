@@ -10,8 +10,8 @@ This GUI provides musicians, as well as beginners with no prior musical knowledg
 sheet music. By entering text, the program converts it into individual musical notes. This feature allows users to store
 music in text files, offering a convenient alternative to traditional graphical sheet music (modern staff notation)
 commonly found online. Text files eliminate the need for scanning documents or dealing with compatibility issues, while
-also saving space compared to PDF files. Once the user has finished inputting text, they can choose to generate the
-music sheet as either a MIDI or MusicXML file by clicking 'Generate.' 
+also saving space compared to PDF files. Once the user has finished inputting text, they can generate the
+music sheet as a MIDI and MusicXML file by clicking 'Generate.' 
 
 ![image](https://github.com/user-attachments/assets/5bf0ffde-143d-4a2c-a63d-663899952d72)
 ![image](https://github.com/user-attachments/assets/ae803262-46c5-43f6-b429-6fd65be6628d)
