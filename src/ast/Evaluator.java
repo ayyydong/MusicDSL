@@ -294,7 +294,7 @@ public class Evaluator implements Visitor<Void> {
         if (n.getDots() != null) {
             dotCount = n.getDots().length();
         }
-      
+
         int div = Integer.parseInt(division);
         int typeCount = 0;
         for (int i = div; i > 1; i /= 2) {
@@ -329,7 +329,7 @@ public class Evaluator implements Visitor<Void> {
         }
 
         // Add note Octave
-        noteXML += "<octave>" + octave + "</octave></pitch>" + durationAndType + "</note>"
+        noteXML += "<octave>" + octave + "</octave></pitch>" + durationAndType + "</note>";
 
         // Need to account for nonexistent sharps/flats
         if (accidental != null && accidental == AccidentalType.SHARP) {
@@ -406,7 +406,6 @@ public class Evaluator implements Visitor<Void> {
                 thisMeasures++;
             }
             musicXMLPost += thisPartXML + "</part>";
-            ;
         }
         musicXMLPartList += "</part-list>";
         musicXMLPost += "</score-partwise>";

@@ -28,7 +28,8 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="JavaFX (windows)" level="project" />
-    <orderEntry type="library" name="javafx-sdk-17.0.0" level="project" />
+    <orderEntry type="library" exported="" name="JavaFX (windows)" level="project" />
+    <orderEntry type="library" exported="" name="javafx-sdk-17.0.0" level="project" />
+    <orderEntry type="library" exported="" name="JavaFX (mac)" level="project" />
   </component>
 </module>
