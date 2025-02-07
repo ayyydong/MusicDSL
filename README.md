@@ -53,18 +53,18 @@ treble G major 3/4 [D4$4 D4$8 E4$4 D4$8][G4$4 F#4$4 R4$8 R4$8]
    ```
 2. Add this to the VM Options/JVM arguments 
    (Inside configuration settings of project -> project dependencies)
-```sh
-    --module-path ${USER PATH}$/lib/javafx-sdk-17.0.0.1/lib --add-modules=javafx.controls
-```
-or if you are using macOS
-```sh
+   ```sh
+       --module-path ${USER PATH}$/lib/javafx-sdk-17.0.0.1/lib --add-modules=javafx.controls
+   ```
+   or if you are using macOS
+   ```sh
     --module-path ${USER PATH}$/lib/mac-javafx-sdk-17.0.0.1/lib --add-modules=javafx.controls
-```
-3. Run the *GUI.java* class
+   ```
+3. Run the *Gui.java* class
 
 ## Built With
 
-[Java](https://seeklogo.com/images/J/java-logo-7833D1D21A-seeklogo.com.png)](https://www.java.com)  
-[ANTLR](https://www.antlr.org/img/antlr-logo.png)](https://www.antlr.org/)  
+[Java](https://www.java.com)  
+[ANTLR](https://www.antlr.org/)  
 [jMusic](https://explodingart.com/jmusic/)
 
