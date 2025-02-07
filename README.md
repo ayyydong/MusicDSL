@@ -64,7 +64,7 @@ or if you are using macOS
 
 ## Built With
 
-[![Java](https://seeklogo.com/images/J/java-logo-7833D1D21A-seeklogo.com.png)](https://www.java.com)  
-[![ANTLR](https://www.antlr.org/img/antlr-logo.png)](https://www.antlr.org/)  
+[Java](https://seeklogo.com/images/J/java-logo-7833D1D21A-seeklogo.com.png)](https://www.java.com)  
+[ANTLR](https://www.antlr.org/img/antlr-logo.png)](https://www.antlr.org/)  
 [jMusic](https://explodingart.com/jmusic/)
 
