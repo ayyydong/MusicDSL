@@ -61,11 +61,11 @@ treble G major 3/4 [D4$4 D4$8 E4$4 D4$8][G4$4 F#4$4 R4$8 R4$8]
 2. Add this to the VM Options/JVM arguments 
    (Inside configuration settings of project -> project dependencies)
    ```sh
-       --module-path ${USER PATH}$/lib/javafx-sdk-17.0.0.1/lib --add-modules=javafx.controls
+   --module-path ${USER PATH}$/lib/javafx-sdk-17.0.0.1/lib --add-modules=javafx.controls
    ```
    or if you are using macOS
    ```sh
-    --module-path ${USER PATH}$/lib/mac-javafx-sdk-17.0.0.1/lib --add-modules=javafx.controls
+   --module-path ${USER PATH}$/lib/mac-javafx-sdk-17.0.0.1/lib --add-modules=javafx.controls
    ```
 3. Run the *Gui.java* class
 
