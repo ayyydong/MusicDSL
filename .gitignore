@@ -8,3 +8,6 @@
 # IntelliJ
 out/
 output/
+
+# VSCode
+.vscode/
